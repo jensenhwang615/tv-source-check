@@ -1,11 +1,23 @@
 #EXTM3U
 # 央视 + 广东实测可用清单（本文件由 check.py 验证通过，可手工增删）
+#
+# 选源规矩：这里排前面的是「家里实测能跑满带宽」的源，不是「握手最快」的源。
+# 74.91.26.218 的 /live/cctvN.m3u8（无后缀）和 /live/cctvN2m.m3u8 是低码率转码流
+# （280~780kbps），源站给得起 1.7~2.8Mbps，所以 ratio 都在 1.7 倍以上，电视上不卡。
+# 代价是画质只有标清。
+#
+# 对比一下同样一个 CCTV-1 的三条线路（家里实测）：
+#   74.91/cctv1.m3u8     码率 483k   吞吐 1688k   3.5x  ← 流畅，用这条
+#   74.91/cctv1hd.m3u8   码率 733k   吞吐 1706k   2.3x  ← 也行，画质稍好
+#   124.165 的 0001_1    码率 8921k  吞吐 1791k   0.2x  ← 看 2 秒卡 8 秒，不能用
 #EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
-http://74.91.26.218:82/live/cctv1hd.m3u8
+http://74.91.26.218:82/live/cctv1.m3u8
 #EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
 http://74.91.26.218:82/live/cctv2hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-3 综艺" group-title="央视",CCTV-3 综艺
 http://74.91.26.218:82/live/cctv3hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-5 体育" group-title="央视",CCTV-5 体育
+http://74.91.26.218:82/live/cctv5hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
 http://8.138.7.223/tv/1905.php?id=LIVE3YPYZ30E7V1R0
 #EXTINF:-1 tvg-name="CCTV-7 国防军事" group-title="央视",CCTV-7 国防军事
@@ -19,11 +31,13 @@ http://74.91.26.218:82/live/cctv10hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-11 戏曲" group-title="央视",CCTV-11 戏曲
 http://74.91.26.218:82/live/cctv11hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
-http://74.91.26.218:82/live/cctv13hd.m3u8
+http://74.91.26.218:82/live/cctv132m.m3u8
 #EXTINF:-1 tvg-name="CCTV-14 少儿" group-title="央视",CCTV-14 少儿
 http://74.91.26.218:82/live/cctv14hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-15 音乐" group-title="央视",CCTV-15 音乐
+http://74.91.26.218:82/live/cctv15.m3u8
 #EXTINF:-1 tvg-name="CCTV-16 奥林匹克" group-title="央视",CCTV-16 奥林匹克
-http://gmxw.7766.org:808/hls/169/index.m3u8
+http://74.91.26.218:82/live/cctv16.m3u8
 #EXTINF:-1 tvg-name="CCTV-17 农业农村" group-title="央视",CCTV-17 农业农村
 http://74.91.26.218:82/live/cctv17hd.m3u8
 #EXTINF:-1 tvg-name="CGTN 法语" group-title="央视",CGTN 法语
@@ -36,10 +50,16 @@ http://english-livetx.cgtn.com/hls/yypdyyctzb_hd.m3u8
 https://0472.org/hls/cgtnx.m3u8
 #EXTINF:-1 tvg-name="CGTN 阿语" group-title="央视",CGTN 阿语
 https://0472.org/hls/cgtna.m3u8
-# ===== 备用镜像：山西联通 IPTV 模板 124.165.251.82:85（实测 50~150ms，比主源快一个数量级）
-# 之前央视只靠 74.91.26.218 一台主机，那台一限流、一下架频道，整个央视组就整片消失，
-# 电视上看到的现象就是「CCTV-3 之后直接跳到 CCTV-6」。这一组就是补这个缺口。
-# 覆盖 CCTV-1 ~ CCTV-15 全部；16、17 是 404，那两个台由 gmxw / 别的源覆盖。
+# ===== 备用镜像：山西联通 IPTV 模板 124.165.251.82:85
+#
+# ⚠️ 这组是「最后备选」，不要当主力。
+# 它握手只要 100ms，比上面的 74.91 快 5 倍，但这个数字骗人：
+# 它的分片是 8~9Mbps 的高码率，而这台机器的上行只给得出 1.3~1.8Mbps。
+# 家里实测 ratio（吞吐÷码率）只有 0.2 —— 也就是看 2 秒要缓冲 8 秒。
+# 曾经把它提成主力，结果就是「延迟数字漂亮了，电视上反而一直转圈」。
+# 现在它排在 74.91 后面，只在 74.91 整个挂掉时才用得上。
+#
+# 覆盖 CCTV-1 ~ CCTV-15；16、17 在这台上是 404。
 #EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
 http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
@@ -74,7 +94,10 @@ http://124.165.251.82:85/tsfile/live/0013_1.m3u8?key=txiptv&playlive=1&authid=0
 http://124.165.251.82:85/tsfile/live/0014_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-15 音乐" group-title="央视",CCTV-15 音乐
 http://124.165.251.82:85/tsfile/live/0015_1.m3u8?key=txiptv&playlive=1&authid=0
-# ===== gmxw.7766.org（30~60ms）
+# ===== gmxw.7766.org
+# ⚠️ 同样是「最后备选」。握手 30~100ms 很快，但码率 8~10Mbps、上行只给 1.8Mbps，
+# 实测 ratio 0.2，电视上会一直缓冲。原来这里放着 CCTV-16 和深圳卫视，
+# 已经换成 74.91 的低码率版本；gmxw 只留作兜底。
 # 该面板只暴露 /hls/<编号>/，编号和频道名的对应关系经上游清单核对过：
 # 93=CCTV-5、96=CCTV-8、102=CCTV-15、169=CCTV-16、40=安徽卫视、45=深圳卫视。
 # 编号相邻不代表频道相邻，别照着推。

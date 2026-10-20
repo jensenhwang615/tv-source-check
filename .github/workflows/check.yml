@@ -41,9 +41,13 @@ jobs:
         # --blocked-host：这两台都会按 IP 限流（并发一高就整片 404，隔 1 秒单条请求又是 200，
         # GitHub 机房 IP 尤其容易中）。从它们上面失败的条目判为 BLOCKED，
         # 不算失效、也不从 valid.m3u 里踢掉。报告里会单独列出「被限流」多少条。
+        #
+        # sources/official.m3u 放最前面：这是央视官网直连源（大厂 CDN，带宽足），
+        # curate.py 会给它们的排序打最高优先级。排在最后的话也没关系（顺序不影响选源），
+        # 但放前面读起来清楚。
         run: |
           python scripts/check.py \
-            --playlist sources/streams.m3u sources/backup.m3u sources/hk.m3u sources/sports.m3u sources/auto.m3u \
+            --playlist sources/official.m3u sources/streams.m3u sources/backup.m3u sources/hk.m3u sources/sports.m3u sources/auto.m3u \
             --out dist \
             --timeout 8 \
             --concurrency 24 \

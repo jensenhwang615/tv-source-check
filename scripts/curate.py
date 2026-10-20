@@ -12,9 +12,94 @@
 """
 from __future__ import annotations
 
+import json
+import os
 import re
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
+
+# ---------------------------------------------------------------------------
+# 家庭实测排名（scripts/bench.py --write-rank 生成）
+# ---------------------------------------------------------------------------
+# 为什么需要这个文件：check.py 量的是「握手延迟」，但电视上卡不卡取决于
+# 「这路流的码率，源站给不给得起带宽」。两者经常是反向的 ——
+# 山西联通 IPTV 模板握手 100ms（看着比境外 VPS 快 10 倍），可它码率 8Mbps、
+# 实际只给得出 1.7Mbps，电视上每看两秒缓冲一次；而境外 VPS 握手 580ms，
+# 码率 2Mbps、带宽给足，反而流畅。
+#
+# 所以选源顺序以这个文件的实测分为准，latency_ms 只在没有实测数据时兜底。
+_RANK_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "sources", "local_rank.json",
+)
+
+# 没有实测数据时的默认分。比任何实测过的差源都不如，但比测过带宽不足的好。
+_SCORE_UNKNOWN = 5000
+# 测过带宽不足（吞吐 < 码率一半）的源：排最后，但不删——
+# 万一大面积断流，留着当最后一个能点的选项总比空台强。
+_SCORE_STARVED = 9000
+# 央视官网源（tv.cctv.com 背后的 CDN）。见 _is_official()。
+_SCORE_OFFICIAL = 10
+
+
+def _is_official(url: str) -> bool:
+    """是不是央视官网直播（tv.cctv.com 那套）。
+
+    这些地址走金山云 / 网宿 / 腾讯云 / 百度云 / 火山 CDN，家里实测单条
+    20~270Mbps，码率 1.5~3.3Mbps，起播 10~200ms。和第三方转播源不是一个物种：
+    第三方（海外小 VPS、各地 IPTV 模板公网暴露）上行通常只有 1.5~2Mbps，
+    却塞 8~10Mbps 的码率，电视上是「看两秒缓冲八秒」。
+
+    所以只要官方源在，就不用看任何延迟数字，直接排第一。
+    特征：路径里带 cdrmldcctv（官方转码分档目录）。第三方就算域名长得像
+    （比如 gcksc.v.kcdnvip.com 也是 kcdnvip），路径里不会有这一段。
+    """
+    u = url or ""
+    return "cdrmldcctv" in u or "/hls_cdrm/" in u
+
+
+def _score(r) -> float:
+    """这条源在家里的体感分，越小越好。
+
+    取值顺序：官方源 → 本 URL 的实测分 → 同主机的平均分 → 默认分。
+    带宽明显不够的直接丢到 9000 档，只有在别的源全挂时才会被选上。
+    """
+    url = (r.url or "").strip()
+    if _is_official(url):
+        return _SCORE_OFFICIAL
+    if url in _RANK_BAD:
+        return _SCORE_STARVED
+    rec = _RANK_URLS.get(url)
+    if rec:
+        s = float(rec.get("score") or _SCORE_UNKNOWN)
+        # ratio < 1 说明带宽跟不上码率，一定会周期性缓冲，按缺口加罚
+        ratio = float(rec.get("ratio") or 0)
+        if ratio and ratio < 1.3:
+            s += (1.3 - ratio) * 2500
+        return s
+    # 没单独测过，用主机历史表现估
+    h = urlparse(url).hostname or ""
+    hrec = _RANK_HOSTS.get(h)
+    if hrec:
+        s = float(hrec.get("score") or _SCORE_UNKNOWN)
+        ratio = float(hrec.get("ratio") or 0)
+        if ratio and ratio < 1.3:
+            s += (1.3 - ratio) * 2500
+        return s
+    # 完全没数据：用握手延迟做粗估（毫秒），再加上「码率未知」的保守罚分
+    lat = r.latency_ms if getattr(r, "latency_ms", None) else 3000
+    return _SCORE_UNKNOWN / 2 + lat
+
+
+def _load_rank() -> tuple[dict, dict, set]:
+    try:
+        d = json.load(open(_RANK_PATH, encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}, {}, set()
+    return d.get("urls") or {}, d.get("hosts") or {}, set(d.get("bad") or [])
+
+
+_RANK_URLS, _RANK_HOSTS, _RANK_BAD = _load_rank()
 
 # ---------------------------------------------------------------------------
 # 分组顺序：数字小的排前面
@@ -314,23 +399,45 @@ for _n in CCTV_CN:
 
 
 def _diverse(items: list, n: int) -> list:
-    """同组内最多挑 n 条，优先选不同主机，避免整份清单压在一台服务器上。"""
-    items = sorted(items, key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
-    chosen: list = []
-    hosts: set[str] = set()
-    for it in items:
+    """同组内最多挑 n 条：第一条挑体感最好的，其余优先换主机做备份。
+
+    以前这里是「按延迟排序 + 强制不同主机」，有两个问题：
+      1. 延迟低 ≠ 好看，选出过 8Mbps/1.7Mbps 的源当主线路，电视上一直缓冲
+      2. 强制不同主机导致线路2 常常差得多，其实用户几乎不会用到线路2
+    现在改成：主线路只看实测分；线路2 起才考虑主机多样性，但差值太大就不换。
+    """
+    items = sorted(items, key=_score)
+    if not items:
+        return []
+    first = items[0]
+    chosen = [first]
+    best = _score(first)
+    used_host = {urlparse(first.url).hostname or ""}
+    for it in items[1:]:
+        if len(chosen) >= n:
+            break
         h = urlparse(it.url).hostname or ""
-        if h in hosts:
+        s = _score(it)
+        # 换主机做备份是有价值的（同一台服务器挂了两条一起死），
+        # 但代价不能超过 2.5 倍——否则所谓的备份比主线路差一个数量级，等于没有。
+        if h in used_host and s > best * 1.2:
+            continue
+        if h not in used_host and s > best * 2.5:
             continue
         chosen.append(it)
-        hosts.add(h)
-        if len(chosen) >= n:
-            return chosen
+        used_host.add(h)
+    # 还是不够 n 条，就把剩下的按分补齐——但只补「分数还过得去」的。
+    # 无条件补齐的后果很具体：某台只有 1 条官方源（分数 10），为了凑够 2 条，
+    # 会把实测 0.2x 的 IPTV 模板塞成「线路2」。用户点到线路2 就是卡死，
+    # 而线路1 本来好好的。宁缺毋滥：官方源在的时候，一条就够。
     for it in items:
-        if it not in chosen:
-            chosen.append(it)
-            if len(chosen) >= n:
-                break
+        if len(chosen) >= n:
+            break
+        if it in chosen:
+            continue
+        if _score(it) > max(best * 3, 200):
+            continue
+        chosen.append(it)
     return chosen
 
 
