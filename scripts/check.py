@@ -286,6 +286,23 @@ def check_channel(ch: Channel, timeout: float, idx: int = 0, blocked: set[str] |
     status, ms, res, detail = probe(ch.url, timeout)
     host = urlparse(ch.url).hostname or ""
 
+    # 央视官网源单独豁免。
+    #
+    # 这套地址（tv.cctv.com 背后，路径带 cdrmldcctv）走的是金山云/网宿/腾讯云/
+    # 百度云/火山这些国内 CDN。它们在中国大陆家里实测 20~270Mbps，但 GitHub 的
+    # runner 在 Azure 境外机房，到百度云、火山这类国内节点经常路由不通。
+    #
+    # 具体表现：同一份清单，家里跑 16 个台全通，Actions 跑只剩 12 个台，
+    # 缺的 CCTV-5/6/9/14 在清单里退回成慢的第三方源——用户在电视上看到的就是
+    # 「换了新源，这几个台还是卡」。
+    #
+    # 判 BLOCKED 的含义是「换网络可播」，正好对应这里的情况。但 404 不能豁免：
+    # 那是地址真的没了，换什么网络都不会好。
+    _is_official = "cdrmldcctv" in ch.url or "/hls_cdrm/" in ch.url
+    if _is_official and status in ("DEAD", "SUSPECT") and "404" not in detail:
+        return Result(ch.name, ch.group, ch.url, "BLOCKED", ms, res,
+                      f"官方源在境外机房不可达（国内家宽可播）: {detail}", idx, ch.raw)
+
     # 403 单独算一类：它说的是「服务器认得你但拒绝服务」，成因基本是地域封锁、
     # 防盗链或 IP 黑名单，而不是「这个源没了」（那是 404）。香港台尤其如此——
     # 翡翠台、明珠台、凤凰这几个的一组源在广东家宽上几乎全 403，在境外机房却正常。

@@ -446,13 +446,25 @@ def _pick_diverse(items: list, n: int) -> list:
 
     BLOCKED 是「403 / 本机 IP 被限流」这类换网络才能播的源。它们的响应时间往往
     比真能播的源还短，如果只按延迟排序，会被优先挑进清单 —— 电视上第一条线路
-    点开就是黑屏。所以 OK 必须无条件排前面。
+    点开就是黑屏。所以真能播的必须排在前面。
+
+    **官方源是唯一例外，它排在「OK」前面。** 原因：GitHub 机房在境外，
+    到百度云/火山这些国内 CDN 经常不通，Actions 会把官方源判成 BLOCKED。
+    如果这时让一条 OK 的第三方慢源（比如 0.2x 的 IPTV 模板）排到前面，
+    用户在电视上看到的就是「明明换了新源，这几个台还是卡」。
+    官方源在中国大陆一定通，境外机房测不到是机房的问题，不是源的问题。
     """
-    ok = [x for x in items if x.status == "OK"]
-    blocked = [x for x in items if x.status != "OK"]
-    chosen = _diverse(ok, n)
-    if len(chosen) < n and blocked:
-        chosen += _diverse(blocked, 1)
+    official = [x for x in items if _is_official(x.url)]
+    ok = [x for x in items if x.status == "OK" and not _is_official(x.url)]
+    other = [x for x in items if x.status != "OK" and not _is_official(x.url)]
+
+    chosen: list = []
+    if official:
+        chosen += _diverse(official, n)
+    if len(chosen) < n:
+        chosen += _diverse(ok, n - len(chosen))
+    if len(chosen) < n and other:
+        chosen += _diverse(other, 1)
     return chosen
 
 
