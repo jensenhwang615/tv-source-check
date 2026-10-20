@@ -50,6 +50,12 @@ http://124.165.251.82:85/tsfile/live/0003_1.m3u8?key=txiptv&playlive=1&authid=0
 http://124.165.251.82:85/tsfile/live/0004_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-5 体育" group-title="央视",CCTV-5 体育
 http://124.165.251.82:85/tsfile/live/0005_1.m3u8?key=txiptv&playlive=1&authid=0
+# CCTV-5+ 体育赛事。0019 号是截帧看过台标的（右上角 CCTV 5+，画面在播德甲），不是照编号猜的
+#EXTINF:-1 tvg-name="CCTV-5+ 体育赛事" group-title="央视",CCTV-5+ 体育赛事
+http://124.165.251.82:85/tsfile/live/0019_1.m3u8?key=txiptv&playlive=1&authid=0
+# 备用线路：另一套同构 IPTV 模板，编号不同（这里是 0006），同样截帧确认过是 5+
+#EXTINF:-1 tvg-name="CCTV-5+ 体育赛事" group-title="央视",CCTV-5+ 体育赛事
+http://223.78.65.165:9901/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
 http://124.165.251.82:85/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-7 国防军事" group-title="央视",CCTV-7 国防军事
