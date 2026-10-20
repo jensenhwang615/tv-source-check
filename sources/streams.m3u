@@ -1,17 +1,31 @@
 #EXTM3U
 # 央视 + 广东实测可用清单（本文件由 check.py 验证通过，可手工增删）
 #
-# 选源规矩：这里排前面的是「家里实测能跑满带宽」的源，不是「握手最快」的源。
-# 74.91.26.218 的 /live/cctvN.m3u8（无后缀）和 /live/cctvN2m.m3u8 是低码率转码流
-# （280~780kbps），源站给得起 1.7~2.8Mbps，所以 ratio 都在 1.7 倍以上，电视上不卡。
-# 代价是画质只有标清。
+# ---------------------------------------------------------------------------
+# 一级源：浙江广电 CDN（ali-m-l.cztv.com）
+# ---------------------------------------------------------------------------
+# 2026-10-20 晚实测：74.91.26.218 已经把央视全部下线（访问 /live/cctv1hd.m3u8
+# 返回 JSON「频道 cctv1 没有配置任何服务器」），124.165 只有 0.2x 带宽。
+# 剩下的可用高带宽央视源就落在浙江广电这套 CDN 上：
 #
-# 对比一下同样一个 CCTV-1 的三条线路（家里实测）：
-#   74.91/cctv1.m3u8     码率 483k   吞吐 1688k   3.5x  ← 流畅，用这条
-#   74.91/cctv1hd.m3u8   码率 733k   吞吐 1706k   2.3x  ← 也行，画质稍好
-#   124.165 的 0001_1    码率 8921k  吞吐 1791k   0.2x  ← 看 2 秒卡 8 秒，不能用
+#   channel16 1080p  CCTV-1  码率 4017k  吞吐 84265k  21.0x  起播 48ms
+#   channel22 720p   CCTV-1  码率 1576k  吞吐 49544k  31.4x  起播 47ms
+#   channel21 1080p  CCTV-13 码率 2138k  吞吐 79245k  37.1x  起播 35ms
+#
+# 通道号与台名的对应关系没有元数据，是逐台抽帧看图标识别出来的。
+# 这套 CDN 上其余通道是浙江本地台（浙江卫视、钱江、浙江新闻、浙江少儿…），
+# 只有 CCTV-1 和 CCTV-13 两台中央电视台，所以只补这两台。
+# 通道 13 / 20 是彩条测试图，别用。
 #EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
-http://74.91.26.218:82/live/cctv1.m3u8
+http://ali-m-l.cztv.com/channels/lantian/channel16/1080p.m3u8
+#EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
+http://ali-m-l.cztv.com/channels/lantian/channel22/720p.m3u8
+#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
+http://ali-m-l.cztv.com/channels/lantian/channel21/1080p.m3u8
+#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
+http://ali-m-l.cztv.com/channels/lantian/channel40/720p.m3u8
+#EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
+http://74.91.26.218:82/live/cctv1hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
 http://74.91.26.218:82/live/cctv2hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-3 综艺" group-title="央视",CCTV-3 综艺

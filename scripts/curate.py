@@ -38,37 +38,119 @@ _SCORE_UNKNOWN = 5000
 # 测过带宽不足（吞吐 < 码率一半）的源：排最后，但不删——
 # 万一大面积断流，留着当最后一个能点的选项总比空台强。
 _SCORE_STARVED = 9000
-# 央视官网源（tv.cctv.com 背后的 CDN）。见 _is_official()。
-_SCORE_OFFICIAL = 10
+# 判死档：永远不选。目前只有央视官网灰屏源用这一档。
+_SCORE_DROP = 1e9
+# 央视官网源（tv.cctv.com 背后的 CDN）——**整条剔除，不是降级**。
+#
+# 曾经以为这是最优解：带宽 20~270Mbps，起播 10~200ms，ratio 90 倍以上，
+# 把第三方源（ratio 0.1~2）按在地上打。但实测抽帧出来是**全灰**：
+#
+#   $ ffmpeg -i "<官网 m3u8>" -t 18 -vf "fps=1/3" f%02d.png
+#   [h264] top block unavailable for requested intra mode
+#   [h264] error while decoding MB 2 0
+#   → f01~f06.png 全是 480x270 的纯灰色块，顶部几条噪点
+#
+# 换 ffmpeg 7.1 重测结果一样，不是解码器版本问题。往下查容器层反而是干净的：
+# TS 加扰标志全 0、清单里没有 EXT-X-KEY、PES 起始码正常。也就是说它不是
+# 标准 DRM，而是 H.264 码流本身解不出画面 —— 路径里的 `cdrm`（CDRM）大概
+# 就是央视自己做的一层载荷处理，只有官网播放器能还原。
+#
+# 佐证是对照组：同一套 ffmpeg 命令去抽第三方源（124.165 的 CCTV-1），画面正常。
+# 录满 60 秒再看仍是灰褐色加顶部噪点，不是「起播缺 IDR 帧」的临时现象。
+#
+# 所以留着它是有害的：用户点「线路2」会看到一片灰，比卡顿更让人以为坏了。
+# 直接不收录。sources/official.m3u 保留作研究留档，但 check 不跑它。
+# 实现见 _is_drm_cctv()：命中就返回 _SCORE_DROP，并在主循环里直接跳过。
+
+# 实测带宽严重不足的主机（吞吐只有码率的 0.2 倍，看 2 秒缓冲 8 秒）。
+# 这些机器握手特别快（100ms），如果不显式压低，按延迟排序会排到最前面——
+# 这正是「换了源反而更卡」的原因。
+#   124.165.251.82  山西联通 IPTV 模板公网暴露端口，8~9Mbps 码率 / 1.7Mbps 上行
+#   gmxw.7766.org   同类，8~10Mbps 码率 / 1.8Mbps 上行
+_STARVED_HOSTS = {"124.165.251.82", "gmxw.7766.org"}
+
+# ---------------------------------------------------------------------------
+# 一级源：电视台 / 广电 / 运营商自己运营的地址
+# ---------------------------------------------------------------------------
+# 选源顺序是「一级源 → 第三方备用」，判断依据是域名归属，不是主观感觉。
+# 这些域名背后是持牌机构自己在发流，掉线概率和画质都比第三方转播节点高一个档次：
+#   官方频道自己的 CDN   cgtn.com（CGTN）、cctvplus.com（央视国际）
+#   地方广电自有服务器   gztv.com（广州台）、hyrtv.cn（河源台）、pybtv.cn（番禺台）、
+#                        sun0769.com（东莞台）、cztv.com（浙江广电华数）
+#   持牌播出平台         bestv.cn（百视通，五星体育官方播出方）
+#   官方 OTT             fengshows.cn（凤凰）、hoy.tv（香港开电视）、rthk.hk（港台）
+#
+# 注意：这里说的是「谁在发流」，不是「播什么」。浙江广电的 CDN 上转 CCTV-13，
+# 仍算一级源——因为运维责任在浙江广电，比某个海外小 VPS 靠谱得多。
+_PRIMARY_SUFFIX = (
+    ".cgtn.com",
+    ".cctvplus.com",
+    ".gztv.com",
+    ".hyrtv.cn",
+    ".pybtv.cn",
+    ".sun0769.com",
+    ".cztv.com",
+    ".bestv.cn",
+    ".fengshows.cn",
+    ".hoy.tv",
+    ".rthk.hk",
+    ".gdbtv.com",
+    ".gdtv.cn",
+)
+# 一级源的分数折扣。乘 0.05 的意思是：即使它比某个第三方源慢 20 倍，
+# 也仍然排前面；只有慢到 20 倍以上（基本等于废了）才会被第三方顶掉。
+_PRIMARY_DISCOUNT = 0.05
 
 
-def _is_official(url: str) -> bool:
-    """是不是央视官网直播（tv.cctv.com 那套）。
+def _is_drm_cctv(url: str) -> bool:
+    """是不是央视官网直播（tv.cctv.com 那套）—— 解出来是灰屏。
 
-    这些地址走金山云 / 网宿 / 腾讯云 / 百度云 / 火山 CDN，家里实测单条
-    20~270Mbps，码率 1.5~3.3Mbps，起播 10~200ms。和第三方转播源不是一个物种：
-    第三方（海外小 VPS、各地 IPTV 模板公网暴露）上行通常只有 1.5~2Mbps，
-    却塞 8~10Mbps 的码率，电视上是「看两秒缓冲八秒」。
+    特征：路径里带 cdrmldcctv（官方转码分档目录）或 /hls_cdrm/。第三方就算
+    域名长得像（比如 gcksc.v.kcdnvip.com 也是 kcdnvip），路径里不会有这一段。
 
-    所以只要官方源在，就不用看任何延迟数字，直接排第一。
-    特征：路径里带 cdrmldcctv（官方转码分档目录）。第三方就算域名长得像
-    （比如 gcksc.v.kcdnvip.com 也是 kcdnvip），路径里不会有这一段。
+    这类源一律不收录，见上面那段注释。
     """
     u = url or ""
     return "cdrmldcctv" in u or "/hls_cdrm/" in u
 
 
+def _is_primary(url: str) -> bool:
+    """是不是「一级源」——电视台 / 广电 / 运营商自己在发流。
+
+    只看域名归属。命中就享受 _PRIMARY_DISCOUNT 的排序折扣，排到第三方前面。
+    """
+    h = urlparse(url or "").hostname or ""
+    if not h:
+        return False
+    h = h.lower()
+    return any(h == s.lstrip(".") or h.endswith(s) for s in _PRIMARY_SUFFIX)
+
+
 def _score(r) -> float:
     """这条源在家里的体感分，越小越好。
 
-    取值顺序：官方源 → 本 URL 的实测分 → 同主机的平均分 → 默认分。
-    带宽明显不够的直接丢到 9000 档，只有在别的源全挂时才会被选上。
+    取值顺序：官网灰屏源（判死）→ 本 URL 实测分 → 同主机均分 → 延迟兜底，
+    最后一级源再乘 _PRIMARY_DISCOUNT 做优先。带宽明显不够的直接丢到 9000 档。
     """
     url = (r.url or "").strip()
-    if _is_official(url):
-        return _SCORE_OFFICIAL
+    if _is_drm_cctv(url):
+        return _SCORE_DROP
     if url in _RANK_BAD:
         return _SCORE_STARVED
+    if (urlparse(url).hostname or "") in _STARVED_HOSTS:
+        return _SCORE_STARVED
+
+    s = _base_score(r, url)
+    # 一级源优先：打折后排在第三方前面。
+    # 放在最后而不是最前，是因为「优先」不等于「免检」——真测出带宽不够
+    # （上面那几条 9000 档）就先保住这个结论，不能因为它是官方的就硬推上去。
+    if _is_primary(url):
+        s *= _PRIMARY_DISCOUNT
+    return s
+
+
+def _base_score(r, url: str) -> float:
+    """不看「是不是官方」，只算这条源本身的体感分。"""
     rec = _RANK_URLS.get(url)
     if rec:
         s = float(rec.get("score") or _SCORE_UNKNOWN)
@@ -446,25 +528,13 @@ def _pick_diverse(items: list, n: int) -> list:
 
     BLOCKED 是「403 / 本机 IP 被限流」这类换网络才能播的源。它们的响应时间往往
     比真能播的源还短，如果只按延迟排序，会被优先挑进清单 —— 电视上第一条线路
-    点开就是黑屏。所以真能播的必须排在前面。
-
-    **官方源是唯一例外，它排在「OK」前面。** 原因：GitHub 机房在境外，
-    到百度云/火山这些国内 CDN 经常不通，Actions 会把官方源判成 BLOCKED。
-    如果这时让一条 OK 的第三方慢源（比如 0.2x 的 IPTV 模板）排到前面，
-    用户在电视上看到的就是「明明换了新源，这几个台还是卡」。
-    官方源在中国大陆一定通，境外机房测不到是机房的问题，不是源的问题。
+    点开就是黑屏。所以 OK 必须无条件排前面。
     """
-    official = [x for x in items if _is_official(x.url)]
-    ok = [x for x in items if x.status == "OK" and not _is_official(x.url)]
-    other = [x for x in items if x.status != "OK" and not _is_official(x.url)]
-
-    chosen: list = []
-    if official:
-        chosen += _diverse(official, n)
-    if len(chosen) < n:
-        chosen += _diverse(ok, n - len(chosen))
+    ok = [x for x in items if x.status == "OK"]
+    other = [x for x in items if x.status != "OK"]
+    chosen = _diverse(ok, n)
     if len(chosen) < n and other:
-        chosen += _diverse(other, 1)
+        chosen += _diverse(other, n - len(chosen))
     return chosen
 
 
@@ -501,6 +571,11 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
             continue
         url = (r.url or "").strip()
         if not url or url in seen_url:
+            continue
+        if _is_drm_cctv(url):
+            # 央视官网源，拉下来是灰屏，收了反而害人
+            seen_url.add(url)
+            dropped["[灰屏] 央视官网源"] = dropped.get("[灰屏] 央视官网源", 0) + 1
             continue
         seen_url.add(url)
 

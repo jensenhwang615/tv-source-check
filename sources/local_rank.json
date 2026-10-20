@@ -1,0 +1,33 @@
+{
+  "_note": "2026-10-20 晚 佛山家宽实测（scripts/bench.py）。ratio = 吞吐 ÷ 码率，>=1.3 才不会卡。这份数据只在本机能测准：GitHub Actions 在境外机房，到国内 CDN 的路由不可比，所以不要用 Actions 的结果覆盖它。",
+  "urls": {
+    "http://ali-m-l.cztv.com/channels/lantian/channel21/1080p.m3u8": {
+      "score": 35,
+      "ratio": 37.1,
+      "ttfb": 35,
+      "kbps": 79245
+    },
+    "http://ali-m-l.cztv.com/channels/lantian/channel16/1080p.m3u8": {
+      "score": 48,
+      "ratio": 21.0,
+      "ttfb": 48,
+      "kbps": 84265
+    },
+    "http://ali-m-l.cztv.com/channels/lantian/channel22/720p.m3u8": {
+      "score": 47,
+      "ratio": 31.4,
+      "ttfb": 47,
+      "kbps": 49544
+    }
+  },
+  "hosts": {
+    "ali-m-l.cztv.com": {
+      "score": 43,
+      "ratio": 29.8,
+      "n": 3
+    }
+  },
+  "bad": [
+    "http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0"
+  ]
+}

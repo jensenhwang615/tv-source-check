@@ -42,12 +42,12 @@ jobs:
         # GitHub 机房 IP 尤其容易中）。从它们上面失败的条目判为 BLOCKED，
         # 不算失效、也不从 valid.m3u 里踢掉。报告里会单独列出「被限流」多少条。
         #
-        # sources/official.m3u 放最前面：这是央视官网直连源（大厂 CDN，带宽足），
-        # curate.py 会给它们的排序打最高优先级。排在最后的话也没关系（顺序不影响选源），
-        # 但放前面读起来清楚。
+        # 不再跑 sources/official.m3u：央视官网那条流解出来是灰屏（路径里的
+        # cdrm 就是这意思），裸拉 TS 解出来是纯灰屏，换 ffmpeg 7.1 也一样。
+        # 收进来用户点开只会看到一片灰，不如不收录。留档在研究脚本里。
         run: |
           python scripts/check.py \
-            --playlist sources/official.m3u sources/streams.m3u sources/backup.m3u sources/hk.m3u sources/sports.m3u sources/auto.m3u \
+            --playlist sources/streams.m3u sources/backup.m3u sources/hk.m3u sources/sports.m3u sources/auto.m3u \
             --out dist \
             --timeout 8 \
             --concurrency 24 \
