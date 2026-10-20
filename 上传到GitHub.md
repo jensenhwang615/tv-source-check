@@ -1,6 +1,6 @@
 # 上传到 GitHub（零基础版 · 公开仓库）
 
-本地已经做好了：`git init` + 三次提交都已完成，分支为 `main`，**16 个文件**已入库，`.git` 只有 219KB。
+本地已经做好了：仓库已建好并提交完毕，分支为 `main`，**16 个文件**已入库，`.git` 不到 300KB。
 你只需要「把本地仓库推到 GitHub」这一件事。
 
 ---
@@ -41,13 +41,9 @@
 ### 2. 上传文件
 1. 新建出来的页面上有一条链接 **`uploading an existing file`**，点它
 2. 在资源管理器打开 `C:\Users\Jensen\WorkBuddy\2026-10-20-09-16-06\tv-source-check`
-3. **先打开「查看」→ 勾上「隐藏的项目」**，否则你看不到 `.github` 和 `.gitignore`
-4. 把这 **9 个** 拖进浏览器（拖内容，**不要拖整个 `tv-source-check` 文件夹**）：
+3. 把这 **6 个** 拖进浏览器（拖内容，**不要拖整个 `tv-source-check` 文件夹**）：
 
 ```
-.github          （隐藏，必须有——工作流就在里面）
-.gitignore       （隐藏）
-.gitattributes   （隐藏）
 README.md
 requirements.txt
 上传到GitHub.md
@@ -56,26 +52,36 @@ scripts
 sources
 ```
 
-5. 等列表全部出现（**16 个文件**：`dist` 里 3 个、`sources` 里 5 个、`scripts` 里 2 个、根目录 4 个、`.github` 里 1 个）
-6. 页面底部点 **Commit changes**
+4. 页面底部点 **Commit changes**
 
-### 3. 确认工作流在里面（关键）
-点进 **`.github/workflows/check.yml`** 能不能看到内容。
-如果 `.github` 没传上去（有些浏览器拖拽会漏隐藏文件夹），用下面的备选办法。
+> ⚠️ **不要试图拖 `.github`、`.gitignore`、`.gitattributes`**。GitHub 网页上传对以点开头的文件名
+> 一律拒绝，会弹出 **`This file is hidden.`**。这不是你的操作问题，是它的限制。
+> 这三个文件用下一步「手工新建」的方式补上。
 
-### 4. 开跑
+### 3. 手工新建 3 个隐藏文件（必做）
+仓库页 → **Add file** → **Create new file** → 输入下面的文件名 → 粘贴内容 → **Commit changes**。
+
+内容不用自己找，已经有现成的副本（都是看得见的 `.txt`，双击就能打开复制）：
+
+```
+C:\Users\Jensen\WorkBuddy\2026-10-20-09-16-06\粘贴到GitHub用\
+```
+
+| 复制这个文件 | 在 GitHub 上输入的文件名 | 作用 |
+|---|---|---|
+| `1-gitignore.txt` | `.gitignore` | 忽略临时文件，让公开仓库保持精简 |
+| `2-gitattributes.txt` | `.gitattributes` | 统一换行符（可选，建议加） |
+| `3-check.yml.txt` | `.github/workflows/check.yml` | **工作流本体，没有它 Actions 不会跑** |
+
+> 输 `.github/workflows/check.yml` 时不用管目录存不存在，打 `/` 会自动帮你建文件夹。
+
+### 4. 确认工作流在里面（关键）
+点进 **`.github/workflows/check.yml`** 能不能看到内容。看不到就是这一步漏了。
+
+### 5. 开跑
 1. 顶部 **Actions** 标签 → 如果出现绿色按钮问你是否启用，点 **I understand my workflows, go ahead and enable them**
 2. 左边选 **源检测** → 右边 **Run workflow** → 绿色 **Run workflow**
 3. 等 3~5 分钟，刷新，看是不是绿勾
-
----
-
-### 备选：手工新建 workflow 文件（`.github` 没传上去时用）
-
-1. 仓库页 **Add file** → **Create new file**
-2. 文件名直接输入：`.github/workflows/check.yml`（打 `/` 会自动变成目录）
-3. 把本地 `C:\Users\Jensen\WorkBuddy\2026-10-20-09-16-06\tv-source-check\.github\workflows\check.yml` 的内容整段复制进去
-4. 底部 **Commit changes**
 
 ---
 
@@ -98,6 +104,19 @@ git remote add origin https://github.com/你的用户名/tv-source-check.git
 # 3. 推上去
 git push -u origin main
 ```
+
+> **如果报 `! [rejected] main -> main (fetch first)`**：说明你已经在网页上提交过一次了。
+> 本地这份是完整的 16 个文件（含网页传不上去的三个隐藏文件），直接覆盖远程最干净：
+>
+> ```bash
+> git push -u --force origin main
+> ```
+>
+> 覆盖掉的只是你网页上那次「缺了隐藏文件」的提交，内容都在本地，不会丢任何东西。
+
+第一次 `push` 会弹出 Git Credential Manager 的窗口，选 **Sign in with your browser**，
+浏览器里点一下授权即可，不用手输 token。这个登录方式我已经帮你配好了
+（`git config --global credential.helper manager`），以后 push 不会再问。
 
 推送成功后，**以后每次改完只需要三行**：
 
@@ -159,8 +178,9 @@ TVBox / 影视壳 / TiviMate / PotPlayer / VLC 都认。**清单每 6 小时自�
 
 | 现象 | 真正的原因 | 怎么修 |
 |---|---|---|
-| 找不到 `.github` 文件夹 | 资源管理器藏了隐藏项 | 查看 → 勾「隐藏的项目」；或用手工新建文件那招 |
-| Actions 页面没有任何工作流 | `.github/workflows/check.yml` 没传上去 | 见「备选：手工新建 workflow 文件」 |
+| 拖 `.github` / `.gitignore` 弹 **`This file is hidden.`** | GitHub 网页上传**不支持**以点开头的文件名 | 这 3 个改用 **Add file → Create new file** 手工新建，内容复制 `粘贴到GitHub用\` 里的 txt（见方法一第 3 步） |
+| 找不到 `.github` 文件夹 | 资源管理器藏了隐藏项 | 查看 → 勾「隐藏的项目」 |
+| Actions 页面没有任何工作流 | `.github/workflows/check.yml` 没传上去 | 见方法一第 3 步「手工新建 3 个隐藏文件」 |
 | 运行成功但最后一步红了 | 机器人没权限回写结果 | **Settings → Actions → General → Workflow permissions** → 选 **Read and write** → Save |
 | 定时任务某天不跑了 | 60 天仓库没活动，GitHub 自动暂停定时任务 | Actions 页点 **Enable workflow**；或随便改一下 README 提交一次 |
 | `push` 报 `rejected ... fetch first` | 建仓库时勾了 README，远程已有提交 | `git pull --rebase origin main` 然后再 `git push` |
