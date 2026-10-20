@@ -1,0 +1,65 @@
+name: 源检测
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # 每 6 小时一次（UTC）。想更勤就改成 "0 */2 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "sources/**"
+      - "scripts/**"
+      - ".github/workflows/check.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 从上游采集候选源
+        run: python scripts/collect.py || echo "采集失败，继续用手工清单"
+
+      - name: 实测所有源
+        # 阈值 5%：auto.m3u 里是几百条自动采集的候选（含大量地域封锁的死源），
+        # 会天然拉低总可用率。这个阈值只用来发现「整体崩了」，不适合当质量指标。
+        # --blocked-host：这两台都会按 IP 限流（并发一高就整片 404，隔 1 秒单条请求又是 200，
+        # GitHub 机房 IP 尤其容易中）。从它们上面失败的条目判为 BLOCKED，
+        # 不算失效、也不从 valid.m3u 里踢掉。报告里会单独列出「被限流」多少条。
+        run: |
+          python scripts/check.py \
+            --playlist sources/streams.m3u sources/backup.m3u sources/hk.m3u sources/sports.m3u sources/auto.m3u \
+            --out dist \
+            --timeout 8 \
+            --concurrency 24 \
+            --keep-per-name 2 \
+            --blocked-host 74.91.26.218 bp-livetytv.bestv.cn \
+            --fail-if-below 0.05
+
+      - name: 把结果提交回仓库
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist
+          if git diff --cached --quiet; then
+            echo "结果无变化，跳过提交"
+          else
+            git commit -m "chore: 源检测结果 $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi

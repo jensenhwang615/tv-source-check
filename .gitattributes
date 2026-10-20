@@ -1,0 +1,9 @@
+# 统一换行符：Windows 本地改的文件推到 Linux 上跑 Actions 时不会因 CRLF 出问题
+* text=auto eol=lf
+
+*.m3u  text eol=lf
+*.m3u8 text eol=lf
+*.json text eol=lf
+*.py   text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf

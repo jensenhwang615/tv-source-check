@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+
+# 本地临时探测文件（脚本跑出来的中间产物，不该进仓库）
+.tmp/
+.cand*.m3u
+.*_cand.m3u
+.*_out/
+.*_out2/
+.curated.pkl
+.sp_check*/
+
+# 系统垃圾
+.DS_Store
+Thumbs.db

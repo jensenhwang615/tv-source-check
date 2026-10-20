@@ -1,0 +1,32 @@
+#EXTM3U
+# 中国香港 —— 以下每条都是实测通过（2026-10-20，佛山宽带环境）
+#
+# 先说清楚性质，别把它当官方源：
+#   · 翡翠台 / 明珠台 / TVB Plus：全部来自第三方转播节点（其中 jade 那条 relay 的是 TVB 的
+#     付费 OTT 服务 myTV SUPER）。翡翠台在香港是免费开路频道，但这些节点本身未经授权。
+#   · 凤凰卫视三条：走的是 fengshows.cn（凤凰官方域名）的 CDN，是这里面最可靠的一类。
+#   · 官方渠道实测全部不可用：HOY TV（hoy.tv）超时，港台 RTHK（akamaized.net）直接 HTTP 403
+#     地域封锁 —— 内地网络拿不到。
+#   · 未收录：华丽翡翠台（Golden Jade，TVB 付费频道，实测其实通，但属订阅内容，性质不同）。
+#
+# 现实提醒：这类节点寿命以「天」计，TVB 维权也比央视积极得多。每 6 小时的自动检测会帮你
+# 把死的踢出去，但别指望长期稳定。
+
+#EXTINF:-1 tvg-name="翡翠台" group-title="香港",翡翠台
+http://103.172.187.30:12000/stream/mytv/null-1/master.m3u8
+#EXTINF:-1 tvg-name="翡翠台 (线路2)" group-title="香港",翡翠台 (线路2)
+http://iptv.4666888.xyz/iptv2A.php?id=34
+#EXTINF:-1 tvg-name="翡翠台 (线路3)" group-title="香港",翡翠台 (线路3)
+http://r.jdshipin.com/62WM7
+#EXTINF:-1 tvg-name="明珠台" group-title="香港",明珠台
+http://r.jdshipin.com/jUx8K
+#EXTINF:-1 tvg-name="明珠台 (线路2)" group-title="香港",明珠台 (线路2)
+http://iptv.4666888.xyz/iptv2A.php?id=29
+#EXTINF:-1 tvg-name="TVB Plus" group-title="香港",TVB Plus
+http://r.jdshipin.com/ndGgS
+#EXTINF:-1 tvg-name="凤凰卫视中文台" group-title="香港",凤凰卫视中文台
+http://43.152.224.209/qctv.fengshows.cn/live/0701pcc72.flv
+#EXTINF:-1 tvg-name="凤凰卫视资讯台" group-title="香港",凤凰卫视资讯台
+http://43.152.224.209/qctv.fengshows.cn/live/0701pin72.flv
+#EXTINF:-1 tvg-name="凤凰卫视香港台" group-title="香港",凤凰卫视香港台
+http://43.152.224.209/qctv.fengshows.cn/live/0701phk72.flv

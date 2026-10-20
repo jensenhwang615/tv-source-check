@@ -1,0 +1,51 @@
+{
+  "_说明": "上游清单地址 + 只要哪些分组。改这里就能改采集范围，不用动代码。",
+  "upstreams": [
+    "https://raw.githubusercontent.com/YueChan/Live/main/IPTV.m3u",
+    "https://raw.githubusercontent.com/suxuang/myIPTV/main/ipv4.m3u",
+    "https://raw.githubusercontent.com/zbefine/iptv/main/iptv.m3u",
+    "https://raw.githubusercontent.com/fanmingming/live/main/tv/m3u/ipv6.m3u",
+    "https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u",
+    "https://iptv-org.github.io/iptv/countries/cn.m3u",
+    "https://iptv-org.github.io/iptv/countries/hk.m3u",
+    "https://iptv-org.github.io/iptv/categories/sports.m3u",
+    "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8"
+  ],
+  "groups": [
+    {
+      "name": "央视",
+      "include": ["CCTV", "CGTN"]
+    },
+    {
+      "name": "广东",
+      "include": [
+        "广东", "珠江", "南方", "大湾区", "岭南", "粤",
+        "广州", "深圳", "珠海", "汕头", "佛山", "韶关", "湛江", "肇庆",
+        "江门", "茂名", "惠州", "梅州", "汕尾", "河源", "阳江", "清远",
+        "东莞", "中山", "潮州", "揭阳", "云浮", "顺德", "南海", "番禺",
+        "Guangdong", "Guangzhou", "Shenzhen", "Zhuhai", "Foshan", "Dongguan",
+        "Shantou", "Zhongshan", "Huizhou", "Jiangmen", "Cantonese", "GDTV"
+      ]
+    },
+    {
+      "name": "香港",
+      "include": [
+        "翡翠", "明珠", "無綫", "无线", "TVB", "Jade", "Pearl", "TVBPlus", "TVB Plus",
+        "Viu", "HOY", "奇妙", "香港開電視", "香港开电视", "港台", "RTHK",
+        "凤凰", "鳳凰", "Phoenix", "有線", "有线", "i-CABLE", "iCABLE", "Now TV", "NowTV",
+        "香港", "Hong Kong", "HongKong", "HKSTV", "澳视", "澳視", "澳门", "澳門", "Macau"
+      ]
+    },
+    {
+      "_说明": "体育只收明确的体育频道名，不收泛化的 sport 关键词——否则会把几百个地域封锁的小台全拉进来",
+      "name": "体育",
+      "include": [
+        "五星体育", "劲爆体育", "风云足球",
+        "beIN SPORTS XTRA", "FIFA+", "NBC Sports NOW", "DD Sports", "Sportitalia",
+        "TyC Sports", "ESPN Latin America", "J SPORTS", "WOWOW",
+        "SBS Sports", "KBS N Sports", "MBC Sports"
+      ]
+    }
+  ],
+  "max_per_name": 4
+}

@@ -1,0 +1,65 @@
+#EXTM3U
+# ============================================================================
+# 体育频道 —— 2026-10-20 在佛山宽带环境逐条实测
+#
+# 【国内】
+#   五星体育（上海 SMG）—— 源自百视通 CDN bp-livetytv.bestv.cn，实测 2 秒分片、
+#   1080p 级别、延迟约 150ms，是本次唯一能稳定出流的国内体育频道。
+#   劲爆体育（SiTV 付费频道）—— 4 条候选全部 403/失效，无公开流，故未收录。
+#
+# 【国际·官方免费】（这两类是真·官方，可以放心长期用）
+#   beIN SPORTS XTRA  beIN 自己的免费 FAST 频道，有足球赛事与集锦
+#   FIFA+             FIFA 官方免费频道（赛事回放、纪录片、部分直播）
+#   NBC Sports NOW    NBC 环球官方免费频道（英超演播室与集锦）
+#   DD Sports         印度 Prasar Bharati 官方免费体育台
+#   Sportitalia       意大利官方免费体育台（足球为主）
+#   TyC Sports        阿根廷 TyC 官方免费频道
+#
+# 【国际·第三方转播】—— 足球内容最对口，但性质要清楚
+#   ESPN 拉美 1~4：拉美区 ESPN 持有西甲、欧冠版权，这里走的是第三方转播节点，
+#   不是官方源，寿命以「天」计。默认只放 2 条主线路，够试就行。
+#
+# 【为什么没有 Sky Sports / TNT Sports / J SPORTS / SBS Sports】
+#   不是没找，是拿不到：
+#   · 英国 Sky Sports、TNT Sports（欧冠英国持权方）在所有公开清单里都已被移除；
+#   · 美国 ESPN 主频、beIN Sports 1~8 实测全部 HTTP 403 —— 内地 IP 被地域封锁；
+#   · 日本 J SPORTS 1~4、WOWOW：Free-TV 清单里直接标注 [NO PUBLIC STREAM]，
+#     即维护者明确说明「没有公开流」（都是付费卫星/有线台）；
+#   · 韩国 SBS Sports / KBS N Sports / MBC Sports+：公开清单里完全没有条目。
+#
+# 想看西甲、欧冠的合法路径，见 README「足球怎么看不踩坑」一节。
+# ============================================================================
+
+#EXTINF:-1 tvg-name="五星体育" group-title="体育·国内",五星体育
+#EXTVLCOPT:http-referrer=http://bp-livetytv.bestv.cn/
+http://bp-livetytv.bestv.cn/ch/bestvwxty.m3u8
+
+#EXTINF:-1 tvg-name="beIN SPORTS XTRA" group-title="体育·国际免费",beIN SPORTS XTRA（官方免费）
+https://bein-xtra-bein.amagi.tv/playlist.m3u8
+
+#EXTINF:-1 tvg-name="FIFA+" group-title="体育·国际免费",FIFA+（官方免费）
+https://d2w9q46ikgrcwx.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-of5cbk3sav3w5/v1/sysdata_s_p_a_fifa_7/samsungheadend_us/latest/main/hls/playlist.m3u8
+
+#EXTINF:-1 tvg-name="NBC Sports NOW" group-title="体育·国际免费",NBC Sports NOW（官方免费）
+https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008
+
+#EXTINF:-1 tvg-name="DD Sports" group-title="体育·国际免费",DD Sports（印度官方免费）
+https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8
+
+#EXTINF:-1 tvg-name="Sportitalia" group-title="体育·国际免费",Sportitalia（意大利官方免费）
+https://edge-001.streamup.eu/sportitalia/sihd_abr/playlist.m3u8
+
+#EXTINF:-1 tvg-name="TyC Sports" group-title="体育·国际免费",TyC Sports（阿根廷官方免费）
+https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8
+
+#EXTINF:-1 tvg-name="ESPN 拉美" group-title="体育·足球(第三方)",ESPN 拉美 1（第三方转播·西甲欧冠）
+https://barinaslive1.boldmss.com/ESPN/ESPN.isml/ESPN.m3u8
+
+#EXTINF:-1 tvg-name="ESPN 拉美 2" group-title="体育·足球(第三方)",ESPN 拉美 2（第三方转播·西甲欧冠）
+https://barinaslive1.boldmss.com/ESPN_2/ESPN_2.isml/ESPN_2.m3u8
+
+#EXTINF:-1 tvg-name="ESPN 拉美 3" group-title="体育·足球(第三方)",ESPN 拉美 3（第三方转播）
+https://barinaslive1.boldmss.com/ESPN_3/ESPN_3.isml/ESPN_3.m3u8
+
+#EXTINF:-1 tvg-name="ESPN 拉美 4" group-title="体育·足球(第三方)",ESPN 拉美 4（第三方转播）
+https://barinaslive1.boldmss.com/ESPN_4/ESPN_4.isml/ESPN_4.m3u8

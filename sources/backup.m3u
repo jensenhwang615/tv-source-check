@@ -1,0 +1,75 @@
+#EXTM3U
+# 备用候选清单 —— 这一份**没有经过完整验证**，别直接拿去用。
+#
+# 来源：74.91.26.218:82/live/<频道名>.m3u8 这一台公开转播节点。
+# 我探测时它上面的下列频道全部返回了合法 HLS 播放列表（CCTV-4/5/5+/6/9/12/15、广东卫视、
+# 珠江、广东体育、深圳卫视、南方、大湾区、广东公共/影视/都市 都在），
+# 但随后因为短时间内请求过多被它限流，整个 IP 变成 404 —— 所以现在无法复核。
+#
+# 它的价值在于：这是目前唯一一个把「CCTV-4、CCTV-5、广东卫视、深圳卫视」凑齐的地址模板。
+# 你的家庭宽带 IP 大概率没有被它拉黑，值得自己跑一次 check.py 验证：
+#     python scripts/check.py --playlist sources/backup.m3u --out dist
+# 通过的自然会进 dist/valid.m3u；不通过就一直待在 dist/dead.m3u 里，不影响你。
+#
+# 风险提示：这是个人转播节点，不是官方 CDN。会限流、会跑路、随时可能整个消失。
+# 只当「缺口补充」，别当主源。
+
+#EXTINF:-1 tvg-name="CCTV-4 中文国际" group-title="央视",CCTV-4 中文国际
+http://74.91.26.218:82/live/cctv4hd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-5 体育" group-title="央视",CCTV-5 体育
+http://74.91.26.218:82/live/cctv5hd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-5+ 体育赛事" group-title="央视",CCTV-5+ 体育赛事
+http://74.91.26.218:82/live/cctv5phd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
+http://74.91.26.218:82/live/cctv6hd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-9 纪录" group-title="央视",CCTV-9 纪录
+http://74.91.26.218:82/live/cctv9hd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-12 社会与法" group-title="央视",CCTV-12 社会与法
+http://74.91.26.218:82/live/cctv12hd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-15 音乐" group-title="央视",CCTV-15 音乐
+http://74.91.26.218:82/live/cctv15hd.m3u8
+
+#EXTINF:-1 tvg-name="CCTV-4K 超高清" group-title="央视",CCTV-4K 超高清
+http://74.91.26.218:82/live/cctv4k.m3u8
+
+#EXTINF:-1 tvg-name="广东卫视" group-title="广东",广东卫视
+http://74.91.26.218:82/live/guangdonghd.m3u8
+
+#EXTINF:-1 tvg-name="广东卫视-线路2" group-title="广东",广东卫视 (线路2)
+http://74.91.26.218:82/live/gdws.m3u8
+
+#EXTINF:-1 tvg-name="珠江频道" group-title="广东",珠江频道
+http://74.91.26.218:82/live/zhujianghd.m3u8
+
+#EXTINF:-1 tvg-name="广东体育" group-title="广东",广东体育
+http://74.91.26.218:82/live/guangdongty.m3u8
+
+#EXTINF:-1 tvg-name="深圳卫视" group-title="广东",深圳卫视
+http://74.91.26.218:82/live/shenzhenhd.m3u8
+
+#EXTINF:-1 tvg-name="深圳卫视-线路2" group-title="广东",深圳卫视 (线路2)
+http://74.91.26.218:82/live/szws.m3u8
+
+#EXTINF:-1 tvg-name="深圳都市" group-title="广东",深圳都市
+http://74.91.26.218:82/live/szmv.m3u8
+
+#EXTINF:-1 tvg-name="南方卫视" group-title="广东",南方卫视
+http://74.91.26.218:82/live/nanfang.m3u8
+
+#EXTINF:-1 tvg-name="大湾区卫视" group-title="广东",大湾区卫视
+http://74.91.26.218:82/live/dawanqu.m3u8
+
+#EXTINF:-1 tvg-name="广东公共" group-title="广东",广东公共
+http://74.91.26.218:82/live/gdgg.m3u8
+
+#EXTINF:-1 tvg-name="广东影视" group-title="广东",广东影视
+http://74.91.26.218:82/live/gdys.m3u8
+
+#EXTINF:-1 tvg-name="广东都市" group-title="广东",广东都市
+http://74.91.26.218:82/live/gdds.m3u8
