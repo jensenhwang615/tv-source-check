@@ -1,38 +1,11 @@
 #EXTM3U
 # 央视 + 广东实测可用清单（本文件由 check.py 验证通过，可手工增删）
-#
-# ---------------------------------------------------------------------------
-# 一级源：浙江广电 CDN（ali-m-l.cztv.com）
-# ---------------------------------------------------------------------------
-# 2026-10-20 晚（19 点晚高峰）实测：74.91.26.218 并未下线，但带宽已经严重不足
-# （CCTV-1 0.4x / CCTV-2 0.5x / CCTV-5 0.2x），124.165 更低（0.2~0.7x）。
-# 高带宽的央视源只剩浙江广电这套 CDN：
-#
-#   channel16 1080p  CCTV-1  码率 4017k  吞吐 84265k  21.0x  起播 48ms
-#   channel22 720p   CCTV-1  码率 1576k  吞吐 49544k  31.4x  起播 47ms
-#   channel21 1080p  CCTV-13 码率 2138k  吞吐 79245k  37.1x  起播 35ms
-#   channel40 720p   CCTV-13 实测 92.9x，是整份清单里最快的一条
-#
-# 通道号与台名的对应关系没有元数据，是逐台抽帧看图标识别出来的。
-# 这套 CDN 上其余通道是浙江本地台（浙江卫视、钱江、浙江新闻、浙江少儿…），
-# 只有 CCTV-1 和 CCTV-13 两台中央电视台，所以只补这两台。
-# 通道 13 / 20 是彩条测试图，别用。
-#EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
-http://ali-m-l.cztv.com/channels/lantian/channel16/1080p.m3u8
-#EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
-http://ali-m-l.cztv.com/channels/lantian/channel22/720p.m3u8
-#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
-http://ali-m-l.cztv.com/channels/lantian/channel21/1080p.m3u8
-#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
-http://ali-m-l.cztv.com/channels/lantian/channel40/720p.m3u8
 #EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
 http://74.91.26.218:82/live/cctv1hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
 http://74.91.26.218:82/live/cctv2hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-3 综艺" group-title="央视",CCTV-3 综艺
 http://74.91.26.218:82/live/cctv3hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-5 体育" group-title="央视",CCTV-5 体育
-http://74.91.26.218:82/live/cctv5hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
 http://8.138.7.223/tv/1905.php?id=LIVE3YPYZ30E7V1R0
 #EXTINF:-1 tvg-name="CCTV-7 国防军事" group-title="央视",CCTV-7 国防军事
@@ -45,8 +18,12 @@ https://xykt-fix.github.io/Y77.m3u8
 http://74.91.26.218:82/live/cctv10hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-11 戏曲" group-title="央视",CCTV-11 戏曲
 http://74.91.26.218:82/live/cctv11hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
+http://74.91.26.218:82/live/cctv13hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-14 少儿" group-title="央视",CCTV-14 少儿
 http://74.91.26.218:82/live/cctv14hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-16 奥林匹克" group-title="央视",CCTV-16 奥林匹克
+http://gmxw.7766.org:808/hls/169/index.m3u8
 #EXTINF:-1 tvg-name="CCTV-17 农业农村" group-title="央视",CCTV-17 农业农村
 http://74.91.26.218:82/live/cctv17hd.m3u8
 #EXTINF:-1 tvg-name="CGTN 法语" group-title="央视",CGTN 法语
@@ -59,35 +36,10 @@ http://english-livetx.cgtn.com/hls/yypdyyctzb_hd.m3u8
 https://0472.org/hls/cgtnx.m3u8
 #EXTINF:-1 tvg-name="CGTN 阿语" group-title="央视",CGTN 阿语
 https://0472.org/hls/cgtna.m3u8
-# ===== 备用镜像：192.151.150.154（实测 2026-10-20 晚，CCTV-1 1.4x / CCTV-2 1.9x）
-# 比 74.91（0.4x）和 124.165（0.4x）都好，但只有 10 个台，且缺 3/5/8/9/11/12/14/15。
-# 同一台承载越多台带宽越薄，所以只做「主力不够用时」的补充，不顶替 cztv 的 CCTV-1/13。
-#EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
-http://192.151.150.154/live/cctv1hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
-http://192.151.150.154/live/cctv2hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-4 中文国际" group-title="央视",CCTV-4 中文国际
-http://192.151.150.154/live/cctv4hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
-http://192.151.150.154/live/cctv6hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-7 国防军事" group-title="央视",CCTV-7 国防军事
-http://192.151.150.154/live/cctv7hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-10 科教" group-title="央视",CCTV-10 科教
-http://192.151.150.154/live/cctv10hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
-http://192.151.150.154/live/cctv13hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-17 农业农村" group-title="央视",CCTV-17 农业农村
-http://192.151.150.154/live/cctv17hd.m3u8
-# ===== 备用镜像：山西联通 IPTV 模板 124.165.251.82:85
-#
-# ⚠️ 这组是「最后备选」，不要当主力。
-# 它握手只要 100ms，比上面的 74.91 快 5 倍，但这个数字骗人：
-# 它的分片是 8~9Mbps 的高码率，而这台机器的上行只给得出 1.3~1.8Mbps。
-# 家里实测 ratio（吞吐÷码率）只有 0.2 —— 也就是看 2 秒要缓冲 8 秒。
-# 曾经把它提成主力，结果就是「延迟数字漂亮了，电视上反而一直转圈」。
-# 现在它排在 74.91 后面，只在 74.91 整个挂掉时才用得上。
-#
-# 覆盖 CCTV-1 ~ CCTV-15；16、17 在这台上是 404。
+# ===== 备用镜像：山西联通 IPTV 模板 124.165.251.82:85（实测 50~150ms，比主源快一个数量级）
+# 之前央视只靠 74.91.26.218 一台主机，那台一限流、一下架频道，整个央视组就整片消失，
+# 电视上看到的现象就是「CCTV-3 之后直接跳到 CCTV-6」。这一组就是补这个缺口。
+# 覆盖 CCTV-1 ~ CCTV-15 全部；16、17 是 404，那两个台由 gmxw / 别的源覆盖。
 #EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
 http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
@@ -122,10 +74,7 @@ http://124.165.251.82:85/tsfile/live/0013_1.m3u8?key=txiptv&playlive=1&authid=0
 http://124.165.251.82:85/tsfile/live/0014_1.m3u8?key=txiptv&playlive=1&authid=0
 #EXTINF:-1 tvg-name="CCTV-15 音乐" group-title="央视",CCTV-15 音乐
 http://124.165.251.82:85/tsfile/live/0015_1.m3u8?key=txiptv&playlive=1&authid=0
-# ===== gmxw.7766.org
-# ⚠️ 同样是「最后备选」。握手 30~100ms 很快，但码率 8~10Mbps、上行只给 1.8Mbps，
-# 实测 ratio 0.2，电视上会一直缓冲。原来这里放着 CCTV-16 和深圳卫视，
-# 已经换成 74.91 的低码率版本；gmxw 只留作兜底。
+# ===== gmxw.7766.org（30~60ms）
 # 该面板只暴露 /hls/<编号>/，编号和频道名的对应关系经上游清单核对过：
 # 93=CCTV-5、96=CCTV-8、102=CCTV-15、169=CCTV-16、40=安徽卫视、45=深圳卫视。
 # 编号相邻不代表频道相邻，别照着推。
