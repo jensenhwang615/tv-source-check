@@ -4,13 +4,14 @@
 # ---------------------------------------------------------------------------
 # 一级源：浙江广电 CDN（ali-m-l.cztv.com）
 # ---------------------------------------------------------------------------
-# 2026-10-20 晚实测：74.91.26.218 已经把央视全部下线（访问 /live/cctv1hd.m3u8
-# 返回 JSON「频道 cctv1 没有配置任何服务器」），124.165 只有 0.2x 带宽。
-# 剩下的可用高带宽央视源就落在浙江广电这套 CDN 上：
+# 2026-10-20 晚（19 点晚高峰）实测：74.91.26.218 并未下线，但带宽已经严重不足
+# （CCTV-1 0.4x / CCTV-2 0.5x / CCTV-5 0.2x），124.165 更低（0.2~0.7x）。
+# 高带宽的央视源只剩浙江广电这套 CDN：
 #
 #   channel16 1080p  CCTV-1  码率 4017k  吞吐 84265k  21.0x  起播 48ms
 #   channel22 720p   CCTV-1  码率 1576k  吞吐 49544k  31.4x  起播 47ms
 #   channel21 1080p  CCTV-13 码率 2138k  吞吐 79245k  37.1x  起播 35ms
+#   channel40 720p   CCTV-13 实测 92.9x，是整份清单里最快的一条
 #
 # 通道号与台名的对应关系没有元数据，是逐台抽帧看图标识别出来的。
 # 这套 CDN 上其余通道是浙江本地台（浙江卫视、钱江、浙江新闻、浙江少儿…），
@@ -44,14 +45,8 @@ https://xykt-fix.github.io/Y77.m3u8
 http://74.91.26.218:82/live/cctv10hd.m3u8
 #EXTINF:-1 tvg-name="CCTV-11 戏曲" group-title="央视",CCTV-11 戏曲
 http://74.91.26.218:82/live/cctv11hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
-http://74.91.26.218:82/live/cctv132m.m3u8
 #EXTINF:-1 tvg-name="CCTV-14 少儿" group-title="央视",CCTV-14 少儿
 http://74.91.26.218:82/live/cctv14hd.m3u8
-#EXTINF:-1 tvg-name="CCTV-15 音乐" group-title="央视",CCTV-15 音乐
-http://74.91.26.218:82/live/cctv15.m3u8
-#EXTINF:-1 tvg-name="CCTV-16 奥林匹克" group-title="央视",CCTV-16 奥林匹克
-http://74.91.26.218:82/live/cctv16.m3u8
 #EXTINF:-1 tvg-name="CCTV-17 农业农村" group-title="央视",CCTV-17 农业农村
 http://74.91.26.218:82/live/cctv17hd.m3u8
 #EXTINF:-1 tvg-name="CGTN 法语" group-title="央视",CGTN 法语
@@ -64,6 +59,25 @@ http://english-livetx.cgtn.com/hls/yypdyyctzb_hd.m3u8
 https://0472.org/hls/cgtnx.m3u8
 #EXTINF:-1 tvg-name="CGTN 阿语" group-title="央视",CGTN 阿语
 https://0472.org/hls/cgtna.m3u8
+# ===== 备用镜像：192.151.150.154（实测 2026-10-20 晚，CCTV-1 1.4x / CCTV-2 1.9x）
+# 比 74.91（0.4x）和 124.165（0.4x）都好，但只有 10 个台，且缺 3/5/8/9/11/12/14/15。
+# 同一台承载越多台带宽越薄，所以只做「主力不够用时」的补充，不顶替 cztv 的 CCTV-1/13。
+#EXTINF:-1 tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
+http://192.151.150.154/live/cctv1hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
+http://192.151.150.154/live/cctv2hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-4 中文国际" group-title="央视",CCTV-4 中文国际
+http://192.151.150.154/live/cctv4hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
+http://192.151.150.154/live/cctv6hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-7 国防军事" group-title="央视",CCTV-7 国防军事
+http://192.151.150.154/live/cctv7hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-10 科教" group-title="央视",CCTV-10 科教
+http://192.151.150.154/live/cctv10hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-13 新闻" group-title="央视",CCTV-13 新闻
+http://192.151.150.154/live/cctv13hd.m3u8
+#EXTINF:-1 tvg-name="CCTV-17 农业农村" group-title="央视",CCTV-17 农业农村
+http://192.151.150.154/live/cctv17hd.m3u8
 # ===== 备用镜像：山西联通 IPTV 模板 124.165.251.82:85
 #
 # ⚠️ 这组是「最后备选」，不要当主力。

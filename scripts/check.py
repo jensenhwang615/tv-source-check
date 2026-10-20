@@ -38,6 +38,12 @@ def session() -> requests.Session:
     s = getattr(_local, "s", None)
     if s is None:
         s = requests.Session()
+        # 必须忽略环境里的 http_proxy / https_proxy。
+        # 否则在 IDE 沙箱里跑（127.0.0.1:2404 之类）时，请求会被代理接管，
+        # 代理对 IPTV 域名返回的是「频道没有配置任何服务器」「not available in
+        # your area」这类伪造响应 —— 实测过：同一台 74.91 走代理全挂，
+        # 直连 200 且内容正常。测源必须直连，否则量到的不是用户电视看到的东西。
+        s.trust_env = False
         s.headers.update({"User-Agent": UA, "Accept": "*/*", "Accept-Language": "zh-CN,zh;q=0.9"})
         _local.s = s
     return s

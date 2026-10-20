@@ -1,33 +1,1314 @@
 {
-  "_note": "2026-10-20 晚 佛山家宽实测（scripts/bench.py）。ratio = 吞吐 ÷ 码率，>=1.3 才不会卡。这份数据只在本机能测准：GitHub Actions 在境外机房，到国内 CDN 的路由不可比，所以不要用 Actions 的结果覆盖它。",
-  "urls": {
-    "http://ali-m-l.cztv.com/channels/lantian/channel21/1080p.m3u8": {
-      "score": 35,
-      "ratio": 37.1,
-      "ttfb": 35,
-      "kbps": 79245
-    },
-    "http://ali-m-l.cztv.com/channels/lantian/channel16/1080p.m3u8": {
-      "score": 48,
-      "ratio": 21.0,
-      "ttfb": 48,
-      "kbps": 84265
-    },
-    "http://ali-m-l.cztv.com/channels/lantian/channel22/720p.m3u8": {
-      "score": 47,
-      "ratio": 31.4,
-      "ttfb": 47,
-      "kbps": 49544
-    }
+ "urls": {
+  "http://espanol-liveali.cgtn.com/hls/LSveOGBaBw41Ea7ukkVAUdKQ220802LSTexu6xAuFH8VZNBLE1ZNEa220802cd.m3u8": {
+   "score": 97.0,
+   "ratio": 6.73,
+   "kbps": 3991,
+   "ttfb_ms": 97
   },
-  "hosts": {
-    "ali-m-l.cztv.com": {
-      "score": 43,
-      "ratio": 29.8,
-      "n": 3
-    }
+  "https://xykt-fix.github.io/Y77.m3u8": {
+   "score": 35.0,
+   "ratio": 40.85,
+   "kbps": 579,
+   "ttfb_ms": 35
   },
-  "bad": [
-    "http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0"
-  ]
+  "https://xykt-fix.github.io/play/a02e/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://ali-m-l.cztv.com/channels/lantian/channel16/1080p.m3u8": {
+   "score": 17.0,
+   "ratio": 20.1,
+   "kbps": 4017,
+   "ttfb_ms": 17
+  },
+  "http://ali-m-l.cztv.com/channels/lantian/channel22/720p.m3u8": {
+   "score": 94.0,
+   "ratio": 20.25,
+   "kbps": 1576,
+   "ttfb_ms": 94
+  },
+  "http://ali-m-l.cztv.com/channels/lantian/channel21/1080p.m3u8": {
+   "score": 32.0,
+   "ratio": 33.76,
+   "kbps": 2138,
+   "ttfb_ms": 32
+  },
+  "http://ali-m-l.cztv.com/channels/lantian/channel40/720p.m3u8": {
+   "score": 111.0,
+   "ratio": 92.94,
+   "kbps": 586,
+   "ttfb_ms": 111
+  },
+  "https://english-livetx.cgtn.com/hls/yypdjlctzb_hd.m3u8": {
+   "score": 44.0,
+   "ratio": 19.76,
+   "kbps": 2223,
+   "ttfb_ms": 44
+  },
+  "http://english-livetx.cgtn.com/hls/yypdyyctzb_hd.m3u8": {
+   "score": 381.0,
+   "ratio": 17.7,
+   "kbps": 2117,
+   "ttfb_ms": 381
+  },
+  "http://223.78.65.165:9901/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://0472.org/hls/cgtnx.m3u8": {
+   "score": 14.0,
+   "ratio": 29.32,
+   "kbps": 3991,
+   "ttfb_ms": 14
+  },
+  "https://0472.org/hls/cgtna.m3u8": {
+   "score": 16.0,
+   "ratio": 34.21,
+   "kbps": 4216,
+   "ttfb_ms": 16
+  },
+  "https://0472.org/hls/cgtnd.m3u8": {
+   "score": 41.0,
+   "ratio": 63.26,
+   "kbps": 2249,
+   "ttfb_ms": 41
+  },
+  "https://0472.org/hls/cgtn.m3u8": {
+   "score": 12.0,
+   "ratio": 61.78,
+   "kbps": 2117,
+   "ttfb_ms": 12
+  },
+  "https://0472.org/hls/cgtne.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://0472.org/hls/cgtnf.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://stream.sun0769.com/dgrtv1/mp4tv1_800/index.m3u8": {
+   "score": 19.0,
+   "ratio": 96.47,
+   "kbps": 918,
+   "ttfb_ms": 19
+  },
+  "https://stream.sun0769.com/dgrtv1/mp4tv2_800/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://8.138.7.223/tv/1905.php?id=LIVE3YPYZ30E7V1R0": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://8.138.7.223/tv/gzjs.m3u8": {
+   "score": 22.0,
+   "ratio": 84.04,
+   "kbps": 1247,
+   "ttfb_ms": 22
+  },
+  "http://8.138.7.223/tv/shtv.php?id=wxty": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://222.128.55.152:9080/live/dwq.m3u8": {
+   "score": 129.0,
+   "ratio": 0.5,
+   "kbps": 8246,
+   "ttfb_ms": 129
+  },
+  "http://183.11.239.36:808/hls/18/index.m3u8": {
+   "score": 52.0,
+   "ratio": 0.49,
+   "kbps": 10385,
+   "ttfb_ms": 52
+  },
+  "http://tmpstream.hyrtv.cn/hygg/sd/live.m3u8": {
+   "score": 50.0,
+   "ratio": 30.09,
+   "kbps": 871,
+   "ttfb_ms": 50
+  },
+  "http://tmpstream.hyrtv.cn/xwzh/sd/live.m3u8": {
+   "score": 42.0,
+   "ratio": 29.17,
+   "kbps": 877,
+   "ttfb_ms": 42
+  },
+  "http://gmxw.7766.org:808/hls/169/index.m3u8": {
+   "score": 74.0,
+   "ratio": 0.28,
+   "kbps": 10929,
+   "ttfb_ms": 74
+  },
+  "http://gmxw.7766.org:808/hls/45/index.m3u8": {
+   "score": 63.0,
+   "ratio": 0.3,
+   "kbps": 10783,
+   "ttfb_ms": 63
+  },
+  "http://gmxw.7766.org:808/hls/102/index.m3u8": {
+   "score": 43.0,
+   "ratio": 2.06,
+   "kbps": 10621,
+   "ttfb_ms": 43
+  },
+  "http://gmxw.7766.org:808/hls/93/index.m3u8": {
+   "score": 56.0,
+   "ratio": 0.33,
+   "kbps": 10225,
+   "ttfb_ms": 56
+  },
+  "http://gmxw.7766.org:808/hls/96/index.m3u8": {
+   "score": 51.0,
+   "ratio": 0.25,
+   "kbps": 10280,
+   "ttfb_ms": 51
+  },
+  "http://tencentplay.gztv.com/live/nanguodushi.m3u8?txSecret=140110ae3d6c936a77f94c4f4d85b0d3&txTime=18d57929bd4": {
+   "score": 84.0,
+   "ratio": 12.36,
+   "kbps": 2869,
+   "ttfb_ms": 84
+  },
+  "http://tencentplay.gztv.com/live/xinwen.m3u8?txSecret=d2c2db0b598c02ec1b5623728434d367&txTime=18d57929bd3": {
+   "score": 27.0,
+   "ratio": 36.93,
+   "kbps": 1682,
+   "ttfb_ms": 27
+  },
+  "http://tencentplay.gztv.com/live/zonghes.m3u8?txSecret=c8dbe86d6f86eb1a21999ab479fd5667&txTime=18d3c4690e8": {
+   "score": 38.0,
+   "ratio": 42.91,
+   "kbps": 1449,
+   "ttfb_ms": 38
+  },
+  "http://tencentplay.gztv.com/live/yingshi.m3u8?txSecret=1bd3a1082ab5b89f48c1bff9a3760da4&txTime=18d57929bd4": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://tencentplay.gztv.com/live/fazhi.m3u8?txSecret=3e84cd8eba844b5dc2150612295c7a52&txTime=18d578f4493": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://tencentplay.gztv.com/live/zonghes.m3u8?txSecret=439b0fd2cf766b363c93a59cbcbe1370&txTime=18d00acf488": {
+   "score": 92.0,
+   "ratio": 29.33,
+   "kbps": 1012,
+   "ttfb_ms": 92
+  },
+  "https://dash2.antik.sk/live/test_cctv_tizen/playlist.m3u8": {
+   "score": 647.0,
+   "ratio": 1.26,
+   "kbps": 1732,
+   "ttfb_ms": 647
+  },
+  "http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 205.0,
+   "ratio": 0.19,
+   "kbps": 8879,
+   "ttfb_ms": 205
+  },
+  "http://124.165.251.82:85/tsfile/live/0002_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 117.0,
+   "ratio": 0.32,
+   "kbps": 8881,
+   "ttfb_ms": 117
+  },
+  "http://124.165.251.82:85/tsfile/live/0003_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 112.0,
+   "ratio": 0.47,
+   "kbps": 8011,
+   "ttfb_ms": 112
+  },
+  "http://124.165.251.82:85/tsfile/live/0004_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 113.0,
+   "ratio": 0.43,
+   "kbps": 8009,
+   "ttfb_ms": 113
+  },
+  "http://124.165.251.82:85/tsfile/live/0005_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 90.0,
+   "ratio": 0.66,
+   "kbps": 8011,
+   "ttfb_ms": 90
+  },
+  "http://124.165.251.82:85/tsfile/live/0019_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 105.0,
+   "ratio": 0.69,
+   "kbps": 8001,
+   "ttfb_ms": 105
+  },
+  "http://124.165.251.82:85/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 123.0,
+   "ratio": 0.35,
+   "kbps": 8016,
+   "ttfb_ms": 123
+  },
+  "http://124.165.251.82:85/tsfile/live/0007_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 106.0,
+   "ratio": 0.54,
+   "kbps": 7997,
+   "ttfb_ms": 106
+  },
+  "http://124.165.251.82:85/tsfile/live/0008_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://124.165.251.82:85/tsfile/live/0009_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 255.0,
+   "ratio": 0.22,
+   "kbps": 8007,
+   "ttfb_ms": 255
+  },
+  "http://124.165.251.82:85/tsfile/live/0010_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 107.0,
+   "ratio": 0.31,
+   "kbps": 8868,
+   "ttfb_ms": 107
+  },
+  "http://124.165.251.82:85/tsfile/live/0011_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 113.0,
+   "ratio": 0.32,
+   "kbps": 8875,
+   "ttfb_ms": 113
+  },
+  "http://124.165.251.82:85/tsfile/live/0013_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 121.0,
+   "ratio": 0.52,
+   "kbps": 3032,
+   "ttfb_ms": 121
+  },
+  "http://124.165.251.82:85/tsfile/live/0014_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 115.0,
+   "ratio": 0.24,
+   "kbps": 8005,
+   "ttfb_ms": 115
+  },
+  "http://124.165.251.82:85/tsfile/live/0015_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 111.0,
+   "ratio": 0.27,
+   "kbps": 8885,
+   "ttfb_ms": 111
+  },
+  "http://124.165.251.82:85/tsfile/live/0012_1.m3u8?key=txiptv&playlive=1&authid=0": {
+   "score": 129.0,
+   "ratio": 0.56,
+   "kbps": 8007,
+   "ttfb_ms": 129
+  },
+  "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL1.smil/playlist.m3u8": {
+   "score": 96.0,
+   "ratio": 44.47,
+   "kbps": 1227,
+   "ttfb_ms": 96
+  },
+  "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://69.30.245.50/live/cctv6.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://69.30.245.50/live/cctv1.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://192.151.150.154/live/cctv8k.m3u8": {
+   "score": 509.0,
+   "ratio": 0.38,
+   "kbps": 4278,
+   "ttfb_ms": 509
+  },
+  "http://103.172.187.30:12000/stream/mytv/null-1/master.m3u8": {
+   "score": 619.0,
+   "ratio": 0.97,
+   "kbps": 4270,
+   "ttfb_ms": 619
+  },
+  "http://103.172.187.30:12000/stream/mytv/null-12/master.m3u8": {
+   "score": 317.0,
+   "ratio": 1.45,
+   "kbps": 4312,
+   "ttfb_ms": 317
+  },
+  "http://bp-livetytv.bestv.cn/ch/bestvwxty.m3u8": {
+   "score": 85.0,
+   "ratio": 4.33,
+   "kbps": 6370,
+   "ttfb_ms": 85
+  },
+  "https://bein-xtra-bein.amagi.tv/playlist.m3u8": {
+   "score": 66.0,
+   "ratio": 12.13,
+   "kbps": 3903,
+   "ttfb_ms": 66
+  },
+  "https://d2w9q46ikgrcwx.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-of5cbk3sav3w5/v1/sysdata_s_p_a_fifa_7/samsungheadend_us/latest/main/hls/playlist.m3u8": {
+   "score": 61.0,
+   "ratio": 22.08,
+   "kbps": 3105,
+   "ttfb_ms": 61
+  },
+  "https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008": {
+   "score": 303.0,
+   "ratio": 8.85,
+   "kbps": 4709,
+   "ttfb_ms": 303
+  },
+  "https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8": {
+   "score": 69.0,
+   "ratio": 13.54,
+   "kbps": 3492,
+   "ttfb_ms": 69
+  },
+  "https://edge-001.streamup.eu/sportitalia/sihd_abr/playlist.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv/ts-us-e2-n2/playlist/amg26268-sportsstudio-tycsports-freelivesportsemea/playlist.m3u8": {
+   "score": 1132.0,
+   "ratio": 1.02,
+   "kbps": 8363,
+   "ttfb_ms": 1132
+  },
+  "https://barinaslive1.boldmss.com/ESPN/ESPN.isml/ESPN.m3u8": {
+   "score": 682.0,
+   "ratio": 0.34,
+   "kbps": 9210,
+   "ttfb_ms": 682
+  },
+  "https://barinaslive1.boldmss.com/ESPN_2/ESPN_2.isml/ESPN_2.m3u8": {
+   "score": 680.0,
+   "ratio": 0.46,
+   "kbps": 3810,
+   "ttfb_ms": 680
+  },
+  "https://barinaslive1.boldmss.com/ESPN_3/ESPN_3.isml/ESPN_3.m3u8": {
+   "score": 676.0,
+   "ratio": 0.5,
+   "kbps": 6341,
+   "ttfb_ms": 676
+  },
+  "https://barinaslive1.boldmss.com/ESPN_4/ESPN_4.isml/ESPN_4.m3u8": {
+   "score": 681.0,
+   "ratio": 0.48,
+   "kbps": 6488,
+   "ttfb_ms": 681
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225673/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225743/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226101/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226103/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226128/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225738/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226147/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226120/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226122/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225766/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221226124/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225734/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225741/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225701/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225736/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://zby.130519.xyz/PLTV/11/224/3221225732/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/ystq.m3u8?auth=testpub": {
+   "score": 572.0,
+   "ratio": 0.35,
+   "kbps": 3601,
+   "ttfb_ms": 572
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/ysjp.m3u8?auth=testpub": {
+   "score": 814.0,
+   "ratio": 0.27,
+   "kbps": 3459,
+   "ttfb_ms": 814
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/wsjk.m3u8?auth=testpub": {
+   "score": 477.0,
+   "ratio": 0.32,
+   "kbps": 3462,
+   "ttfb_ms": 477
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/hjjc.m3u8?auth=testpub": {
+   "score": 556.0,
+   "ratio": 0.34,
+   "kbps": 3529,
+   "ttfb_ms": 556
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/fyzq.m3u8?auth=testpub": {
+   "score": 774.0,
+   "ratio": 0.3,
+   "kbps": 3595,
+   "ttfb_ms": 774
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/fyyy.m3u8?auth=testpub": {
+   "score": 852.0,
+   "ratio": 0.28,
+   "kbps": 3488,
+   "ttfb_ms": 852
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/fyjc.m3u8?auth=testpub": {
+   "score": 660.0,
+   "ratio": 0.42,
+   "kbps": 3165,
+   "ttfb_ms": 660
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/gfjs.m3u8?auth=testpub": {
+   "score": 1163.0,
+   "ratio": 0.57,
+   "kbps": 3129,
+   "ttfb_ms": 1163
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/nxss.m3u8?auth=testpub": {
+   "score": 461.0,
+   "ratio": 0.64,
+   "kbps": 2709,
+   "ttfb_ms": 461
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/gefwq.m3u8?auth=testpub": {
+   "score": 780.0,
+   "ratio": 0.28,
+   "kbps": 3244,
+   "ttfb_ms": 780
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/dyjc.m3u8?auth=testpub": {
+   "score": 464.0,
+   "ratio": 0.34,
+   "kbps": 3433,
+   "ttfb_ms": 464
+  },
+  "http://38.75.136.137:98/gslb/dsdqpub/sjdl.m3u8?auth=testpub": {
+   "score": 531.0,
+   "ratio": 1.08,
+   "kbps": 404,
+   "ttfb_ms": 531
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226937/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226334/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226942/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226316/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226947/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226333/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221227002/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226318/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226895/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226893/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226471/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226335/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226894/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226469/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226468/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226946/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226485/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226944/1.m3u8?": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://go.bkpcp.top/mg/cctv13": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://39.135.138.60:18890/PLTV/88888910/224/3221225643/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225619/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225647/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225621/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225649/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225624/index.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.tszhgjj.cn:7000/rtp/239.253.93.134:6631": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://198.204.240.250:82/live/cctv4k.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://myip.pdtvhd.com/Sports/streams/CCTV5pul.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "https://live.eac-news.com/CCTV/streams/cctv6.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv9": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv15": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv16": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv17": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv4k": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.93:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.98:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.80:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.95:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.94:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.90:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.81:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.97:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.86:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.89:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.96:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://www.lizhinas.top:1009/rtp/239.252.219.87:5140": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://nas.hssvm.com:8888/udp/225.1.1.210:5002": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://74.91.26.218:82/live/cctv1hd.m3u8": {
+   "score": 547.0,
+   "ratio": 0.43,
+   "kbps": 1735,
+   "ttfb_ms": 547
+  },
+  "http://74.91.26.218:82/live/cctv2hd.m3u8": {
+   "score": 780.0,
+   "ratio": 0.51,
+   "kbps": 1297,
+   "ttfb_ms": 780
+  },
+  "http://74.91.26.218:82/live/cctv3hd.m3u8": {
+   "score": 772.0,
+   "ratio": 0.33,
+   "kbps": 3471,
+   "ttfb_ms": 772
+  },
+  "http://74.91.26.218:82/live/cctv5hd.m3u8": {
+   "score": 1237.0,
+   "ratio": 0.17,
+   "kbps": 4249,
+   "ttfb_ms": 1237
+  },
+  "http://74.91.26.218:82/live/cctv7hd.m3u8": {
+   "score": 939.0,
+   "ratio": 0.37,
+   "kbps": 2178,
+   "ttfb_ms": 939
+  },
+  "http://74.91.26.218:82/live/cctv8hd.m3u8": {
+   "score": 537.0,
+   "ratio": 0.57,
+   "kbps": 1565,
+   "ttfb_ms": 537
+  },
+  "http://74.91.26.218:82/live/cctv10hd.m3u8": {
+   "score": 599.0,
+   "ratio": 0.33,
+   "kbps": 1832,
+   "ttfb_ms": 599
+  },
+  "http://74.91.26.218:82/live/cctv11hd.m3u8": {
+   "score": 466.0,
+   "ratio": 0.44,
+   "kbps": 3089,
+   "ttfb_ms": 466
+  },
+  "http://74.91.26.218:82/live/cctv132m.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://74.91.26.218:82/live/cctv14hd.m3u8": {
+   "score": 613.0,
+   "ratio": 0.27,
+   "kbps": 3434,
+   "ttfb_ms": 613
+  },
+  "http://74.91.26.218:82/live/cctv15.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://74.91.26.218:82/live/cctv16.m3u8": {
+   "score": 3000.0,
+   "ratio": 0,
+   "kbps": 0,
+   "ttfb_ms": null
+  },
+  "http://74.91.26.218:82/live/cctv17hd.m3u8": {
+   "score": 808.0,
+   "ratio": 0.29,
+   "kbps": 3547,
+   "ttfb_ms": 808
+  },
+  "http://74.91.26.218:82/live/cctv12hd.m3u8": {
+   "score": 777.0,
+   "ratio": 2.71,
+   "kbps": 526,
+   "ttfb_ms": 777
+  },
+  "http://74.91.26.218:82/live/cctv15hd.m3u8": {
+   "score": 849.0,
+   "ratio": 0.89,
+   "kbps": 826,
+   "ttfb_ms": 849
+  },
+  "http://74.91.26.218:82/live/cctv9hd.m3u8": {
+   "score": 570.0,
+   "ratio": 0.23,
+   "kbps": 2416,
+   "ttfb_ms": 570
+  },
+  "http://192.151.150.154/live/cctv1hd.m3u8": {
+   "score": 986.0,
+   "ratio": 0.22,
+   "kbps": 2557,
+   "ttfb_ms": 986
+  },
+  "http://192.151.150.154/live/cctv2hd.m3u8": {
+   "score": 563.0,
+   "ratio": 0.22,
+   "kbps": 2665,
+   "ttfb_ms": 563
+  },
+  "http://192.151.150.154/live/cctv4hd.m3u8": {
+   "score": 654.0,
+   "ratio": 0.42,
+   "kbps": 1822,
+   "ttfb_ms": 654
+  },
+  "http://192.151.150.154/live/cctv6hd.m3u8": {
+   "score": 598.0,
+   "ratio": 0.3,
+   "kbps": 1534,
+   "ttfb_ms": 598
+  },
+  "http://192.151.150.154/live/cctv7hd.m3u8": {
+   "score": 557.0,
+   "ratio": 0.71,
+   "kbps": 1003,
+   "ttfb_ms": 557
+  },
+  "http://192.151.150.154/live/cctv10hd.m3u8": {
+   "score": 588.0,
+   "ratio": 0.26,
+   "kbps": 3178,
+   "ttfb_ms": 588
+  },
+  "http://192.151.150.154/live/cctv13hd.m3u8": {
+   "score": 664.0,
+   "ratio": 0.28,
+   "kbps": 1983,
+   "ttfb_ms": 664
+  },
+  "http://192.151.150.154/live/cctv17hd.m3u8": {
+   "score": 430.0,
+   "ratio": 0.49,
+   "kbps": 3296,
+   "ttfb_ms": 430
+  },
+  "http://r.jdshipin.com/62WM7": {
+   "score": 198.0,
+   "ratio": 0.46,
+   "kbps": 4219,
+   "ttfb_ms": 198
+  },
+  "http://r.jdshipin.com/jUx8K": {
+   "score": 242.0,
+   "ratio": 0.89,
+   "kbps": 2864,
+   "ttfb_ms": 242
+  },
+  "http://r.jdshipin.com/ndGgS": {
+   "score": 453.0,
+   "ratio": 0.28,
+   "kbps": 4998,
+   "ttfb_ms": 453
+  }
+ },
+ "hosts": {
+  "espanol-liveali.cgtn.com": {
+   "score": 97.0,
+   "ratio": 6.73,
+   "n": 1
+  },
+  "xykt-fix.github.io": {
+   "score": 35.0,
+   "ratio": 40.85,
+   "n": 1
+  },
+  "ali-m-l.cztv.com": {
+   "score": 63.5,
+   "ratio": 41.76,
+   "n": 4
+  },
+  "english-livetx.cgtn.com": {
+   "score": 212.5,
+   "ratio": 18.73,
+   "n": 2
+  },
+  "0472.org": {
+   "score": 20.8,
+   "ratio": 47.14,
+   "n": 4
+  },
+  "stream.sun0769.com": {
+   "score": 19.0,
+   "ratio": 96.47,
+   "n": 1
+  },
+  "8.138.7.223": {
+   "score": 22.0,
+   "ratio": 84.04,
+   "n": 1
+  },
+  "222.128.55.152": {
+   "score": 129.0,
+   "ratio": 0.5,
+   "n": 1
+  },
+  "183.11.239.36": {
+   "score": 52.0,
+   "ratio": 0.49,
+   "n": 1
+  },
+  "tmpstream.hyrtv.cn": {
+   "score": 46.0,
+   "ratio": 29.63,
+   "n": 2
+  },
+  "gmxw.7766.org": {
+   "score": 57.4,
+   "ratio": 0.64,
+   "n": 5
+  },
+  "tencentplay.gztv.com": {
+   "score": 60.2,
+   "ratio": 30.38,
+   "n": 4
+  },
+  "dash2.antik.sk": {
+   "score": 647.0,
+   "ratio": 1.26,
+   "n": 1
+  },
+  "124.165.251.82": {
+   "score": 128.1,
+   "ratio": 0.41,
+   "n": 15
+  },
+  "cd-live-stream.news.cctvplus.com": {
+   "score": 96.0,
+   "ratio": 44.47,
+   "n": 1
+  },
+  "192.151.150.154": {
+   "score": 616.6,
+   "ratio": 0.36,
+   "n": 9
+  },
+  "103.172.187.30": {
+   "score": 468.0,
+   "ratio": 1.21,
+   "n": 2
+  },
+  "bp-livetytv.bestv.cn": {
+   "score": 85.0,
+   "ratio": 4.33,
+   "n": 1
+  },
+  "bein-xtra-bein.amagi.tv": {
+   "score": 66.0,
+   "ratio": 12.13,
+   "n": 1
+  },
+  "d2w9q46ikgrcwx.cloudfront.net": {
+   "score": 61.0,
+   "ratio": 22.08,
+   "n": 1
+  },
+  "d4whmvwm0rdvi.cloudfront.net": {
+   "score": 303.0,
+   "ratio": 8.85,
+   "n": 1
+  },
+  "d3qs3d2rkhfqrt.cloudfront.net": {
+   "score": 69.0,
+   "ratio": 13.54,
+   "n": 1
+  },
+  "amg26268-amg26268c14-freelivesports-emea-10267.playouts.now.amagi.tv": {
+   "score": 1132.0,
+   "ratio": 1.02,
+   "n": 1
+  },
+  "barinaslive1.boldmss.com": {
+   "score": 679.8,
+   "ratio": 0.45,
+   "n": 4
+  },
+  "38.75.136.137": {
+   "score": 675.3,
+   "ratio": 0.43,
+   "n": 12
+  },
+  "74.91.26.218": {
+   "score": 730.3,
+   "ratio": 0.58,
+   "n": 13
+  },
+  "r.jdshipin.com": {
+   "score": 297.7,
+   "ratio": 0.54,
+   "n": 3
+  }
+ },
+ "bad": [
+  "https://xykt-fix.github.io/play/a02e/index.m3u8",
+  "http://223.78.65.165:9901/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "https://0472.org/hls/cgtne.m3u8",
+  "https://0472.org/hls/cgtnf.m3u8",
+  "https://stream.sun0769.com/dgrtv1/mp4tv2_800/index.m3u8",
+  "http://8.138.7.223/tv/1905.php?id=LIVE3YPYZ30E7V1R0",
+  "http://8.138.7.223/tv/shtv.php?id=wxty",
+  "http://183.11.239.36:808/hls/18/index.m3u8",
+  "http://gmxw.7766.org:808/hls/169/index.m3u8",
+  "http://gmxw.7766.org:808/hls/45/index.m3u8",
+  "http://gmxw.7766.org:808/hls/93/index.m3u8",
+  "http://gmxw.7766.org:808/hls/96/index.m3u8",
+  "http://tencentplay.gztv.com/live/yingshi.m3u8?txSecret=1bd3a1082ab5b89f48c1bff9a3760da4&txTime=18d57929bd4",
+  "http://tencentplay.gztv.com/live/fazhi.m3u8?txSecret=3e84cd8eba844b5dc2150612295c7a52&txTime=18d578f4493",
+  "http://124.165.251.82:85/tsfile/live/0001_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0002_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0003_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0004_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0008_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0009_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0010_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0011_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0014_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "http://124.165.251.82:85/tsfile/live/0015_1.m3u8?key=txiptv&playlive=1&authid=0",
+  "https://cd-live-stream.news.cctvplus.com/live/smil:CHANNEL2.smil/playlist.m3u8",
+  "http://69.30.245.50/live/cctv6.m3u8",
+  "http://69.30.245.50/live/cctv1.m3u8",
+  "http://192.151.150.154/live/cctv8k.m3u8",
+  "https://edge-001.streamup.eu/sportitalia/sihd_abr/playlist.m3u8",
+  "https://barinaslive1.boldmss.com/ESPN/ESPN.isml/ESPN.m3u8",
+  "https://barinaslive1.boldmss.com/ESPN_2/ESPN_2.isml/ESPN_2.m3u8",
+  "https://barinaslive1.boldmss.com/ESPN_4/ESPN_4.isml/ESPN_4.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225673/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225743/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226101/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226103/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226128/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225738/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226147/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226120/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226122/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225766/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221226124/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225734/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225741/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225701/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225736/index.m3u8",
+  "https://zby.130519.xyz/PLTV/11/224/3221225732/index.m3u8",
+  "http://38.75.136.137:98/gslb/dsdqpub/ystq.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/ysjp.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/wsjk.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/hjjc.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/fyzq.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/fyyy.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/fyjc.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/gefwq.m3u8?auth=testpub",
+  "http://38.75.136.137:98/gslb/dsdqpub/dyjc.m3u8?auth=testpub",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226937/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226334/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226942/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226316/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226947/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226333/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221227002/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226318/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226895/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226893/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226471/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226335/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226894/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226469/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226468/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226946/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226485/1.m3u8?",
+  "http://[2409:8087:8:21::18]:6610/otttv.bj.chinamobile.com/PLTV/88888888/224/3221226944/1.m3u8?",
+  "http://go.bkpcp.top/mg/cctv13",
+  "http://39.135.138.60:18890/PLTV/88888910/224/3221225643/index.m3u8",
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225619/index.m3u8",
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225647/index.m3u8",
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225621/index.m3u8",
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225649/index.m3u8",
+  "http://39.134.115.163:8080/PLTV/88888910/224/3221225624/index.m3u8",
+  "https://global.cgtn.cicc.media.caton.cloud/master/cgtn-america.m3u8",
+  "http://www.tszhgjj.cn:7000/rtp/239.253.93.134:6631",
+  "http://198.204.240.250:82/live/cctv4k.m3u8",
+  "https://myip.pdtvhd.com/Sports/streams/CCTV5pul.m3u8",
+  "https://live.eac-news.com/CCTV/streams/cctv6.m3u8",
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv9",
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv15",
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv16",
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv17",
+  "http://p.ytelc.com/169l/0/cctv.php?id=cctv4k",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.93:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.98:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.80:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.95:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.94:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.90:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.81:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.97:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.86:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.89:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.96:5140",
+  "http://www.lizhinas.top:1009/rtp/239.252.219.87:5140",
+  "http://nas.hssvm.com:8888/udp/225.1.1.210:5002",
+  "http://74.91.26.218:82/live/cctv1hd.m3u8",
+  "http://74.91.26.218:82/live/cctv3hd.m3u8",
+  "http://74.91.26.218:82/live/cctv5hd.m3u8",
+  "http://74.91.26.218:82/live/cctv7hd.m3u8",
+  "http://74.91.26.218:82/live/cctv10hd.m3u8",
+  "http://74.91.26.218:82/live/cctv11hd.m3u8",
+  "http://74.91.26.218:82/live/cctv132m.m3u8",
+  "http://74.91.26.218:82/live/cctv14hd.m3u8",
+  "http://74.91.26.218:82/live/cctv15.m3u8",
+  "http://74.91.26.218:82/live/cctv16.m3u8",
+  "http://74.91.26.218:82/live/cctv17hd.m3u8",
+  "http://74.91.26.218:82/live/cctv9hd.m3u8",
+  "http://192.151.150.154/live/cctv1hd.m3u8",
+  "http://192.151.150.154/live/cctv2hd.m3u8",
+  "http://192.151.150.154/live/cctv4hd.m3u8",
+  "http://192.151.150.154/live/cctv6hd.m3u8",
+  "http://192.151.150.154/live/cctv10hd.m3u8",
+  "http://192.151.150.154/live/cctv13hd.m3u8",
+  "http://192.151.150.154/live/cctv17hd.m3u8",
+  "http://r.jdshipin.com/62WM7",
+  "http://r.jdshipin.com/ndGgS"
+ ]
 }

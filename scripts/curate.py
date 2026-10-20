@@ -70,6 +70,19 @@ _SCORE_DROP = 1e9
 _STARVED_HOSTS = {"124.165.251.82", "gmxw.7766.org"}
 
 # ---------------------------------------------------------------------------
+# 硬剔除：确认整台失效、一条都不该收的主机
+# ---------------------------------------------------------------------------
+# 和 _STARVED_HOSTS 的区别：starved 是「能播但带宽不够」，留着当最后一档备选；
+# 这里是「根本打不开」，留着只会让用户点开黑屏。
+#
+# 目前为空。曾经把 74.91.26.218 写进来过，理由是「央视全线下线、返回
+# {"error":"频道 cctv2md 没有配置任何服务器。"}」——后来查清那是 **IDE 沙箱
+# 代理**造的假象：同一台机器绕过代理直连，200 且内容是正常 m3u8。教训是
+# 「测源前先确认请求没走代理」，见 check.py 里 session() 的注释。
+_DEAD_HOSTS: set[str] = set()
+
+
+# ---------------------------------------------------------------------------
 # 一级源：电视台 / 广电 / 运营商自己运营的地址
 # ---------------------------------------------------------------------------
 # 选源顺序是「一级源 → 第三方备用」，判断依据是域名归属，不是主观感觉。
@@ -135,9 +148,14 @@ def _score(r) -> float:
     url = (r.url or "").strip()
     if _is_drm_cctv(url):
         return _SCORE_DROP
+    if (urlparse(url).hostname or "") in _DEAD_HOSTS:
+        return _SCORE_DROP
     if url in _RANK_BAD:
         return _SCORE_STARVED
-    if (urlparse(url).hostname or "") in _STARVED_HOSTS:
+    # 只有「这条 URL 没实测过」时才按主机一刀切打压。
+    # 反过来会误伤：gmxw.7766.org 整体是 0.3x 的烂主机，但它 hls/102 这条
+    # 实测 2.1x，够用。主机级判断只该在没有更好信息时兜底。
+    if url not in _RANK_URLS and (urlparse(url).hostname or "") in _STARVED_HOSTS:
         return _SCORE_STARVED
 
     s = _base_score(r, url)
@@ -576,6 +594,11 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
             # 央视官网源，拉下来是灰屏，收了反而害人
             seen_url.add(url)
             dropped["[灰屏] 央视官网源"] = dropped.get("[灰屏] 央视官网源", 0) + 1
+            continue
+        if (urlparse(url).hostname or "") in _DEAD_HOSTS:
+            # 对本地网络整台失效（云端机房却通），收了会让主线路点开就是黑屏
+            seen_url.add(url)
+            dropped["[本机不通] 已下线主机"] = dropped.get("[本机不通] 已下线主机", 0) + 1
             continue
         seen_url.add(url)
 

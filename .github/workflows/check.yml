@@ -52,7 +52,7 @@ jobs:
             --timeout 8 \
             --concurrency 24 \
             --keep-per-name 2 \
-            --blocked-host 74.91.26.218 bp-livetytv.bestv.cn \
+            --blocked-host bp-livetytv.bestv.cn \
             --fail-if-below 0.05
 
       - name: 把结果提交回仓库
