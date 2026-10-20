@@ -106,7 +106,30 @@ scripts/curate.py      整理：剔除垃圾 → 统一命名 → 排序 → 编
 dist/valid.m3u         ← 订阅这个（已整理）
 dist/dead.m3u          失效的，用来看"整站挂了"还是"个别台挂了"（保留原始名，方便排查）
 dist/report.md         人看的报告
+上传更新.bat           双击就能把改过的源推上去（Windows）
 ```
+
+## 改完源怎么上传
+
+**双击 `上传更新.bat`。** 拉取 → 提交 → 推送，一步到底，然后告诉你到哪看进度。
+
+手动也行：
+
+```bash
+git pull --ff-only
+git add sources
+git commit -m "更新源"
+git push
+```
+
+三条规矩：
+
+1. **只 `git add sources`，不要 `git add -A`**。`dist/` 是机器人跑完写回来的产物，
+   你本地手动跑检测也会改它，两边一起动就撞车（`rejected / fetch first`）。
+2. **推完要等 3~5 分钟**。你推的只是候选清单，`dist/valid.m3u` 要等 Actions 实测后才生成。
+3. **不改文件、只想立刻刷新**：Actions 页面 →「源检测」→ Run workflow。
+
+细节（报错对照表、怎么确认成功）见 [上传到GitHub.md](上传到GitHub.md)。
 
 ## 检测到底测什么
 

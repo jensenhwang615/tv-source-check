@@ -118,14 +118,59 @@ git push -u origin main
 浏览器里点一下授权即可，不用手输 token。这个登录方式我已经帮你配好了
 （`git config --global credential.helper manager`），以后 push 不会再问。
 
-推送成功后，**以后每次改完只需要三行**：
+推送成功后，日常更新见下面这一节。
+
+---
+
+## 日常更新（只上传源，别碰 dist）
+
+**双击 `上传更新.bat` 就行**，它把这四步串起来了：
+
+1. 先把线上最新的检测结果拉回本地（避免冲突）
+2. 列出你改了哪些源文件
+3. 提交
+4. 推送，然后告诉你到哪看进度
+
+没有任何改动时会提示「不需要上传」，不会产生空提交。
+
+不用脚本的话，手动三行：
 
 ```bash
 cd C:\Users\Jensen\WorkBuddy\2026-10-20-09-16-06\tv-source-check
-git add -A
-git commit -m "更新清单"
+git pull --ff-only
+git add sources
+git commit -m "更新源"
 git push
 ```
+
+### 三个必须遵守的规矩
+
+**1. 只 `git add sources`，不要 `git add -A`。**
+`dist/` 是 GitHub Actions 跑完自动写回来的产物。你本地手动跑检测也会改 `dist/`，
+两边都改就会撞车，push 时报 `rejected / fetch first`。
+`dist` 交给机器人管，你只管 `sources/`。
+
+**2. 推送后必须等 Actions 跑完，清单才真的变。**
+你推上去的只是「候选源清单」，`dist/valid.m3u`（订阅用的那份）是机器人在 GitHub 的机器上
+实测一遍后生成的，约 3~5 分钟。
+
+**3. 别指望本地检测结果。**
+在家里跑，香港台会成片失败、国内 CDN 也可能因为代理出口在境外而大量 403。
+**以 Actions 的结果为准**，这也是当初上 Actions 的唯一理由。
+
+### 想立刻刷新一次（不改任何文件）怎么办
+
+打开 https://github.com/jensenhwang615/tv-source-check/actions → 左侧「源检测」→
+右上 **Run workflow** → 绿色按钮。等 3~5 分钟，`dist/` 会被机器人更新。
+
+### 怎么确认推送成功
+
+| 看哪里 | 正常的样子 |
+|---|---|
+| 终端最后一行 | `main -> main` 或 `Everything up-to-date` |
+| 仓库首页提交列表 | 出现一条你名字的 `update: 源清单更新 ...` |
+| Actions 页面 | 多了一条黄色（运行中）→ 变绿（成功） |
+| 订阅地址加 `?t=1` 后缀 | 内容有变化（raw 有缓存，不加参数可能还是旧的） |
 
 > 顺手加一行 `git config --global core.quotepath false`，中文文件名就不会显示成 `\344\270\212...` 这种乱码。
 
