@@ -1,25 +1,29 @@
-# 上传到 GitHub（零基础版）
+# 上传到 GitHub（零基础版 · 公开仓库）
 
-本地已经做好了：`git init` + 首次提交都已完成，分支为 `main`，19 个文件已入库。
+本地已经做好了：`git init` + 三次提交都已完成，分支为 `main`，**16 个文件**已入库，`.git` 只有 219KB。
 你只需要「把本地仓库推到 GitHub」这一件事。
 
 ---
 
-## 第 0 步：先决定仓库是私有还是公开（这一步最重要，别跳过）
+## 第 0 步：你已经选了 Public，先认清这意味着什么
 
-| | Private（推荐） | Public |
-|---|---|---|
-| 谁能看到 `sources/` 里的地址 | 只有你 | 所有人 |
-| DMCA / 版权投诉风险 | 基本没有 | 落在你这个账号上 |
-| raw 链接能不能直接当订阅地址 | ❌ 要登录才能拉 | ✅ 可以直接订阅 |
-| Actions 免费额度 | 2000 分钟/月（本项目约 480，够用） | 无限 |
-| 定时任务会不会自动停 | 60 天没提交会自动暂停 | 不会 |
+公开是你自己的决定，我按公开来配好了。三件事要心里有数：
 
-**建议先选 Private。** 理由：`sources/` 里放的是第三方转播节点，公开仓库等于公开分发，
-真出问题时被封的是你整个账号（连带你的 3D 公司项目）。私有仓库唯一的代价是
-`dist/valid.m3u` 不能直接用 URL 订阅，需要下载下来导进播放器——对你其实没影响。
+| | 事实 |
+|---|---|
+| ✅ 好处 | raw 链接能直接当订阅地址；Actions 分钟数无限（私有仓库只有 2000 分钟/月） |
+| ⚠️ 代价 | 全世界都能看到 `sources/` 里的地址；真被投诉时，处理方式是**禁用整个仓库** |
+| 🎯 真实概率 | 公开的直播 m3u 仓库在 GitHub 上有几十上百个（`suxuang`、`YueChan`、`fanmingming/live` 都活了几年）。针对这类仓库的 DMCA 很少，真正被批量投诉的是**影视点播聚合接口**和**TVBox 的 spider JAR** |
 
-> 想公开也可以，但把 `sources/` 清空、只留脚本，当技术演示。
+所以公开可以，但要守一条线：
+
+> **这个仓库永远只放直播 m3u。不要往里加影视点播的 `api.php/provide/vod` 接口，不要放 spider JAR。**
+> 那两样东西是 GitHub 版权投诉的主要目标，一旦命中，封的是整个仓库、连带你的 3D 公司项目。
+
+为此我已经做了三件事：
+1. README 顶部加了「有什么 / 没有什么」对照表和免责声明（明确不托管、不转码、不担保）
+2. 把 `dist/status.json`（229KB）、`dist/dead.m3u`、`sources/auto.m3u` 移出了仓库——这三样每 6 小时重生成一次，提交上去只会让 git 历史每月涨几十 MB
+3. 加了 `.gitattributes` 统一换行符，避免 Windows 的 CRLF 推到 Linux 机器上出问题
 
 ---
 
@@ -29,7 +33,7 @@
 1. 打开 https://github.com ，登录（没账号就注册）
 2. 右上角 **`+`** → **New repository**
 3. **Repository name** 填 `tv-source-check`
-4. 选 **Private**
+4. 选 **Public**
 5. **下面三个勾全都不要勾**（Add a README / Add .gitignore / Choose a license）
    —— 勾了会在远程先产生文件，后面 `git push` 会冲突
 6. 点 **Create repository**
@@ -52,7 +56,8 @@ scripts
 sources
 ```
 
-5. 等列表全部出现（19 个文件）→ 页面底部点 **Commit changes**
+5. 等列表全部出现（**16 个文件**：`dist` 里 3 个、`sources` 里 5 个、`scripts` 里 2 个、根目录 4 个、`.github` 里 1 个）
+6. 页面底部点 **Commit changes**
 
 ### 3. 确认工作流在里面（关键）
 点进 **`.github/workflows/check.yml`** 能不能看到内容。
@@ -76,7 +81,7 @@ sources
 
 ## 方法二：命令行（以后每次更新都走这个，最省事）
 
-仓库地址里把 `你的用户名` 换掉。第一次 `push` 会弹窗要求登录，选
+把两处 `你的用户名` 换掉。第一次 `push` 会弹窗要求登录，选
 **「Sign in with your browser」**，浏览器点授权就完事，不用记 token。
 
 ```bash
@@ -103,7 +108,7 @@ git commit -m "更新清单"
 git push
 ```
 
-> 小技巧：加一行 `git config --global core.quotepath false`，中文文件名就不会显示成乱码。
+> 顺手加一行 `git config --global core.quotepath false`，中文文件名就不会显示成 `\344\270\212...` 这种乱码。
 
 ---
 
@@ -111,23 +116,42 @@ git push
 
 1. 装 https://desktop.github.com ，打开后用 GitHub 账号登录
 2. **File → Add local repository** → 选 `C:\Users\Jensen\WorkBuddy\2026-10-20-09-16-06\tv-source-check`
-3. 它会识别到已有仓库（19 个文件的提交已经在里面了）
-4. 点右上 **Publish repository**
-5. **Name** 填 `tv-source-check`，**把 "Keep this code private" 勾上** → **Publish repository**
+3. 它会识别到已有仓库（16 个文件的提交已经在里面了）
+4. 点右上 **Publish repository** → **Name** 填 `tv-source-check`
+5. ⚠️ **把 "Keep this code private" 的勾去掉**（默认是勾上的，不去掉就成私有仓库了）
+6. **Publish repository**
 
 以后更新就是：改完文件 → 左下角填一句说明 → **Commit to main** → 右上 **Push origin**。
 
 ---
 
+## 跑通之后：直接把 raw 链接当订阅地址
+
+公开仓库最大的好处在这里。推上去之后，这个地址直接粘进播放器就能用，永远指向最新实测通过的清单：
+
+```
+https://raw.githubusercontent.com/你的用户名/tv-source-check/main/dist/valid.m3u
+```
+
+TVBox / 影视壳 / TiviMate / PotPlayer / VLC 都认。**清单每 6 小时自动刷新，你不用重新导。**
+
+顺带一个只有公开仓库才有的能力：在仓库页 README 顶部加徽章，显示当前可用率——
+
+```markdown
+![可用率](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/你的用户名/tv-source-check/main/dist/badge.json)
+```
+
+---
+
 ## 上传完，逐条打勾确认
 
-- [ ] 仓库里能看到 19 个文件，`.github/workflows/check.yml` 也在
+- [ ] 仓库里能看到 16 个文件，`.github/workflows/check.yml` 也在
 - [ ] **Actions** 标签里能看到「源检测」这个工作流
 - [ ] 手动 Run 一次，5 分钟内跑完且是绿勾
 - [ ] 跑完后仓库多了一条 `chore: 源检测结果 ...` 的提交（说明会自动回写结果）
 - [ ] 点开 `dist/report.md`，能看到最新的可用率表格
-
-四项全绿就说明整套流水线在云端跑通了。之后每 6 小时自动跑一次，你不用管。
+- [ ] 用上面的 raw 链接，能在播放器里导入成功
+- [ ] 仓库里**没有** `dist/status.json` 和 `dist/dead.m3u`（说明瘦身生效了）
 
 ---
 
@@ -137,17 +161,19 @@ git push
 |---|---|---|
 | 找不到 `.github` 文件夹 | 资源管理器藏了隐藏项 | 查看 → 勾「隐藏的项目」；或用手工新建文件那招 |
 | Actions 页面没有任何工作流 | `.github/workflows/check.yml` 没传上去 | 见「备选：手工新建 workflow 文件」 |
-| 运行成功但最后一步红了 | 机器人没权限 copy 结果回去 | **Settings → Actions → General → Workflow permissions** → 选 **Read and write** → Save |
-| 定时任务某天不跑了 | 私有仓库 60 天没提交，GitHub 自动暂停定时任务 | Actions 页点 **Enable workflow**；或随便改一下 README 提交一次 |
+| 运行成功但最后一步红了 | 机器人没权限回写结果 | **Settings → Actions → General → Workflow permissions** → 选 **Read and write** → Save |
+| 定时任务某天不跑了 | 60 天仓库没活动，GitHub 自动暂停定时任务 | Actions 页点 **Enable workflow**；或随便改一下 README 提交一次 |
 | `push` 报 `rejected ... fetch first` | 建仓库时勾了 README，远程已有提交 | `git pull --rebase origin main` 然后再 `git push` |
-| `push` 报 `Permission denied` / 一直要密码 | 用的还是 HTTPS 密码 | 改用 Personal Access Token 当密码，或用 GitHub Desktop |
-| 私有仓库的 raw 链接打开是 404 | 私有仓库的 raw 必须带 token | 正常现象。改成「网页下载 `dist/valid.m3u` → 播放器导入本地文件」 |
-| 跑一次花掉多少额度 | 约 4 分钟/次 × 120 次/月 ≈ 480 分钟 | 免费额度 2000 分钟/月，够用；想省就改 cron 为 `0 */12 * * *` |
+| `push` 报 `Permission denied` / 一直要密码 | 用的还是账号密码 | 改用 Personal Access Token 当密码，或用 GitHub Desktop |
+| raw 链接打开是 404 | 仓库还是 Private，或者分支不叫 `main` | 仓库 Settings 拉到最下面改成 Public；确认地址里是 `/main/` |
+| 用几次后 raw 链接 404 | 已经是 Public，但文件路径写错 | 核对是 `dist/valid.m3u`，注意大小写 |
+| 每次提交都很大的 diff | `status.json` 没被忽略 | 检查 `.gitignore` 里那三行在不在 |
+| 担心被人投诉 | 只要不放点播接口和 spider，风险很低 | 保持仓库只含直播 m3u；来源有争议就删掉那几条 |
 
 ---
 
 ## 最后一句提醒
 
-上传之后，**这个仓库里存的是别人的服务器地址**。私有仓库自己用没问题；
-一旦改成 Public，就等于你在替这些节点做公开分发，风险会落到账号上。
-真要公开分享，把 `sources/` 清空、只留 `scripts/` 和 `README.md` 当技术演示更稳妥。
+公开之后，这个仓库就是「一份公开的直播源清单」。**你以后往里加的任何东西都会立刻被所有人看到**，
+所以那道线要守住：只放直播 m3u，不放点播聚合接口、不放 spider、不放任何音视频文件。
+真的想折腾点播，另开一个私有仓库，或者干脆只在本地跑。

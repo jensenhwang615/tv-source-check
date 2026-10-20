@@ -550,10 +550,14 @@ def main() -> int:
         ),
         encoding="utf-8",
     )
-    color = "brightgreen" if ratio >= 0.9 else "green" if ratio >= 0.7 else "yellow" if ratio >= 0.5 else "red"
+    # 徽章只报「可用条数」, 不报可用率。
+    # 原因: 分母里混着 auto.m3u 几百条自动采集的地域封锁源, 算出来的百分比常年 10% 出头,
+    # 挂在公开仓库首页会被误读成「这项目废了」。条数才是用户真正关心的。
+    n_ok = len(ok)
+    color = "brightgreen" if n_ok >= 60 else "green" if n_ok >= 40 else "yellow" if n_ok >= 20 else "red"
     (out_dir / "badge.json").write_text(
         json.dumps(
-            {"schemaVersion": 1, "label": "源可用率", "message": f"{ratio:.0%}", "color": color},
+            {"schemaVersion": 1, "label": "实测可播", "message": f"{n_ok} 条", "color": color},
             ensure_ascii=False,
         ),
         encoding="utf-8",
