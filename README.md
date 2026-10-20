@@ -26,14 +26,35 @@
 
 | 分组 | 覆盖 | 实测 |
 |---|---|---|
-| **央视** | CCTV-1 ~ CCTV-17 全齐 + CCTV-4K + CGTN 五语种 | 26/26 ✅ |
-| **广东** | 广东卫视、珠江、广东体育、深圳卫视、深圳都市、南方卫视、大湾区、广东公共、广东影视、广东都市、广东民生、广州综合、广州新闻、南国都市、东莞新闻、河源综合/公共、番禺综合 | 22/22 ✅ |
-| **中国香港** | 翡翠台、明珠台、TVB Plus、凤凰卫视中文/资讯/香港台 | 8/9 ⚠️ 见下方「香港这一块」 |
-| **体育** | 五星体育 + 6 个官方免费国际体育台 + 4 条 ESPN 拉美（足球） | 11/11 ✅ 见下方「体育这一块」 |
+| **央视** | CCTV-1 ~ CCTV-17 全齐 + CCTV-4K/8K + CGTN 五语种 | 26/26 ✅ |
+| **广东** | 广东卫视、珠江、广东体育、深圳卫视、深圳都市、南方卫视、大湾区、广东公共、广东影视、广东都市、广东民生、广州综合、广州新闻、南国都市、东莞新闻、河源综合/公共、梅州 | 22/22 ✅ |
+| **中国香港** | 翡翠台、明珠台、TVB Plus、无线新闻台、ViuTV、HOY TV、RTHK、凤凰系列、香港卫视 | ⚠️ 见下方「香港这一块」 |
+| **澳门** | 澳视澳门、澳视卫星、澳门卫视 | ✅ |
+| **体育** | 五星体育 + 6 个官方免费国际体育台 + 2 条 ESPN 拉美（足球） | ✅ 见下方「体育这一块」 |
 
-共 **63 条线路在 `valid.m3u` 里**（其中 36 条本次因本机 IP 被限流判为 BLOCKED，此前实测均可播）。
-体育候选 343 条，单独低并发跑是 **11/11 全通**；放进 500 多条一起高并发跑时会被 CDN 临时挡，
-所以这两台主干 CDN 已加进 `--blocked-host`，不会被误踢。
+原始候选 538 条，实测可用约 100 条，**去重合并后 `valid.m3u` 里是 62 条**（同台保留 1~3 条不同的线路）。
+
+> 香港那组在本机跑时经常只剩两三条——不是源死了，是那几个转播节点把我这台机器的 IP 挡了。
+> 换成 GitHub 机房 IP 跑（Actions 定时任务）能恢复到 40 多条。**以 `dist/report.md` 的数字为准。**
+
+## 清单长什么样
+
+`dist/valid.m3u` 不是把能播的源原样堆在一起，而是整理过的：
+
+```
+#EXTINF:-1 tvg-chno="1" tvg-name="CCTV-1 综合" group-title="央视",CCTV-1 综合
+#EXTINF:-1 tvg-chno="1" tvg-name="CCTV-1 综合 (线路2)" group-title="央视",CCTV-1 综合 (线路2)
+#EXTINF:-1 tvg-chno="2" tvg-name="CCTV-2 财经" group-title="央视",CCTV-2 财经
+```
+
+四条规则：
+
+1. **分组固定顺序**：央视 → 广东 → 香港 → 澳门 → 体育（国内 → 国际免费 → 足球第三方）
+2. **组内按台序排**：CCTV-1 到 CCTV-17 → CCTV-5+ → 4K/8K → CGTN；地方台按「卫视 → 主频道 → 城市台」排
+3. **同一个台只出现一次**，多条线路紧邻并标 `(线路2)` `(线路3)`；`tvg-chno` 让播放器按台号排序时也是这个次序
+4. **不收录**：付费频道（央视付费数字台、华丽翡翠台）、名字撞关键词的误采内容（电视剧《特种兵之火凤凰》、风景摄像头"翡翠湾"）、别的地区的台（台湾 TVBS）
+
+想看整理前的原始名字，看 `dist/status.json`；想改排序规则或增删频道别名，改 `scripts/curate.py` 顶部的表就行。
 
 ## 三步上手
 
@@ -57,8 +78,12 @@ https://raw.githubusercontent.com/<你的用户名>/<仓库名>/main/dist/valid.
 ```bash
 pip install -r requirements.txt
 python scripts/collect.py                                                    # 采候选
-python scripts/check.py --playlist sources/streams.m3u sources/backup.m3u --out dist
+python scripts/check.py --playlist sources/*.m3u --out dist                   # 检测 + 整理
+python scripts/check.py --from-status dist/status.json --out dist             # 只重新整理，不联网
 ```
+
+最后那条很实用：改完 `curate.py` 的排序规则或别名表，不用等 538 条重新检测一遍（要一分多钟），
+直接拿上次的 `status.json` 重新生成 `valid.m3u` 和报告，几秒出结果。
 
 ## 文件结构
 
@@ -71,8 +96,9 @@ sources/auto.m3u       自动生成（collect.py 产物），别手改
 sources/collect.json   采集配置：上游地址 + 只要哪些分组。改这里就能改采集范围
 scripts/collect.py     采集：拉上游 → 按关键词分到「央视 / 广东 / 香港 / 体育」→ 去重
 scripts/check.py       检测：连通 → 内容 → HLS 主列表 → 拉第一个分片 → 判定
-dist/valid.m3u         ← 订阅这个
-dist/dead.m3u          失效的，用来看"整站挂了"还是"个别台挂了"
+scripts/curate.py      整理：剔除垃圾 → 统一命名 → 排序 → 编号 → 写 m3u
+dist/valid.m3u         ← 订阅这个（已整理）
+dist/dead.m3u          失效的，用来看"整站挂了"还是"个别台挂了"（保留原始名，方便排查）
 dist/report.md         人看的报告
 ```
 

@@ -22,6 +22,8 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
+from curate import build_m3u, curate
+
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
@@ -106,6 +108,21 @@ def parse_m3u(text: str) -> list[Channel]:
     if cur and cur.url:
         channels.append(cur)
     return channels
+
+
+def result_from_dict(d: dict) -> Result:
+    """从 status.json 的一条记录还原 Result（--from-status 复用旧结果时用）。"""
+    return Result(
+        name=d.get("name") or "",
+        group=d.get("group") or "",
+        url=d.get("url") or "",
+        status=d.get("status") or "DEAD",
+        latency_ms=d.get("latency_ms"),
+        resolution=d.get("resolution"),
+        detail=d.get("detail") or "",
+        idx=d.get("idx") or 0,
+        raw=d.get("raw") or [],
+    )
 
 
 # ----------------------------------------------------------------------------
@@ -332,56 +349,44 @@ def check_tvbox(url: str, timeout: float, deep: int = 0) -> dict:
 # ----------------------------------------------------------------------------
 # 输出
 # ----------------------------------------------------------------------------
-def pick_diverse(items: list[Result], n: int) -> list[Result]:
-    """同一频道最多留 n 条，但优先选不同主机的线路——避免整份清单压在单台服务器上。"""
-    items = sorted(items, key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
-    chosen: list[Result] = []
-    hosts: set[str] = set()
-    for it in items:
-        h = urlparse(it.url).hostname or ""
-        if h in hosts:
-            continue
-        chosen.append(it)
-        hosts.add(h)
-        if len(chosen) >= n:
-            return chosen
-    for it in items:
-        if it not in chosen:
-            chosen.append(it)
-            if len(chosen) >= n:
-                break
-    return chosen
+# 「同频道优先选不同主机」的去重逻辑在 curate.py 里（_pick_diverse），
+# 这里不再重复实现一份，避免两边算法漂移。
+def write_m3u(
+    path: Path,
+    results: list[Result],
+    keep_per_name: int = 2,
+    header: list[str] | None = None,
+) -> dict:
+    """写「可直接订阅」的清单：剔除付费/误采、统一命名、按台序排列。
+
+    整理规则全部在 curate.py 里，这里只负责调用。返回统计信息给报告用。
+    """
+    entries, stats = curate(results, keep_per_name)
+    path.write_text(build_m3u(entries, header), encoding="utf-8")
+    return stats
 
 
-def write_m3u(path: Path, results: list[Result], keep_per_name: int = 0) -> None:
-    # 同一个 URL 可能在手工清单和 auto.m3u 里各出现一次（名字不同），只保留先出现的那个——
-    # 手工清单在 --playlist 里排前面，所以留下的是人写的那条友好命名。
-    seen_urls: set[str] = set()
-    deduped: list[Result] = []
-    for r in results:
-        key = r.url.strip()
-        if key in seen_urls:
-            continue
-        seen_urls.add(key)
-        deduped.append(r)
-    results = deduped
-    if keep_per_name:
-        grouped: dict[str, list[Result]] = {}
-        for r in results:
-            grouped.setdefault(r.name, []).append(r)
-        order = {id(r): i for i, r in enumerate(results)}
-        trimmed: list[Result] = []
-        for items in grouped.values():
-            trimmed.extend(pick_diverse(items, keep_per_name))
-        results = sorted(trimmed, key=lambda r: order[id(r)])
+def write_m3u_raw(path: Path, results: list[Result]) -> None:
+    """写原始清单（失效明细用）：保持原样，方便对着排查是哪条挂了。"""
+    seen: set[str] = set()
     lines = ["#EXTM3U"]
     for r in results:
+        key = r.url.strip()
+        if key in seen:
+            continue
+        seen.add(key)
         lines.extend(r.raw)
         lines.append(r.url)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def build_report(results: list[Result], tvbox: list[dict], ratio: float, started: datetime) -> str:
+def build_report(
+    results: list[Result],
+    tvbox: list[dict],
+    ratio: float,
+    started: datetime,
+    curate_stats: dict | None = None,
+) -> str:
     ok = [r for r in results if r.status == "OK"]
     dead = [r for r in results if r.status == "DEAD"]
     suspect = [r for r in results if r.status == "SUSPECT"]
@@ -434,17 +439,51 @@ def build_report(results: list[Result], tvbox: list[dict], ratio: float, started
         if len(dead) + len(suspect) > 200:
             out.append(f"| ... | | | 其余 {len(dead) + len(suspect) - 200} 条见 status.json | |")
 
+    if curate_stats and (curate_stats.get("kept") or curate_stats.get("dropped_total")):
+        kept = curate_stats.get("kept", 0)
+        dropped = curate_stats.get("dropped_total", 0)
+        out += [
+            "",
+            "## 清单整理",
+            "",
+            f"可用 {len(ok) + len(blocked)} 条 → 去重合并后写进 `valid.m3u` 的 **{kept} 条**。"
+            f"另有 {dropped} 条不进清单（付费频道 / 名字撞关键词的误采内容）。",
+            "",
+        ]
+        names = curate_stats.get("dropped_names") or {}
+        if names:
+            out += ["被剔除的内容：", ""]
+            for n, c in sorted(names.items(), key=lambda kv: -kv[1]):
+                out.append(f"- `{n}`")
+            out.append("")
+
     if tvbox:
         out += ["", "## TVBox 接口", "", "| 接口 | 状态 | 内容 |", "|---|---|---|"]
         for t in tvbox:
             name = t["url"] if len(t["url"]) < 60 else t["url"][:57] + "..."
             out.append(f"| `{name}` | {t['status']} | {t['detail']} |")
 
-    ok_sorted = sorted([r for r in ok if r.latency_ms is not None], key=lambda r: r.latency_ms)
+    # 「最快的 10 条」只统计真正进了 valid.m3u 的，
+    # 否则会出现「某个已被剔除的付费台/误采内容跑得最快」这种自我矛盾的场面。
+    kept_urls = (curate_stats or {}).get("kept_urls") or set()
+    kept_names = (curate_stats or {}).get("kept_names") or {}
+    ok_sorted = sorted(
+        [r for r in ok if r.latency_ms is not None and (not kept_urls or r.url in kept_urls)],
+        key=lambda r: r.latency_ms,
+    )
     if ok_sorted:
         out += ["", "## 最快的 10 条", "", "| 频道 | 延迟 | 分辨率 |", "|---|---|---|"]
-        for r in ok_sorted[:10]:
-            out.append(f"| {r.name} | {r.latency_ms}ms | {r.resolution or '-'} |")
+        seen_canon: set[str] = set()
+        shown = 0
+        for r in ok_sorted:
+            canon = kept_names.get(r.url, r.name)
+            if canon in seen_canon:      # 同一个台的多条线路只报最快的那个
+                continue
+            seen_canon.add(canon)
+            out.append(f"| {canon} | {r.latency_ms}ms | {r.resolution or '-'} |")
+            shown += 1
+            if shown >= 10:
+                break
     out.append("")
     return "\n".join(out)
 
@@ -464,6 +503,11 @@ def main() -> int:
     ap.add_argument("--concurrency", type=int, default=24)
     ap.add_argument("--deep", type=int, default=0, help="TVBox 抽查几个站点的采集 API (0=关闭)")
     ap.add_argument("--keep-per-name", type=int, default=2, help="valid.m3u 里每个频道最多保留几条线路")
+    ap.add_argument(
+        "--from-status",
+        default="",
+        help="复用已有的 status.json，不重新联网检测（只改整理规则时用，几秒出结果）",
+    )
     ap.add_argument("--fail-if-below", type=float, default=0.0, help="可用率低于此值则退出码 1")
     ap.add_argument(
         "--blocked-host",
@@ -478,47 +522,64 @@ def main() -> int:
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    channels: list[Channel] = []
-    for p in args.playlist:
-        fp = Path(p)
-        if fp.exists():
-            channels.extend(parse_m3u(fp.read_text(encoding="utf-8-sig")))
-        else:
-            print(f"[!] 找不到 {p}，跳过")
-    print(f"[i] 解析到 {len(channels)} 条直播源")
-
     results: list[Result] = []
-    if channels:
-        with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
-            futures = {ex.submit(check_channel, c, args.timeout, i, blocked): c for i, c in enumerate(channels)}
-            done = 0
-            for fut in as_completed(futures):
-                done += 1
-                try:
-                    results.append(fut.result())
-                except Exception as e:  # noqa: BLE001
-                    c = futures[fut]
-                    idx = next(i for i, ch in enumerate(channels) if ch is c)
-                    results.append(
-                        Result(c.name, c.group, c.url, "DEAD", None, None, f"{type(e).__name__}", idx, c.raw)
-                    )
-                if done % 20 == 0 or done == len(channels):
-                    oks = sum(1 for r in results if r.status == "OK")
-                    print(f"[i] {done}/{len(channels)} 已检测, 当前可用 {oks}", flush=True)
-
-    results.sort(key=lambda r: r.idx)
-
     tvbox_results: list[dict] = []
-    tb = Path(args.tvbox)
-    if tb.exists():
-        urls = [
-            ln.strip()
-            for ln in tb.read_text(encoding="utf-8-sig").splitlines()
-            if ln.strip() and not ln.strip().startswith("#")
-        ]
-        for u in urls:
-            tvbox_results.append(check_tvbox(u, args.timeout, args.deep))
-        print(f"[i] 检测 {len(tvbox_results)} 个 TVBox 接口")
+
+    if args.from_status:
+        # 只改整理规则、不想重新联网跑一遍时用这个：
+        # 拿上次的 status.json 复用检测结论，几秒内就能生成新的 valid.m3u 和报告。
+        src = Path(args.from_status)
+        data = json.loads(src.read_text(encoding="utf-8"))
+        results = [result_from_dict(c) for c in data.get("channels", [])]
+        tvbox_results = data.get("tvbox") or []
+        started = datetime.fromisoformat(data["checked_at"])
+        print(f"[i] 复用 {src} 的检测结果：{len(results)} 条（不重新联网）")
+    else:
+        channels: list[Channel] = []
+        for p in args.playlist:
+            fp = Path(p)
+            if fp.exists():
+                channels.extend(parse_m3u(fp.read_text(encoding="utf-8-sig")))
+            else:
+                print(f"[!] 找不到 {p}，跳过")
+        print(f"[i] 解析到 {len(channels)} 条直播源")
+
+        if channels:
+            with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
+                futures = {
+                    ex.submit(check_channel, c, args.timeout, i, blocked): c
+                    for i, c in enumerate(channels)
+                }
+                done = 0
+                for fut in as_completed(futures):
+                    done += 1
+                    try:
+                        results.append(fut.result())
+                    except Exception as e:  # noqa: BLE001
+                        c = futures[fut]
+                        idx = next(i for i, ch in enumerate(channels) if ch is c)
+                        results.append(
+                            Result(
+                                c.name, c.group, c.url, "DEAD", None, None,
+                                f"{type(e).__name__}", idx, c.raw,
+                            )
+                        )
+                    if done % 20 == 0 or done == len(channels):
+                        oks = sum(1 for r in results if r.status == "OK")
+                        print(f"[i] {done}/{len(channels)} 已检测, 当前可用 {oks}", flush=True)
+
+        results.sort(key=lambda r: r.idx)
+
+        tb = Path(args.tvbox)
+        if tb.exists():
+            urls = [
+                ln.strip()
+                for ln in tb.read_text(encoding="utf-8-sig").splitlines()
+                if ln.strip() and not ln.strip().startswith("#")
+            ]
+            for u in urls:
+                tvbox_results.append(check_tvbox(u, args.timeout, args.deep))
+            print(f"[i] 检测 {len(tvbox_results)} 个 TVBox 接口")
 
     ok = [r for r in results if r.status == "OK"]
     blocked = [r for r in results if r.status == "BLOCKED"]
@@ -526,9 +587,24 @@ def main() -> int:
     ratio = len(ok) / counted if counted else 0.0
 
     # 被限流的那批不算「死」，留在 valid.m3u 里——换个 IP 就能播
-    write_m3u(out_dir / "valid.m3u", ok + blocked, args.keep_per_name)
-    write_m3u(out_dir / "dead.m3u", [r for r in results if r.status in ("DEAD", "SUSPECT")])
-    (out_dir / "report.md").write_text(build_report(results, tvbox_results, ratio, started), encoding="utf-8")
+    stats = write_m3u(
+        out_dir / "valid.m3u",
+        ok + blocked,
+        args.keep_per_name,
+        header=[
+            "# 央视 + 广东 + 港澳 + 体育｜每 6 小时自动重新检测",
+            "#",
+            "# 用法：把这个文件当 M3U 播放列表导入即可，分组已按「央视 → 广东 → 香港 → 澳门 → 体育」排好。",
+            "# 同一频道有多条线路时，标注 (线路2) (线路3)，任意一条能播就用那条。",
+            "#",
+            "# 本文件由 scripts/check.py 自动生成，手工修改会在下次运行时被覆盖。",
+            "# 想长期保留自己的源，请写进 sources/ 目录下的清单。",
+        ],
+    )
+    write_m3u_raw(out_dir / "dead.m3u", [r for r in results if r.status in ("DEAD", "SUSPECT")])
+    (out_dir / "report.md").write_text(
+        build_report(results, tvbox_results, ratio, started, stats), encoding="utf-8"
+    )
     (out_dir / "status.json").write_text(
         json.dumps(
             {
@@ -550,20 +626,25 @@ def main() -> int:
         ),
         encoding="utf-8",
     )
-    # 徽章只报「可用条数」, 不报可用率。
-    # 原因: 分母里混着 auto.m3u 几百条自动采集的地域封锁源, 算出来的百分比常年 10% 出头,
-    # 挂在公开仓库首页会被误读成「这项目废了」。条数才是用户真正关心的。
-    n_ok = len(ok)
-    color = "brightgreen" if n_ok >= 60 else "green" if n_ok >= 40 else "yellow" if n_ok >= 20 else "red"
+    # 徽章只报「清单里有多少条」，不报可用率。
+    # 原因一: 分母里混着 auto.m3u 几百条自动采集的地域封锁源, 百分比常年 10% 出头,
+    #         挂在公开仓库首页会被误读成「这项目废了」。条数才是用户真正关心的。
+    # 原因二: 必须用整理后的条数（stats["kept"]），不能用检测通过的条数——
+    #         后者包含被剔除的付费台和重复线路，和用户真正订阅到的数量对不上。
+    n_kept = stats.get("kept", len(ok))
+    color = "brightgreen" if n_kept >= 60 else "green" if n_kept >= 40 else "yellow" if n_kept >= 20 else "red"
     (out_dir / "badge.json").write_text(
         json.dumps(
-            {"schemaVersion": 1, "label": "实测可播", "message": f"{n_ok} 条", "color": color},
+            {"schemaVersion": 1, "label": "清单条数", "message": f"{n_kept} 条", "color": color},
             ensure_ascii=False,
         ),
         encoding="utf-8",
     )
 
-    print(f"[✓] 可用 {len(ok)}/{counted} = {ratio:.1%}，被限流 {len(blocked)} 条（换 IP 可播，已保留在 valid.m3u），结果已写入 {out_dir}/")
+    print(
+        f"[✓] 可用 {len(ok)}/{counted} = {ratio:.1%}，被限流 {len(blocked)} 条（换 IP 可播，已保留在 valid.m3u），"
+        f"整理后 {n_kept} 条写入 {out_dir}/"
+    )
     if args.fail_if_below and ratio < args.fail_if_below:
         print(f"[!] 可用率低于阈值 {args.fail_if_below:.0%}，退出码 1（GitHub 会给你发失败邮件）")
         return 1
