@@ -185,8 +185,39 @@ for canon, group, order, aliases in LOCAL:
         _ALIAS_INDEX.append((canon, group, order, a.lower()))
 _ALIAS_INDEX.sort(key=lambda x: -len(x[3]))
 
-# 央视编号 → 频道号，用于 tvg-chno
-CCTV_CHNO = {n: n for n in CCTV_CN}
+# ---------------------------------------------------------------------------
+# 台号：每个频道一个「固定」编号，与本次收录到几条无关
+# ---------------------------------------------------------------------------
+# 关键点：绝不能用「计数器 +1」分配台号。那样一旦中间某个台（比如 CCTV-4）
+# 这次没测通，后面的台号会整体前移，于是 CCTV-6 顶上 4 号位，播放器里看到
+# 的就是「3 号台是 CCTV-3，4 号台却是 CCTV-6」——错位比留空难看得多。
+# 固定编号的含义是：CCTV-5 永远是 5 号台，没源就空着；广东卫视永远是 101。
+CCTV_CHNO: dict[str, int] = {f"CCTV-{n} {cn}": n for n, cn in CCTV_CN.items()}
+CCTV_CHNO["CCTV-5+ 体育赛事"] = 18
+CCTV_CHNO["CCTV-4K 超高清"] = 19
+CCTV_CHNO["CCTV-8K 超高清"] = 20
+for _i, _cn in enumerate(["英语", "纪录", "西语", "法语", "阿语", "俄语"]):
+    CCTV_CHNO[f"CGTN {_cn}"] = 21 + _i
+
+
+def _build_chno_map() -> dict[tuple[str, str], int]:
+    """(分组, 规范名) → 固定台号。在模块加载时算一次，此后不再变化。"""
+    m: dict[tuple[str, str], int] = {}
+    for canon, n in CCTV_CHNO.items():
+        m[("央视", canon)] = n
+    # 地方台：按 LOCAL 表里出现的先后，在各自分组的基准号上顺排。
+    # 位置只取决于 LOCAL 的书写顺序，不取决于这次测通了哪些台。
+    counter: dict[str, int] = {}
+    for canon, group, _order, _aliases in LOCAL:
+        if (group, canon) in m:
+            continue
+        k = counter.get(group, 0)
+        m[(group, canon)] = GROUP_BASE.get(group, 900) + k
+        counter[group] = k + 1
+    return m
+
+
+CHNO_MAP = _build_chno_map()
 
 
 def _clean(name: str) -> str:
@@ -275,12 +306,15 @@ def classify(name: str) -> tuple[str, str, int] | None:
 # ---------------------------------------------------------------------------
 # 排序与编号
 # ---------------------------------------------------------------------------
-# 个别频道允许多留几条线路
+# 个别频道允许多留几条线路。
+# 央视 1-17 是刚需且最容易断，留 2 条；一旦全断，对应台号就会空出来。
 KEEP_OVERRIDE = {"翡翠台": 3, "广东卫视": 2, "深圳卫视": 2}
+for _n in CCTV_CN:
+    KEEP_OVERRIDE[f"CCTV-{_n} {CCTV_CN[_n]}"] = 2
 
 
-def _pick_diverse(items: list, n: int) -> list:
-    """同一频道最多留 n 条，优先选不同主机，避免整份清单压在一台服务器上。"""
+def _diverse(items: list, n: int) -> list:
+    """同组内最多挑 n 条，优先选不同主机，避免整份清单压在一台服务器上。"""
     items = sorted(items, key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
     chosen: list = []
     hosts: set[str] = set()
@@ -297,6 +331,21 @@ def _pick_diverse(items: list, n: int) -> list:
             chosen.append(it)
             if len(chosen) >= n:
                 break
+    return chosen
+
+
+def _pick_diverse(items: list, n: int) -> list:
+    """先挑实测通过的线路；只有凑不够时，才补一条 BLOCKED 当后备。
+
+    BLOCKED 是「403 / 本机 IP 被限流」这类换网络才能播的源。它们的响应时间往往
+    比真能播的源还短，如果只按延迟排序，会被优先挑进清单 —— 电视上第一条线路
+    点开就是黑屏。所以 OK 必须无条件排前面。
+    """
+    ok = [x for x in items if x.status == "OK"]
+    blocked = [x for x in items if x.status != "OK"]
+    chosen = _diverse(ok, n)
+    if len(chosen) < n and blocked:
+        chosen += _diverse(blocked, 1)
     return chosen
 
 
@@ -359,16 +408,15 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
     # 注意不能只按名字排：字符串比较会把 "CCTV-10" 排在 "CCTV-2" 前面（空格 < '0'）。
     entries.sort(key=lambda e: (GROUP_ORDER.get(e.group, 999), e.order, e.name))
 
-    # 分配台号：同一分组内，同一个台的多条线路共用一个台号
-    counter: dict[str, int] = {}
-    chno_of: dict[tuple[str, str], int] = {}
+    # 分配台号：查固定表。同一个台的多条线路共用一个台号，
+    # 也不会因为某个台这次没测通而让后面的台号整体挪位。
     for e in entries:
-        key = (e.group, e.canon)
-        if key not in chno_of:
-            base = GROUP_BASE.get(e.group, 900)
-            chno_of[key] = base + counter.get(e.group, 0)
-            counter[e.group] = counter.get(e.group, 0) + 1
-        e.chno = chno_of[key]
+        e.chno = CHNO_MAP.get((e.group, e.canon), 999)
+
+    # 央视 1-17 里这一轮没测通的台，列出来让用户知道是「缺台」而不是「乱序」
+    got_cctv = {e.canon for e in entries if e.group == "央视"}
+    missing = [c for c in (f"CCTV-{n} {cn}" for n, cn in CCTV_CN.items())
+               if c not in got_cctv]
 
     stats = {
         "kept": len(entries),
@@ -376,6 +424,7 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
         "kept_names": {e.url: e.canon for e in entries},   # url → 规范名，报告里显示用
         "dropped_names": dropped,
         "dropped_total": sum(dropped.values()),
+        "missing_cctv": missing,
     }
     return entries, stats
 

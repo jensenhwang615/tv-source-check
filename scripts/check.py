@@ -112,14 +112,21 @@ def parse_m3u(text: str) -> list[Channel]:
 
 def result_from_dict(d: dict) -> Result:
     """从 status.json 的一条记录还原 Result（--from-status 复用旧结果时用）。"""
+    st = d.get("status") or "DEAD"
+    detail = d.get("detail") or ""
+    # 和 check_channel 里同一条规则：403 是「拒绝访问」而不是「源没了」。
+    # 写在这里，才能用 --from-status 把上一轮判成 DEAD 的 403 批量修正过来，
+    # 不必为了改一个判定规则把几百条源重新联网测一遍。
+    if st == "DEAD" and detail == "HTTP 403":
+        st, detail = "BLOCKED", "HTTP 403 拒绝访问（地域封锁/防盗链，换网络再试）"
     return Result(
         name=d.get("name") or "",
         group=d.get("group") or "",
         url=d.get("url") or "",
-        status=d.get("status") or "DEAD",
+        status=st,
         latency_ms=d.get("latency_ms"),
         resolution=d.get("resolution"),
-        detail=d.get("detail") or "",
+        detail=detail,
         idx=d.get("idx") or 0,
         raw=d.get("raw") or [],
     )
@@ -254,15 +261,50 @@ def probe(url: str, timeout: float, depth: int = 0, ref: str | None = None) -> t
     head = body[:512].lstrip().lower()
     if head.startswith(b"<html") or head.startswith(b"<!doctype") or b"<html" in head:
         return "SUSPECT", ms, None, "返回网页而非视频流"
-    return "OK", ms, None, f"裸流可读 ({len(body)}B){note}"
+
+    # 走到这里说明不是 HLS。要区分「真·裸流（TS/FLV/MP4）」和「一段错误提示文字」。
+    # 老版本把任何非网页响应都算「裸流可读」，于是
+    # `http://.../cctv5hd.m3u8` 返回的 41 字节 "the content is not available in your area"
+    # 被当成可用源写进清单 —— 电视上点开就黑屏。这类地域封锁提示必须判死。
+    ctype = info.get("ctype", "")
+    if any(t in ctype for t in ("video/", "mpegurl", "mp2t")):
+        return "OK", ms, None, f"裸流可读 ({len(body)}B, {ctype}){note}"
+    if body[:1] == b"\x47" or body[:3] == b"FLV" or b"ftyp" in body[:16]:
+        return "OK", ms, None, f"裸流可读 ({len(body)}B){note}"
+
+    text = body[:200].decode("utf-8", "ignore").strip()
+    if text:
+        printable = sum(1 for ch in text if ch.isprintable() or ch in "\r\n\t")
+        if printable / len(text) > 0.9:
+            one = " ".join(text.split())[:70]
+            return "DEAD", ms, None, f"返回提示文字而非视频流: {one}"
+
+    return "SUSPECT", ms, None, f"无法识别的响应 ({len(body)}B, {ctype or '无 content-type'})"
 
 
 def check_channel(ch: Channel, timeout: float, idx: int = 0, blocked: set[str] | None = None) -> Result:
     status, ms, res, detail = probe(ch.url, timeout)
     host = urlparse(ch.url).hostname or ""
+
+    # 403 单独算一类：它说的是「服务器认得你但拒绝服务」，成因基本是地域封锁、
+    # 防盗链或 IP 黑名单，而不是「这个源没了」（那是 404）。香港台尤其如此——
+    # 翡翠台、明珠台、凤凰这几个的一组源在广东家宽上几乎全 403，在境外机房却正常。
+    # 判死会把整组香港台从清单里删掉，所以统一降级成 BLOCKED 保留下来。
+    if status == "DEAD" and detail == "HTTP 403":
+        return Result(ch.name, ch.group, ch.url, "BLOCKED", ms, res,
+                      "HTTP 403 拒绝访问（地域封锁/防盗链，换网络再试）", idx, ch.raw)
+
     # 被站点按 IP 限流 / 封禁，和「源本身死了」是两件事：
     # 前者换个 IP（家里宽带、换网络）就能看，不该判死、也不该踢出 valid.m3u。
-    if blocked and host in blocked and status in ("DEAD", "SUSPECT"):
+    #
+    # 但这条豁免不能滥用。以前只要主机在 --blocked-host 里，任何失败都算 BLOCKED，
+    # 于是「频道 xxx 没有配置任何源」这种明确的错误 JSON、以及
+    # "the content is not available in your area" 这种地域封锁提示，
+    # 全都以 BLOCKED 的身份赖在清单里 —— 电视上点开就是黑屏。
+    # 只有「拿不到内容」型失败（HTTP 错误码、空响应、超时）才算限流。
+    _NOT_THROTTLE = ("提示文字", "返回网页", "无法识别")
+    if blocked and host in blocked and status in ("DEAD", "SUSPECT") \
+            and not any(k in detail for k in _NOT_THROTTLE):
         status = "BLOCKED"
         detail = f"本机 IP 被该站限流/封锁（此前可播）: {detail}"
     return Result(ch.name, ch.group, ch.url, status, ms, res, detail, idx, ch.raw)
@@ -457,6 +499,21 @@ def build_report(
                 out.append(f"- `{n}`")
             out.append("")
 
+        missing = curate_stats.get("missing_cctv") or []
+        out += [
+            "台号规则：每个频道一个固定编号（央视 = 频道号本身，CCTV-5 恒为 5 号台），"
+            "不随本轮测通情况移动。某个台本轮没测通时台号留空，后面的台不会顶上来。",
+            "",
+        ]
+        if missing:
+            out += [
+                f"本轮央视 1-17 中未测通、台号留空的有 **{len(missing)} 个**："
+                + "、".join(m.split(" ")[0] for m in missing),
+                "",
+            ]
+        else:
+            out += ["本轮央视 1-17 全部有可用源。", ""]
+
     if tvbox:
         out += ["", "## TVBox 接口", "", "| 接口 | 状态 | 内容 |", "|---|---|---|"]
         for t in tvbox:
@@ -545,28 +602,40 @@ def main() -> int:
         print(f"[i] 解析到 {len(channels)} 条直播源")
 
         if channels:
+            # 同一台主机上的源串行测，不同主机之间并行。
+            #
+            # 这条是必须的。有些 IPTV 网关就是家用宽带搭的（比如 124.165.251.82），
+            # 单条请求 50~150ms 很健康，但十几条并发打过去就整片超时。
+            # 全并发测法会把这类主机上的源全部判死，于是明明能播的台（央视 1-15 都在它上面）
+            # 从清单里整片消失。按 host 串行之后测出来才是真实可用性。
+            by_host: dict[str, list[tuple[int, Channel]]] = {}
+            for i, c in enumerate(channels):
+                by_host.setdefault(urlparse(c.url).hostname or f"_{i}", []).append((i, c))
+
+            def run_host(items: list[tuple[int, Channel]]) -> list[Result]:
+                got: list[Result] = []
+                for i, c in items:
+                    try:
+                        got.append(check_channel(c, args.timeout, i, blocked))
+                    except Exception as e:  # noqa: BLE001
+                        got.append(
+                            Result(c.name, c.group, c.url, "DEAD", None, None,
+                                   f"{type(e).__name__}", i, c.raw)
+                        )
+                    time.sleep(0.15)     # 给弱主机留口气
+                return got
+
+            total = len(channels)
             with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
-                futures = {
-                    ex.submit(check_channel, c, args.timeout, i, blocked): c
-                    for i, c in enumerate(channels)
-                }
+                futures = [ex.submit(run_host, items) for items in by_host.values()]
                 done = 0
                 for fut in as_completed(futures):
-                    done += 1
-                    try:
-                        results.append(fut.result())
-                    except Exception as e:  # noqa: BLE001
-                        c = futures[fut]
-                        idx = next(i for i, ch in enumerate(channels) if ch is c)
-                        results.append(
-                            Result(
-                                c.name, c.group, c.url, "DEAD", None, None,
-                                f"{type(e).__name__}", idx, c.raw,
-                            )
-                        )
-                    if done % 20 == 0 or done == len(channels):
+                    batch = fut.result()
+                    results.extend(batch)
+                    done += len(batch)
+                    if done % 20 < len(batch) or done >= total:
                         oks = sum(1 for r in results if r.status == "OK")
-                        print(f"[i] {done}/{len(channels)} 已检测, 当前可用 {oks}", flush=True)
+                        print(f"[i] {done}/{total} 已检测, 当前可用 {oks}", flush=True)
 
         results.sort(key=lambda r: r.idx)
 
