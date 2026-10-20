@@ -14,3 +14,10 @@ __pycache__/
 # 系统垃圾
 .DS_Store
 Thumbs.db
+
+# 公开仓库瘦身：这几个是每次运行都会重新生成的中间产物，
+# 提交上去只会让 git 历史每 6 小时涨几百 KB（status.json 单独就 229KB）。
+# 真正需要长期保存的只有 valid.m3u / report.md / badge.json。
+dist/status.json
+dist/dead.m3u
+sources/auto.m3u
