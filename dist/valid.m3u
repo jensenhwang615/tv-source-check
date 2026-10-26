@@ -17,6 +17,8 @@ http://74.91.26.218:82/live/cctv4hd.m3u8
 #EXTINF:-1 tvg-chno="4" tvg-name="CCTV-4 中文国际 (线路2)" group-title="央视",CCTV-4 中文国际 (线路2)
 https://dash2.antik.sk/live/test_cctv_tizen/playlist.m3u8
 #EXTINF:-1 tvg-chno="6" tvg-name="CCTV-6 电影" group-title="央视",CCTV-6 电影
+http://69.30.245.50/live/cctv6.m3u8
+#EXTINF:-1 tvg-chno="6" tvg-name="CCTV-6 电影 (线路2)" group-title="央视",CCTV-6 电影 (线路2)
 http://74.91.26.218:82/live/cctv6hd.m3u8
 #EXTINF:-1 tvg-chno="7" tvg-name="CCTV-7 国防军事" group-title="央视",CCTV-7 国防军事
 http://74.91.26.218:82/live/cctv7hd.m3u8
@@ -42,8 +44,8 @@ http://74.91.26.218:82/live/cctv15hd.m3u8
 http://gmxw.7766.org:808/hls/169/index.m3u8
 #EXTINF:-1 tvg-chno="17" tvg-name="CCTV-17 农业农村" group-title="央视",CCTV-17 农业农村
 http://74.91.26.218:82/live/cctv17hd.m3u8
-#EXTINF:-1 tvg-chno="17" tvg-name="CCTV-17 农业农村 (线路2)" group-title="央视",CCTV-17 农业农村 (线路2)
-https://live.264788.xyz/channel/cctv17?streamid=f9c36f1e95b5b35eac89cc89583e7c0a&livekey=01WgOR41rriMmMkzNsd0UoaxJRwetZdxIvtVk
+#EXTINF:-1 tvg-chno="18" tvg-name="CCTV-5+ 体育赛事" group-title="央视",CCTV-5+ 体育赛事
+http://74.91.26.218:82/live/cctv5phd.m3u8
 #EXTINF:-1 tvg-chno="20" tvg-name="CCTV-8K 超高清" group-title="央视",CCTV-8K 超高清
 http://192.151.150.154/live/cctv8k.m3u8
 #EXTINF:-1 tvg-chno="21" tvg-name="CGTN 英语" group-title="央视",CGTN 英语
@@ -61,8 +63,6 @@ https://0472.org/hls/cgtna.m3u8
 https://h5cul1yar48um3t.wcetv.com/hls/gdsatellite.m3u8
 #EXTINF:-1 tvg-chno="102" tvg-name="珠江频道" group-title="广东",珠江频道
 http://r.jdshipin.com/sE5vO
-#EXTINF:-1 tvg-chno="103" tvg-name="广东体育" group-title="广东",广东体育
-http://r.jdshipin.com/LiYdg
 #EXTINF:-1 tvg-chno="104" tvg-name="大湾区卫视" group-title="广东",大湾区卫视
 http://222.128.55.152:9080/live/dwq.m3u8
 #EXTINF:-1 tvg-chno="104" tvg-name="大湾区卫视 (线路2)" group-title="广东",大湾区卫视 (线路2)
@@ -87,11 +87,11 @@ http://gcalic.v.myalicdn.com/gc/gllj01_1/index.m3u8
 http://pili-live-rtmp.tvliving.gdmztv.com/meizhou-tvliving/mztv1.m3u8
 
 #EXTINF:-1 tvg-chno="201" tvg-name="翡翠台" group-title="香港",翡翠台
-http://r.jdshipin.com/qClQf
-#EXTINF:-1 tvg-chno="201" tvg-name="翡翠台 (线路2)" group-title="香港",翡翠台 (线路2)
-http://r.jdshipin.com/qrfbg
-#EXTINF:-1 tvg-chno="201" tvg-name="翡翠台 (线路3)" group-title="香港",翡翠台 (线路3)
 http://r.jdshipin.com/n90gt
+#EXTINF:-1 tvg-chno="201" tvg-name="翡翠台 (线路2)" group-title="香港",翡翠台 (线路2)
+http://php.jdshipin.com:8880/TVOD/iptv.php?id=j1
+#EXTINF:-1 tvg-chno="201" tvg-name="翡翠台 (线路3)" group-title="香港",翡翠台 (线路3)
+http://php.jdshipin.com:8880/TVOD/iptv.php?id=fct3
 #EXTINF:-1 tvg-chno="202" tvg-name="明珠台" group-title="香港",明珠台
 http://r.jdshipin.com/ZQ4kN
 #EXTINF:-1 tvg-chno="202" tvg-name="明珠台 (线路2)" group-title="香港",明珠台 (线路2)
@@ -101,25 +101,25 @@ http://r.jdshipin.com/Nr5jq
 #EXTINF:-1 tvg-chno="203" tvg-name="TVB Plus (线路2)" group-title="香港",TVB Plus (线路2)
 http://r.jdshipin.com/ndGgS
 #EXTINF:-1 tvg-chno="204" tvg-name="无线新闻台" group-title="香港",无线新闻台
-http://r.jdshipin.com/CkuBd
-#EXTINF:-1 tvg-chno="204" tvg-name="无线新闻台 (线路2)" group-title="香港",无线新闻台 (线路2)
 http://php.jdshipin.com/TVOD/iptv.php?id=wxxw
+#EXTINF:-1 tvg-chno="204" tvg-name="无线新闻台 (线路2)" group-title="香港",无线新闻台 (线路2)
+http://r.jdshipin.com/CkuBd
 #EXTINF:-1 tvg-chno="205" tvg-name="TVB娱乐新闻台" group-title="香港",TVB娱乐新闻台
 http://php.jdshipin.com/TVOD/iptv.php?id=tvbylxw
 #EXTINF:-1 tvg-chno="205" tvg-name="TVB娱乐新闻台 (线路2)" group-title="香港",TVB娱乐新闻台 (线路2)
 http://ali.hlspull.yximgs.com/live/6425965d63a08c85ca806bfcc8c75cf4.flv
 #EXTINF:-1 tvg-chno="206" tvg-name="TVB星河" group-title="香港",TVB星河
-http://r.jdshipin.com/sXuuD
-#EXTINF:-1 tvg-chno="206" tvg-name="TVB星河 (线路2)" group-title="香港",TVB星河 (线路2)
 http://r.jdshipin.com/Voac4
+#EXTINF:-1 tvg-chno="206" tvg-name="TVB星河 (线路2)" group-title="香港",TVB星河 (线路2)
+http://php.jdshipin.com/TVOD/iptv.php?id=xinghe
 #EXTINF:-1 tvg-chno="207" tvg-name="ViuTV" group-title="香港",ViuTV
-http://php.jdshipin.com/TVOD/iptv.php?id=viutv2
+http://r.jdshipin.com/vSJvl
 #EXTINF:-1 tvg-chno="207" tvg-name="ViuTV (线路2)" group-title="香港",ViuTV (线路2)
-http://php.jdshipin.com/TVOD/iptv.php?id=viutv
+http://r.jdshipin.com/TcKr2
 #EXTINF:-1 tvg-chno="209" tvg-name="HOY TV" group-title="香港",HOY TV
-http://r.jdshipin.com/sFw4S
-#EXTINF:-1 tvg-chno="209" tvg-name="HOY TV (线路2)" group-title="香港",HOY TV (线路2)
 http://php.jdshipin.com/TVOD/iptv.php?id=hoytv
+#EXTINF:-1 tvg-chno="209" tvg-name="HOY TV (线路2)" group-title="香港",HOY TV (线路2)
+http://r.jdshipin.com/sFw4S
 #EXTINF:-1 tvg-chno="211" tvg-name="RTHK 31" group-title="香港",RTHK 31
 http://php.jdshipin.com:8880/TVOD/iptv.php?id=rthk31
 #EXTINF:-1 tvg-chno="212" tvg-name="RTHK 32" group-title="香港",RTHK 32
@@ -129,13 +129,13 @@ http://r.jdshipin.com/cCCzW
 #EXTINF:-1 tvg-chno="216" tvg-name="凤凰卫视中文台 (线路2)" group-title="香港",凤凰卫视中文台 (线路2)
 http://php.jdshipin.com/TVOD/iptv.php?id=fhzw
 #EXTINF:-1 tvg-chno="217" tvg-name="凤凰卫视资讯台" group-title="香港",凤凰卫视资讯台
-http://php.jdshipin.com/TVOD/iptv.php?id=fhzx
-#EXTINF:-1 tvg-chno="217" tvg-name="凤凰卫视资讯台 (线路2)" group-title="香港",凤凰卫视资讯台 (线路2)
 http://r.jdshipin.com/0Rp07
+#EXTINF:-1 tvg-chno="217" tvg-name="凤凰卫视资讯台 (线路2)" group-title="香港",凤凰卫视资讯台 (线路2)
+http://php.jdshipin.com/TVOD/iptv.php?id=fhzx
 #EXTINF:-1 tvg-chno="218" tvg-name="凤凰卫视香港台" group-title="香港",凤凰卫视香港台
-http://r.jdshipin.com/yDoTN
-#EXTINF:-1 tvg-chno="218" tvg-name="凤凰卫视香港台 (线路2)" group-title="香港",凤凰卫视香港台 (线路2)
 http://r.jdshipin.com/NfC0f
+#EXTINF:-1 tvg-chno="218" tvg-name="凤凰卫视香港台 (线路2)" group-title="香港",凤凰卫视香港台 (线路2)
+http://r.jdshipin.com/yDoTN
 #EXTINF:-1 tvg-chno="219" tvg-name="香港卫视" group-title="香港",香港卫视
 http://webcast.hkstv.tv/livestream/mutfysrq/playlist.m3u8
 
@@ -155,9 +155,9 @@ http://bp-livetytv.bestv.cn/ch/bestvwxty.m3u8
 #EXTINF:-1 tvg-chno="311" tvg-name="beIN SPORTS XTRA" group-title="体育·国际",beIN SPORTS XTRA
 https://bein-xtra-bein.amagi.tv/playlist.m3u8
 #EXTINF:-1 tvg-chno="312" tvg-name="FIFA+" group-title="体育·国际",FIFA+
-https://jmp2.uk/plu-660c29b5aec9680008f5b4a4.m3u8
+https://37b4c228.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWZyX0ZJRkFQbHVzRnJlbmNoX0hMUw/playlist.m3u8
 #EXTINF:-1 tvg-chno="312" tvg-name="FIFA+ (线路2)" group-title="体育·国际",FIFA+ (线路2)
-https://e3be9ac5.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/TEctYnJfRklGQVBsdXNQb3J0dWd1ZXNlX0hMUw/playlist.m3u8
+https://4397879b.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWRlX0ZJRkFQbHVzR2VybWFuX0hMUw/playlist.m3u8
 #EXTINF:-1 tvg-chno="313" tvg-name="NBC Sports NOW" group-title="体育·国际",NBC Sports NOW
 https://d4whmvwm0rdvi.cloudfront.net/10007/99993008/hls/master.m3u8?ads.xumo_channelId=99993008
 #EXTINF:-1 tvg-chno="314" tvg-name="DD Sports" group-title="体育·国际",DD Sports
