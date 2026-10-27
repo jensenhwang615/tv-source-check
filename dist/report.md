@@ -1,17 +1,17 @@
 # 源可用性报告
 
-检测时间: 2026-10-27 02:24 (UTC+8)　耗时 294s
+检测时间: 2026-10-27 08:16 (UTC+8)　耗时 294s
 
-**共 538 条 · 可用 171 (33%) · 失效 310 · 可疑 9 · 被限流 19 · 跳过 29**
+**共 533 条 · 可用 164 (32%) · 失效 306 · 可疑 11 · 被限流 23 · 跳过 29**
 
 ## 按分组
 
 | 分组 | 可用 / 总数 | 被限流 | 可用率 |
 |---|---|---|---|
-| 央视 | 66 / 281 | 0 | 23% |
-| 香港 | 55 / 121 | 10 | 50% |
-| 广东 | 20 / 91 | 5 | 23% |
-| 体育 | 20 / 33 | 2 | 65% |
+| 央视 | 62 / 276 | 0 | 22% |
+| 香港 | 53 / 121 | 10 | 48% |
+| 广东 | 19 / 91 | 5 | 22% |
+| 体育 | 20 / 33 | 6 | 74% |
 | 体育·国际免费 | 6 / 6 | 0 | 100% |
 | 体育·足球(第三方) | 4 / 4 | 0 | 100% |
 | 体育·国内 | 0 / 1 | 1 | — |
@@ -19,7 +19,7 @@
 
 ## 被限流（不是失效）
 
-以下 19 条来自 `ali.hlspull.yximgs.com`, `bantel-cdn1.iptvperu.tv`, `bp-livetytv.bestv.cn`, `distribution.sportitalialive.it`, `gcksc.v.kcdnvip.com`, `hoytv-live-stream.hoy.tv`, `livepull-tcms.sztv.com.cn`, `pili-live-rtmp.tvliving.gdmztv.com`, `rthktv32-live.akamaized.net`, `rthktv33-live.akamaized.net`, `rthktv34-live.akamaized.net`, `rthktv35-live.akamaized.net`, `zdf-hls-19.akamaized.net`。这些地址此前实测可播，本次是本机 IP 被站点限流/封锁才失败；**已保留在 valid.m3u 里**，换个 IP（家里宽带、手机热点）通常就能看。
+以下 23 条来自 `8.138.7.223`, `ali.hlspull.yximgs.com`, `bantel-cdn1.iptvperu.tv`, `bp-livetytv.bestv.cn`, `di-g7ij0rwh.vo.lswcdn.net`, `di-yx2saj20.vo.lswcdn.net`, `distribution.sportitalialive.it`, `gcksc.v.kcdnvip.com`, `hoytv-live-stream.hoy.tv`, `livepull-tcms.sztv.com.cn`, `pili-live-rtmp.tvliving.gdmztv.com`, `rthktv32-live.akamaized.net`, `rthktv33-live.akamaized.net`, `rthktv34-live.akamaized.net`, `rthktv35-live.akamaized.net`, `zdf-hls-19.akamaized.net`。这些地址此前实测可播，本次是本机 IP 被站点限流/封锁才失败；**已保留在 valid.m3u 里**，换个 IP（家里宽带、手机热点）通常就能看。
 
 
 ## 失效 / 可疑明细
@@ -30,28 +30,28 @@
 | 河源综合 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 珠江卫视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 番禺综合 | 广东 | DEAD | 超时 >8.0s | -ms |
-| CCTV-5 体育 | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 38ms |
-| CCTV-5+ 体育赛事 | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv5phd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u | 38ms |
-| CCTV-4K 超高清 | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv4k \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u67 | 38ms |
-| 广东卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdonghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 38ms |
-| 广东卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 38ms |
+| CCTV-5 体育 | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 34ms |
+| CCTV-5+ 体育赛事 | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv5phd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u | 34ms |
+| CCTV-4K 超高清 | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv4k \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u67 | 34ms |
+| 广东卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdonghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 35ms |
+| 广东卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 35ms |
 | 珠江频道 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 zhujianghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 39ms |
-| 广东体育 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdongty \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 38ms |
-| 深圳卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 shenzhenhd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 38ms |
-| 深圳卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 38ms |
-| 深圳都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szmv \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 38ms |
-| 南方卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 nanfang \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u6 | 38ms |
-| 大湾区卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 dawanqu \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u6 | 38ms |
-| 广东公共 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdgg \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 38ms |
-| 广东影视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdys \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 40ms |
-| 广东都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdds \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 54ms |
-| 翡翠台 (线路2) | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 明珠台 (线路2) | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
+| 广东体育 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdongty \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 34ms |
+| 深圳卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 shenzhenhd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 34ms |
+| 深圳卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 34ms |
+| 深圳都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szmv \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 34ms |
+| 南方卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u65e0\u6cd5\u83b7\u53d6 server_stats.json"} | 32ms |
+| 大湾区卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 dawanqu \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u6 | 34ms |
+| 广东公共 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdgg \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 34ms |
+| 广东影视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdys \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 34ms |
+| 广东都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdds \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 35ms |
+| 翡翠台 (线路2) | 香港 | DEAD | 超时 >8.0s | -ms |
+| 明珠台 (线路2) | 香港 | DEAD | 超时 >8.0s | -ms |
 | CCTV-1 | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-1 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-1 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-1 | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV-1 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 73ms |
+| CCTV-1 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 65ms |
 | CCTV-10 | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-10 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-10 | 央视 | DEAD | 超时 >8.0s | -ms |
@@ -75,7 +75,7 @@
 | CCTV-15 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-15音乐 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-16 | 央视 | DEAD | SSL 握手失败 | -ms |
-| CCTV-16 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 38ms |
+| CCTV-16 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 34ms |
 | CCTV-16奥林匹克 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-16奥林匹克 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-16奥林匹克 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -98,7 +98,7 @@
 | CCTV-4 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-4 中文国际（美） Ⓢ | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-4K | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV-4K HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv4khd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u | 142ms |
+| CCTV-4K HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv4khd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u | 127ms |
 | CCTV-4中文国际 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-5 | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-5 | 央视 | DEAD | 超时 >8.0s | -ms |
@@ -107,12 +107,13 @@
 | CCTV-5+ | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-5+ | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-5+ | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV-5+ | 央视 | DEAD | HTTP 500 | 1893ms |
+| CCTV-5+ | 央视 | DEAD | HTTP 500 | 1814ms |
 | CCTV-5+体育赛事 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-5体育 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-6 | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-6 | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV-6 [Geo-blocked] | 央视 | DEAD | HTTP 500 | 1710ms |
+| CCTV-6 HD (1080p) | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
+| CCTV-6 [Geo-blocked] | 央视 | DEAD | HTTP 500 | 1460ms |
 | CCTV-6电影 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-7 | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-7 | 央视 | DEAD | 超时 >8.0s | -ms |
@@ -122,7 +123,7 @@
 | CCTV-8 | 央视 | DEAD | SSL 握手失败 | -ms |
 | CCTV-8 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-8电视剧 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV-9 | 央视 | DEAD | HTTP 404 | 1500ms |
+| CCTV-9 | 央视 | DEAD | HTTP 404 | 1486ms |
 | CCTV-9 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-9 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV-9纪录 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -139,11 +140,11 @@
 | CCTV-风云剧场 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-风云足球 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-风云音乐 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV1 | 央视 | DEAD | HTTP 404 | 1583ms |
+| CCTV1 | 央视 | DEAD | HTTP 404 | 1524ms |
 | CCTV1 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV1 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV1 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV10 | 央视 | DEAD | HTTP 404 | 1322ms |
+| CCTV10 | 央视 | DEAD | HTTP 404 | 1289ms |
 | CCTV10 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV10 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV10 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -151,7 +152,7 @@
 | CCTV11 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV11 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV11 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV12 | 央视 | DEAD | HTTP 404 | 1322ms |
+| CCTV12 | 央视 | DEAD | HTTP 404 | 1288ms |
 | CCTV12 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV12 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV12 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -159,25 +160,25 @@
 | CCTV13 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV13 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV13 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV14 | 央视 | DEAD | HTTP 404 | 1322ms |
+| CCTV14 | 央视 | DEAD | HTTP 404 | 1289ms |
 | CCTV14 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV14 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV14 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV15 | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV15 | 央视 | DEAD | HTTP 404 | 1235ms |
+| CCTV15 | 央视 | DEAD | HTTP 404 | 1229ms |
 | CCTV15 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV15 | 央视 | DEAD | HTTP 500 | 1721ms |
-| CCTV16 | 央视 | DEAD | HTTP 404 | 1323ms |
-| CCTV16 | 央视 | DEAD | HTTP 404 | 1235ms |
+| CCTV15 | 央视 | DEAD | HTTP 500 | 1652ms |
+| CCTV16 | 央视 | DEAD | HTTP 404 | 1287ms |
+| CCTV16 | 央视 | DEAD | HTTP 404 | 1229ms |
 | CCTV16 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV17 | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV17 | 央视 | DEAD | HTTP 404 | 1235ms |
+| CCTV17 | 央视 | DEAD | HTTP 404 | 1229ms |
 | CCTV17 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV2 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV2 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV2 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV2 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV3 | 央视 | DEAD | HTTP 404 | 1322ms |
+| CCTV3 | 央视 | DEAD | HTTP 404 | 1288ms |
 | CCTV3 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV3 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV3 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -185,19 +186,18 @@
 | CCTV4 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV4 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV4 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV4K | 央视 | DEAD | HTTP 404 | 1235ms |
+| CCTV4K | 央视 | DEAD | HTTP 404 | 1228ms |
 | CCTV4K真4K | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV4欧洲 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV4美洲 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV5 | 央视 | DEAD | HTTP 404 | 1323ms |
+| CCTV5 | 央视 | DEAD | HTTP 404 | 1297ms |
 | CCTV5 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV5 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV5 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV5+ | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV5+ | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV5+ | 央视 | DEAD | HTTP 500 | 1671ms |
-| CCTV5+ | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV6 | 央视 | DEAD | HTTP 404 | 1322ms |
+| CCTV5+ | 央视 | DEAD | HTTP 500 | 1621ms |
+| CCTV6 | 央视 | DEAD | HTTP 404 | 1277ms |
 | CCTV6 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV6 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV6 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -205,7 +205,7 @@
 | CCTV7 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV7 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV7 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV8 | 央视 | DEAD | HTTP 404 | 1322ms |
+| CCTV8 | 央视 | DEAD | HTTP 404 | 1296ms |
 | CCTV8 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV8 | 央视 | DEAD | 超时 >8.0s | -ms |
 | CCTV8 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -217,24 +217,25 @@
 | CCTV发现之旅 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV老故事 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CGTN | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CGTN | 央视 | DEAD | HTTP 500 | 1634ms |
+| CGTN | 央视 | DEAD | HTTP 500 | 1660ms |
 | CGTN | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CGTN | 央视 | DEAD | 超时 >8.0s | -ms |
-| CGTN Documentary English Ⓢ | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 530ms |
-| CGTN Español | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 54ms |
-| CGTN Français | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 54ms |
-| CGTN Pусский | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 54ms |
+| CGTN Documentary English Ⓢ | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 427ms |
+| CGTN Español | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 58ms |
+| CGTN Français | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 58ms |
+| CGTN Pусский | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 58ms |
 | CGTN العربية | 央视 | DEAD | 超时 >8.0s | -ms |
 | CGTN俄语 | 央视 | DEAD | 超时 >8.0s | -ms |
-| ... | | | 其余 119 条见 status.json | |
+| ... | | | 其余 117 条见 status.json | |
 
 ## 清单整理
 
-可用 190 条 → 去重合并后写进 `valid.m3u` 的 **83 条**。另有 33 条不进清单（付费频道 / 名字撞关键词的误采内容）。
+可用 187 条 → 去重合并后写进 `valid.m3u` 的 **80 条**。另有 31 条不进清单（付费频道 / 名字撞关键词的误采内容）。
 
 被剔除的内容：
 
 - `华丽翡翠台`
+- `CCTV+ 2 (600p) [Not 24/7]`
 - `CCTV-Billiards (1080p)`
 - `CCTV-Culture of Quality SD (1080p)`
 - `CCTV-Golf & Tennis (1080p)`
@@ -247,9 +248,6 @@
 - `CCTV-Weapon & Technology (1080p)`
 - `CCTV-Women's Fashion SD (1080p)`
 - `CCTV-World Geography SD (1080p)`
-- `CCTV怀旧剧场`
-- `CCTV文化精品`
-- `CCTV第一剧场`
 - `Golden Jade (1080p)`
 - `RTHK TV 31 (1080p) [Geo-blocked]`
 - `Right Now TV (720p)`
@@ -276,13 +274,13 @@
 
 | 频道 | 延迟 | 分辨率 |
 |---|---|---|
-| CCTV-9 纪录 | 8ms | 1920x1080 |
-| DD Sports | 23ms | 1920x1080 |
-| beIN SPORTS XTRA | 23ms | 1920x1080 |
-| NBC Sports NOW | 25ms | 1920x1080 |
-| TyC Sports | 26ms | 1920x1080 |
-| CGTN 西语 | 33ms | - |
-| CGTN 法语 | 69ms | - |
-| CGTN 阿语 | 96ms | - |
-| CCTV-3 综艺 | 108ms | - |
-| CCTV-10 科教 | 108ms | - |
+| beIN SPORTS XTRA | 13ms | 1920x1080 |
+| NBC Sports NOW | 17ms | 1920x1080 |
+| TyC Sports | 20ms | 1920x1080 |
+| DD Sports | 33ms | 1920x1080 |
+| CCTV-9 纪录 | 34ms | 1920x1080 |
+| 明珠台 | 38ms | 1920x1080 |
+| CGTN 阿语 | 47ms | - |
+| CGTN 西语 | 50ms | - |
+| CGTN 英语 | 59ms | - |
+| CGTN 法语 | 74ms | - |
