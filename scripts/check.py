@@ -22,7 +22,7 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
-from curate import build_m3u, curate
+from curate import build_m3u, classify, curate
 
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -524,8 +524,10 @@ def build_report(
 
         missing = curate_stats.get("missing_cctv") or []
         out += [
-            "台号规则：每个频道一个固定编号（央视 = 频道号本身，CCTV-5 恒为 5 号台），"
-            "不随本轮测通情况移动。某个台本轮没测通时台号留空，后面的台不会顶上来。",
+            "台号规则：每个频道一个固定编号，不随本轮测通情况移动。"
+            "某个台本轮没测通时台号留空，后面的台不会顶上来。"
+            "央视组按显示顺序连续编号（CCTV-5 是 5、CCTV-5+ 是 6、CCTV-6 是 7），"
+            "这样不管播放器按文件顺序还是按 tvg-chno 排，次序都一样。",
             "",
         ]
         if missing:
@@ -536,6 +538,15 @@ def build_report(
             ]
         else:
             out += ["本轮央视 1-17 全部有可用源。", ""]
+
+        unreach = curate_stats.get("unreachable") or []
+        if unreach:
+            out += [
+                f"另有 {len(unreach)} 个台按用户要求「不管通不通都要在清单里」，"
+                "但本轮一条都没测通，名字后面标了「（本期未测通）」："
+                + "、".join(unreach),
+                "",
+            ]
 
     if tvbox:
         out += ["", "## TVBox 接口", "", "| 接口 | 状态 | 内容 |", "|---|---|---|"]
@@ -577,6 +588,15 @@ def main() -> int:
         default=["sources/streams.m3u"],
         help="m3u 播放列表，可以给多个，合并检测",
     )
+    ap.add_argument(
+        "--cctv-playlist",
+        nargs="*",
+        default=["sources/cctv_iptvorg.m3u", "sources/cctv_extra.m3u"],
+        help=(
+            "央视组的唯一来源。这些文件里的 CCTV/CGTN 才收，其它清单里的 CCTV 条目"
+            "（不管叫 CCTV-1 还是 CCTV-1 HD）一律跳过。给空列表等于取消这条限制。"
+        ),
+    )
     ap.add_argument("--tvbox", default="sources/tvbox.txt", help="TVBox 接口列表, 一行一个")
     ap.add_argument("--out", default="dist", help="输出目录")
     ap.add_argument("--timeout", type=float, default=8.0)
@@ -616,12 +636,32 @@ def main() -> int:
         print(f"[i] 复用 {src} 的检测结果：{len(results)} 条（不重新联网）")
     else:
         channels: list[Channel] = []
+        cctv_files = [Path(p) for p in (args.cctv_playlist or [])]
+        cctv_files = [p for p in cctv_files if p.exists()]
+        cctv_only = bool(cctv_files)
+
+        def _is_cctv(name: str) -> bool:
+            got = classify(name)
+            return bool(got and got[0] == "央视")
+
+        skipped_cctv = 0
         for p in args.playlist:
             fp = Path(p)
-            if fp.exists():
-                channels.extend(parse_m3u(fp.read_text(encoding="utf-8-sig")))
-            else:
+            if not fp.exists():
                 print(f"[!] 找不到 {p}，跳过")
+                continue
+            for c in parse_m3u(fp.read_text(encoding="utf-8-sig")):
+                # 央视组只认 cctv_iptvorg.m3u。以前同一个 CCTV-1 能从 5 个清单里
+                # 捡出七八条不同来路的地址，谁排前面全看谁当时握手快，结果这个台
+                # 今天用 A 的源、明天用 B 的源，稳定性根本没法谈。
+                if cctv_only and _is_cctv(c.name):
+                    skipped_cctv += 1
+                    continue
+                channels.append(c)
+        for fp in cctv_files:
+            channels.extend(parse_m3u(fp.read_text(encoding="utf-8-sig")))
+        if skipped_cctv:
+            print(f"[i] 央视组只取 {len(cctv_files)} 个专用清单，其它清单跳过 {skipped_cctv} 条央视重复项")
         print(f"[i] 解析到 {len(channels)} 条直播源")
 
         if channels:
@@ -678,10 +718,13 @@ def main() -> int:
     counted = len(results) - len(blocked)
     ratio = len(ok) / counted if counted else 0.0
 
-    # 被限流的那批不算「死」，留在 valid.m3u 里——换个 IP 就能播
+    # 被限流的那批不算「死」，留在 valid.m3u 里——换个 IP 就能播。
+    # 这里必须把**全部**结果交给 curate，不能只交 ok+blocked：
+    # curate 自己要负责「没测通的一律不收，除非在 FORCE_KEEP 里」
+    # （CCTV-5 / CCTV-5+ 要在清单里留位置）。提前过滤掉 DEAD，刚需台就再也进不去了。
     stats = write_m3u(
         out_dir / "valid.m3u",
-        ok + blocked,
+        results,
         args.keep_per_name,
         header=[
             "# 央视 + 广东 + 港澳 + 体育｜每 6 小时自动重新检测",

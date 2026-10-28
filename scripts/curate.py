@@ -274,8 +274,23 @@ CCTV_CN = {
     17: "农业农村",
 }
 
-CGTN_CN = {"": "英语", "英语": "英语", "纪录": "纪录", "西语": "西语",
-           "法语": "法语", "阿语": "阿语", "俄语": "俄语"}
+# CGTN 在 iptv-org 里用的是英文台名（CGTN Documentary / CGTN Arabic …），
+# 国内清单里是中文（CGTN 纪录），两种都要认，否则一半会被判成「不认识」丢掉。
+CGTN_LANG = ["英语", "纪录", "西语", "法语", "阿语", "俄语", "财经"]
+CGTN_ALIAS = {
+    "": "英语", "英语": "英语", "ENGLISH": "英语",
+    "纪录": "纪录", "纪录片": "纪录", "DOCUMENTARY": "纪录", "DOC": "纪录",
+    "西语": "西语", "西班牙语": "西语", "SPANISH": "西语",
+    "法语": "法语", "FRENCH": "法语",
+    "阿语": "阿语", "阿拉伯语": "阿语", "ARABIC": "阿语",
+    "俄语": "俄语", "RUSSIAN": "俄语",
+    "财经": "财经", "英语财经": "财经", "GLOBALBIZ": "财经",
+}
+# 刚需台：不管检测结果如何都要写进清单。
+# 用户明确要求「必须包含 CCTV-5 和 CCTV-5+，不管是否超时」——
+# 理由很实际：这两个台在清单里「有一行」比「整台消失」好，
+# 点开是黑屏至少知道源挂了，而不是怀疑清单里根本没这个台。
+FORCE_KEEP = {"CCTV-5 体育", "CCTV-5+ 体育赛事"}
 
 # ---------------------------------------------------------------------------
 # 地方台别名：规范名 -> (分组, 序号, [别名])
@@ -377,12 +392,26 @@ _ALIAS_INDEX.sort(key=lambda x: -len(x[3]))
 # 这次没测通，后面的台号会整体前移，于是 CCTV-6 顶上 4 号位，播放器里看到
 # 的就是「3 号台是 CCTV-3，4 号台却是 CCTV-6」——错位比留空难看得多。
 # 固定编号的含义是：CCTV-5 永远是 5 号台，没源就空着；广东卫视永远是 101。
-CCTV_CHNO: dict[str, int] = {f"CCTV-{n} {cn}": n for n, cn in CCTV_CN.items()}
-CCTV_CHNO["CCTV-5+ 体育赛事"] = 18
-CCTV_CHNO["CCTV-4K 超高清"] = 19
-CCTV_CHNO["CCTV-8K 超高清"] = 20
-for _i, _cn in enumerate(["英语", "纪录", "西语", "法语", "阿语", "俄语"]):
-    CCTV_CHNO[f"CGTN {_cn}"] = 21 + _i
+#
+# 央视组的顺序在这里「一次写死」，原因：CCTV-5+ 不是按台号插得进去的
+# （它不是 5.5 号台），但它必须紧跟在 CCTV-5 后面、排在 CCTV-6 之前。
+# 所以央视组改成「按显示顺序连续编号」：CCTV-5 是 5，CCTV-5+ 是 6，
+# CCTV-6 是 7……播放器无论按文件顺序还是按 tvg-chno 排，出来的次序都一样。
+CCTV_ORDER: list[str] = []
+for _n in sorted(CCTV_CN):
+    CCTV_ORDER.append(f"CCTV-{_n} {CCTV_CN[_n]}")
+    if _n == 5:
+        CCTV_ORDER.append("CCTV-5+ 体育赛事")     # 紧跟 CCTV-5，见上
+CCTV_ORDER += ["CCTV-4K 超高清", "CCTV-8K 超高清"]
+CCTV_ORDER += [f"CGTN {_c}" for _c in CGTN_LANG]
+
+CCTV_INDEX = {name: i for i, name in enumerate(CCTV_ORDER)}
+CCTV_CHNO: dict[str, int] = {name: i + 1 for i, name in enumerate(CCTV_ORDER)}
+
+
+def _cctv_order(canon: str) -> int:
+    """央视台的组内排序键。就按 CCTV_ORDER 的先后乘 10，留空档方便插台。"""
+    return (CCTV_INDEX.get(canon, 999) + 1) * 10
 
 
 def _build_chno_map() -> dict[tuple[str, str], int]:
@@ -428,11 +457,13 @@ def _match_cctv(s: str) -> tuple[str, int] | None:
     m = re.match(r"^CGTN(.*)$", up)
     if m:
         tail = m.group(1).strip("-·_ ")
-        cn = CGTN_CN.get(tail, CGTN_CN.get(tail[:2], None))
+        cn = CGTN_ALIAS.get(tail)
+        if cn is None:
+            # 去掉标点再试一次：CGTN Documentary → CGTNDOCUMENTARY
+            cn = CGTN_ALIAS.get(re.sub(r"[^A-Z\u4e00-\u9fff]", "", tail))
         if cn is None:
             return None
-        order = 300 + (list(CGTN_CN.values()).index(cn) * 5)
-        return f"CGTN {cn}", order
+        return f"CGTN {cn}", _cctv_order(f"CGTN {cn}")
 
     # CCTV+ 海外版（与 CCTV-1 不是同一个台，单独排）
     m = re.match(r"^CCTV\+[-]?(\d)", up)
@@ -442,12 +473,12 @@ def _match_cctv(s: str) -> tuple[str, int] | None:
     # CCTV-4K / 8K
     m = re.match(r"^CCTV[-]?(4K|8K)", up)
     if m:
-        k = m.group(1)
-        return f"CCTV-{k} 超高清", 270 if k == "4K" else 275
+        canon = f"CCTV-{m.group(1)} 超高清"
+        return canon, _cctv_order(canon)
 
-    # CCTV-5+
+    # CCTV-5+（必须排在 CCTV-5 之后、CCTV-6 之前，序号见 CCTV_ORDER）
     if re.match(r"^CCTV[-]?5\+", up) or re.match(r"^CCTV5PLUS", up):
-        return "CCTV-5+ 体育赛事", 250
+        return "CCTV-5+ 体育赛事", _cctv_order("CCTV-5+ 体育赛事")
 
     # CCTV-N
     # 注意：不能用 \b —— 中文也算 \w，`CCTV-1综合` 里 1 和「综」之间没有词边界，
@@ -457,7 +488,8 @@ def _match_cctv(s: str) -> tuple[str, int] | None:
         n = int(m.group(1))
         if n not in CCTV_CN:
             return None          # 18 以上不是台号，多是"CCTV5+高清"之类没洗净，丢弃
-        return f"CCTV-{n} {CCTV_CN[n]}", n * 10
+        canon = f"CCTV-{n} {CCTV_CN[n]}"
+        return canon, _cctv_order(canon)
 
     return None
 
@@ -493,7 +525,7 @@ def classify(name: str) -> tuple[str, str, int] | None:
 # ---------------------------------------------------------------------------
 # 个别频道允许多留几条线路。
 # 央视 1-17 是刚需且最容易断，留 2 条；一旦全断，对应台号就会空出来。
-KEEP_OVERRIDE = {"翡翠台": 3, "广东卫视": 2, "深圳卫视": 2}
+KEEP_OVERRIDE = {"翡翠台": 3, "广东卫视": 2, "深圳卫视": 2, "CCTV-5+ 体育赛事": 1}
 for _n in CCTV_CN:
     KEEP_OVERRIDE[f"CCTV-{_n} {CCTV_CN[_n]}"] = 2
 
@@ -541,18 +573,25 @@ def _diverse(items: list, n: int) -> list:
     return chosen
 
 
-def _pick_diverse(items: list, n: int) -> list:
+def _pick_diverse(items: list, n: int, force: bool = False) -> list:
     """先挑实测通过的线路；只有凑不够时，才补一条 BLOCKED 当后备。
 
     BLOCKED 是「403 / 本机 IP 被限流」这类换网络才能播的源。它们的响应时间往往
     比真能播的源还短，如果只按延迟排序，会被优先挑进清单 —— 电视上第一条线路
     点开就是黑屏。所以 OK 必须无条件排前面。
+
+    force=True 给 FORCE_KEEP 里的刚需台用：一条都不通时也留一条，
+    让这个台在清单里有位置（用户明确要求 CCTV-5 / CCTV-5+ 必须出现）。
     """
     ok = [x for x in items if x.status == "OK"]
     other = [x for x in items if x.status != "OK"]
     chosen = _diverse(ok, n)
     if len(chosen) < n and other:
-        chosen += _diverse(other, n - len(chosen))
+        if force and not chosen:
+            # 全军覆没：挑延迟最小的那条当占位，只留 1 条，别拿两条死链凑数
+            chosen += sorted(other, key=lambda x: x.latency_ms or 99999)[:1]
+        else:
+            chosen += _diverse(other, n - len(chosen))
     return chosen
 
 
@@ -586,7 +625,11 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
 
     for r in results:
         if r.status not in ("OK", "BLOCKED"):
-            continue
+            # 没测通的源默认不收。唯一例外是 FORCE_KEEP 里的刚需台：
+            # CCTV-5 / CCTV-5+ 全挂了也要在清单里留一行，见 FORCE_KEEP 的注释。
+            _g = classify(r.name)
+            if not (_g and _g[1] in FORCE_KEEP):
+                continue
         url = (r.url or "").strip()
         if not url or url in seen_url:
             continue
@@ -611,11 +654,20 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
         buckets.setdefault((group, canon, order), []).append(r)
 
     entries: list[Entry] = []
+    unreachable: list[str] = []      # 收进来了，但这一轮一条都没测通
     for (group, canon, order), items in buckets.items():
         n = KEEP_OVERRIDE.get(canon, keep_per_name)
-        picks = _pick_diverse(items, n)
+        force = canon in FORCE_KEEP
+        picks = _pick_diverse(items, n, force=force)
+        # 只在「一条都没测通」时算未测通。BLOCKED 不算——那是「换网络可播」，
+        # 不是坏源，以前它跟真死源混在一起统计，报告里会冒出十几台假警报。
+        if picks and all(p.status not in ("OK", "BLOCKED") for p in picks):
+            unreachable.append(canon)
         for i, r in enumerate(picks, 1):
             label = canon if i == 1 else f"{canon} (线路{i})"
+            if r.status not in ("OK", "BLOCKED"):
+                # 标出来，免得用户点开黑屏还以为清单做坏了
+                label += "（本期未测通）"
             entries.append(
                 Entry(group=group, name=label, canon=canon, order=order, url=r.url,
                       extra=_extra_lines(r.raw or []))
@@ -642,6 +694,7 @@ def curate(results: list, keep_per_name: int = 2) -> tuple[list[Entry], dict]:
         "dropped_names": dropped,
         "dropped_total": sum(dropped.values()),
         "missing_cctv": missing,
+        "unreachable": unreachable,
     }
     return entries, stats
 

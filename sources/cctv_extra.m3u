@@ -1,0 +1,25 @@
+# 央视补充源｜iptv-org 没收录（或收录的地址全死了）但本机实测能播的台
+#
+# 为什么需要这个文件：
+#   央视组的源统一从 iptv-org 取（scripts/fetch_cctv.py 生成 cctv_iptvorg.m3u），
+#   但 iptv-org 的收录是不全的，实测漏了这几个：
+#     · CCTV-5      —— 频道条目 CCTV5.cn 在库里，但挂的流地址是 0 条
+#     · CCTV-6      —— 库里只有 69.30.245.50，那台域名已解析不到；
+#                      真正好用的是 74.91 这套模板的 cctv6hd，它没被收录
+#     · CGTN 西语   —— 库里的 amagi / cgtn.com 地址本机不通
+#   这些台是刚需，不能因为上游漏了就整台消失，所以在这里手工补。
+#
+# 本文件由人手工维护，scripts/fetch_cctv.py 会把它拼进 sources/cctv_iptvorg.m3u。
+#
+# 编号提醒：各家 IPTV 模板的频道编号互不相同，**别照编号类推**。
+#   74.91 这套模板里 cctv5hd = CCTV-5、cctv6hd = CCTV-6（截帧核过台标）；
+#   别的模板里 0005 / 1005 / 0006 之类未必是同一个台，没核过台标的地址不要写进来。
+
+#EXTINF:-1 tvg-id="CCTV5.cn" group-title="央视",CCTV-5 体育
+http://74.91.26.218:82/live/cctv5hd.m3u8
+
+#EXTINF:-1 tvg-id="CCTV6.cn" group-title="央视",CCTV-6 电影
+http://74.91.26.218:82/live/cctv6hd.m3u8
+
+#EXTINF:-1 tvg-id="CGTNSpanish.cn" group-title="央视",CGTN 西语
+https://0472.org/hls/cgtnx.m3u8

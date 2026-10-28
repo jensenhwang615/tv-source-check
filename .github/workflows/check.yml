@@ -35,6 +35,11 @@ jobs:
       - name: 从上游采集候选源
         run: python scripts/collect.py || echo "采集失败，继续用手工清单"
 
+      - name: 更新央视源（iptv-org）
+        # 央视组只从这一个文件取源。拉不到就用仓库里上一版（已提交），
+        # 不让一次网络抖动把整组央视弄空。
+        run: python scripts/fetch_cctv.py || echo "拉取 iptv-org 失败，沿用仓库里的上一版"
+
       - name: 实测所有源
         # 阈值 5%：auto.m3u 里是几百条自动采集的候选（含大量地域封锁的死源），
         # 会天然拉低总可用率。这个阈值只用来发现「整体崩了」，不适合当质量指标。
@@ -42,12 +47,17 @@ jobs:
         # GitHub 机房 IP 尤其容易中）。从它们上面失败的条目判为 BLOCKED，
         # 不算失效、也不从 valid.m3u 里踢掉。报告里会单独列出「被限流」多少条。
         #
+        # 央视组只认 --cctv-playlist 里的两个文件（iptv-org 自动生成 + 手工补充），
+        # 其它清单里的 CCTV 条目一律跳过——否则同一个台会被七八个来路的地址重复喂进来，
+        # 谁排前面全看谁当时握手快，稳定性无从谈起。
+        #
         # 不再跑 sources/official.m3u：央视官网那条流解出来是灰屏（路径里的
         # cdrm 就是这意思），裸拉 TS 解出来是纯灰屏，换 ffmpeg 7.1 也一样。
         # 收进来用户点开只会看到一片灰，不如不收录。留档在研究脚本里。
         run: |
           python scripts/check.py \
             --playlist sources/streams.m3u sources/backup.m3u sources/hk.m3u sources/sports.m3u sources/auto.m3u \
+            --cctv-playlist sources/cctv_iptvorg.m3u sources/cctv_extra.m3u \
             --out dist \
             --timeout 8 \
             --concurrency 24 \
