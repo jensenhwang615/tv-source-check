@@ -1,17 +1,17 @@
 # 源可用性报告
 
-检测时间: 2026-10-30 06:11 (UTC+8)　耗时 103s
+检测时间: 2026-10-30 11:25 (UTC+8)　耗时 104s
 
-**共 329 条 · 可用 143 (47%) · 失效 152 · 可疑 9 · 被限流 23 · 跳过 2**
+**共 329 条 · 可用 142 (46%) · 失效 155 · 可疑 12 · 被限流 18 · 跳过 2**
 
 ## 按分组
 
 | 分组 | 可用 / 总数 | 被限流 | 可用率 |
 |---|---|---|---|
-| 香港 | 53 / 121 | 10 | 48% |
-| 广东 | 19 / 91 | 5 | 22% |
-| 央视 | 40 / 72 | 0 | 56% |
-| 体育 | 21 / 33 | 6 | 78% |
+| 香港 | 52 / 121 | 9 | 46% |
+| 广东 | 20 / 91 | 4 | 23% |
+| 央视 | 39 / 72 | 0 | 54% |
+| 体育 | 21 / 33 | 3 | 70% |
 | 体育·国际免费 | 6 / 6 | 0 | 100% |
 | 体育·足球(第三方) | 4 / 4 | 0 | 100% |
 | 体育·国内 | 0 / 1 | 1 | — |
@@ -19,7 +19,7 @@
 
 ## 被限流（不是失效）
 
-以下 23 条来自 `8.138.7.223`, `ali.hlspull.yximgs.com`, `bantel-cdn1.iptvperu.tv`, `bp-livetytv.bestv.cn`, `di-g7ij0rwh.vo.lswcdn.net`, `di-yx2saj20.vo.lswcdn.net`, `distribution.sportitalialive.it`, `gcksc.v.kcdnvip.com`, `hoytv-live-stream.hoy.tv`, `livepull-tcms.sztv.com.cn`, `pili-live-rtmp.tvliving.gdmztv.com`, `rthktv32-live.akamaized.net`, `rthktv33-live.akamaized.net`, `rthktv34-live.akamaized.net`, `rthktv35-live.akamaized.net`, `zdf-hls-19.akamaized.net`。这些地址此前实测可播，本次是本机 IP 被站点限流/封锁才失败；**已保留在 valid.m3u 里**，换个 IP（家里宽带、手机热点）通常就能看。
+以下 18 条来自 `8.138.7.223`, `bantel-cdn1.iptvperu.tv`, `bp-livetytv.bestv.cn`, `distribution.sportitalialive.it`, `gcksc.v.kcdnvip.com`, `hoytv-live-stream.hoy.tv`, `livepull-tcms.sztv.com.cn`, `pili-live-rtmp.tvliving.gdmztv.com`, `rthktv32-live.akamaized.net`, `rthktv33-live.akamaized.net`, `rthktv34-live.akamaized.net`, `rthktv35-live.akamaized.net`, `zdf-hls-19.akamaized.net`。这些地址此前实测可播，本次是本机 IP 被站点限流/封锁才失败；**已保留在 valid.m3u 里**，换个 IP（家里宽带、手机热点）通常就能看。
 
 
 ## 失效 / 可疑明细
@@ -30,20 +30,18 @@
 | 河源综合 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 珠江卫视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 番禺综合 | 广东 | DEAD | 超时 >8.0s | -ms |
-| 广东卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdonghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 297ms |
-| 广东卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 29ms |
-| 珠江频道 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 zhujianghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 29ms |
-| 广东体育 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdongty \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 31ms |
-| 深圳卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 shenzhenhd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 30ms |
-| 深圳卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 29ms |
-| 深圳都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szmv \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 30ms |
-| 南方卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 nanfang \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u6 | 29ms |
-| 大湾区卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 dawanqu \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u6 | 31ms |
-| 广东公共 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdgg \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 29ms |
-| 广东影视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdys \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 30ms |
-| 广东都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdds \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 29ms |
+| 广东卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdonghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 104ms |
+| 广东卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 53ms |
+| 珠江频道 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 zhujianghd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 54ms |
+| 广东体育 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 guangdongty \u6ca1\u6709\u914d\u7f6e\u4efb\u4f5 | 53ms |
+| 深圳卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 shenzhenhd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55 | 53ms |
+| 深圳卫视 (线路2) | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 szws \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 53ms |
+| 大湾区卫视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 dawanqu \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u6 | 54ms |
+| 广东公共 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdgg \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 54ms |
+| 广东影视 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdys \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 53ms |
+| 广东都市 | 广东 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 gdds \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u670d | 53ms |
 | 翡翠台 (线路2) | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 明珠台 (线路2) | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
+| 明珠台 (线路2) | 香港 | DEAD | 超时 >8.0s | -ms |
 | CCTV-世界地理 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-兵器科技 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV-卫生健康 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -60,30 +58,31 @@
 | CCTV中学生 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV发现之旅 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | CCTV老故事 | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CGTN Documentary English Ⓢ | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 334ms |
-| CGTN Español | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 36ms |
-| CGTN Français | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 29ms |
-| CGTN Pусский | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 24ms |
-| 东莞生活资讯 | 广东 | DEAD | HTTP 404 | 6698ms |
+| CGTN Documentary English Ⓢ | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 296ms |
+| CGTN Español | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 10ms |
+| CGTN Français | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 10ms |
+| CGTN Pусский | 央视 | DEAD | 变体: 连接失败/DNS 解析不了 | 17ms |
+| 东莞生活资讯 | 广东 | DEAD | HTTP 404 | 7962ms |
 | 云浮公共 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 云浮综合 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 南方卫视 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 嘉佳卡通 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 大湾区卫视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 大湾区卫视 | 广东 | DEAD | 超时 >8.0s | -ms |
-| 广东-广州塔与海心桥视角 | 广东 | DEAD | 超时 >8.0s | -ms |
+| 大湾区卫视 | 广东 | DEAD | 超时 >8.0s | -ms |
+| 广东-广州塔与海心桥视角 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 广东-车八岭国家级自然保护区 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 广东公共 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 广东卫视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 广东卫视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 广东卫视 | 广东 | DEAD | HTTP 404 | 1439ms |
-| 广东卫视4K | 广东 | DEAD | HTTP 404 | 1226ms |
-| 广东少儿 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 广东影视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
+| 广东卫视 | 广东 | DEAD | HTTP 404 | 1421ms |
+| 广东卫视4K | 广东 | DEAD | HTTP 404 | 1214ms |
+| 广东少儿 | 广东 | DEAD | 超时 >8.0s | -ms |
+| 广东影视 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 广东文化 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 广东新闻 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 广东民生 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 广东经济科教 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
+| 广东新闻 | 广东 | DEAD | 超时 >8.0s | -ms |
+| 广东民生 | 广东 | DEAD | 超时 >8.0s | -ms |
+| 广东经济科教 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 广州影视 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 广州法治 | 广东 | DEAD | 超时 >8.0s | -ms |
 | 河源公共 | 广东 | DEAD | 超时 >8.0s | -ms |
@@ -91,8 +90,8 @@
 | 深圳东部 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 深圳众创TV | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 深圳卫视 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 深圳卫视 | 广东 | DEAD | HTTP 404 | 1226ms |
-| 深圳卫视 | 广东 | DEAD | HTTP 500 | 1537ms |
+| 深圳卫视 | 广东 | DEAD | HTTP 404 | 1214ms |
+| 深圳卫视 | 广东 | DEAD | HTTP 500 | 1427ms |
 | 深圳龙岗 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 清新公共 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 清新综合 | 广东 | DEAD | 连接失败/DNS 解析不了 | -ms |
@@ -119,82 +118,88 @@
 | TDM Ou Mun | 香港 | DEAD | 超时 >8.0s | -ms |
 | TDM Sport | 香港 | DEAD | 超时 >8.0s | -ms |
 | TVB Finance (Sports & Information Channel) | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| TVB J1 | 香港 | DEAD | HTTP 409 | 341ms |
+| TVB J1 | 香港 | DEAD | HTTP 409 | 492ms |
 | TVB News Channel | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | TVB Plus | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| TVB Plus | 香港 | DEAD | 变体: 超时 >8.0s | 523ms |
+| TVB Plus | 香港 | DEAD | 变体: 超时 >8.0s | 154ms |
 | TVBS欢乐台 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| TVB无线新闻 | 香港 | DEAD | HTTP 523 | 2423ms |
+| TVB娱乐新闻 | 香港 | DEAD | 超时 >8.0s | -ms |
+| TVB无线新闻 | 香港 | DEAD | HTTP 523 | 2570ms |
 | TVB无线新闻（备用） | 香港 | DEAD | 超时 >8.0s | -ms |
 | TVB无线星河 | 香港 | DEAD | 超时 >8.0s | -ms |
-| TVB明珠台 | 香港 | DEAD | 响应体为空 | 3297ms |
-| TVB星河 | 香港 | DEAD | HTTP 404 | 3825ms |
+| TVB明珠台 | 香港 | DEAD | 超时 >8.0s | -ms |
+| TVB星河 | 香港 | DEAD | HTTP 404 | 1115ms |
 | TVB生活台 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| TVB翡翠台 | 香港 | DEAD | HTTP 404 | 1226ms |
-| TVB翡翠台 | 香港 | DEAD | HTTP 523 | 3244ms |
+| TVB翡翠台 | 香港 | DEAD | HTTP 404 | 1214ms |
+| TVB翡翠台 | 香港 | DEAD | HTTP 523 | 7111ms |
 | TVB翡翠台（备用） | 香港 | DEAD | 超时 >8.0s | -ms |
 | VIUTV1 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | Viu6 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | iHOY 爱历史 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 凤凰中文台 | 香港 | DEAD | HTTP 404 | 1226ms |
+| 凤凰中文台 | 香港 | DEAD | HTTP 404 | 1213ms |
 | 凤凰中文高清 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 凤凰卫视 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 凤凰电影 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 凤凰资讯 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 凤凰资讯台 | 香港 | DEAD | HTTP 404 | 1227ms |
+| 凤凰资讯台 | 香港 | DEAD | HTTP 404 | 1214ms |
 | 凤凰资讯高清 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 凤凰香港 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 凤凰香港台 | 香港 | DEAD | HTTP 404 | 1227ms |
-| 华丽翡翠台 | 香港 | DEAD | HTTP 523 | 2932ms |
-| 华丽翡翠台 | 香港 | DEAD | HTTP 404 | 3791ms |
+| 凤凰香港台 | 香港 | DEAD | HTTP 404 | 1215ms |
+| 华丽翡翠台 | 香港 | DEAD | HTTP 523 | 2958ms |
+| 华丽翡翠台 | 香港 | DEAD | HTTP 404 | 1072ms |
 | 房山无线频道 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 房山有线频道 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 无线新闻台 | 香港 | DEAD | 超时 >8.0s | -ms |
 | 明珠台 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 明珠台 | 香港 | DEAD | 超时 >8.0s | -ms |
 | 有线新闻 | 香港 | DEAD | 超时 >8.0s | -ms |
-| 港台电视31 | 香港 | DEAD | HTTP 404 | 2236ms |
-| 港台电视32 | 香港 | DEAD | HTTP 404 | 1082ms |
+| 港台电视31 | 香港 | DEAD | HTTP 404 | 2343ms |
+| 港台电视32 | 香港 | DEAD | HTTP 404 | 2929ms |
 | 澳视卫星 | 香港 | DEAD | SSL 握手失败 | -ms |
 | 澳视澳门 | 香港 | DEAD | SSL 握手失败 | -ms |
 | 石景山有线 | 香港 | DEAD | 超时 >8.0s | -ms |
 | 翡翠台 backup | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| 香港卫视 | 香港 | DEAD | HTTP 404 | 1227ms |
+| 香港卫视 | 香港 | DEAD | HTTP 404 | 1214ms |
 | 香港卫视 | 香港 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| FIFA+ | 体育 | DEAD | HTTP 404 | 1478ms |
+| FIFA+ | 体育 | DEAD | HTTP 404 | 1262ms |
+| Sportitalia 24 (720p) [Geo-blocked] | 体育 | DEAD | HTTP 404 | 1157ms |
+| Sportitalia LIVE24 | 体育 | DEAD | HTTP 404 | 1243ms |
+| Sportitalia Motori (720p) [Geo-blocked] | 体育 | DEAD | HTTP 404 | 867ms |
 | WOWOWライブ | 体育 | DEAD | InvalidURL | -ms |
 | 五星体育 | 体育 | DEAD | SSL 握手失败 | -ms |
-| 五星体育 | 体育 | DEAD | HTTP 404 | 1227ms |
+| 五星体育 | 体育 | DEAD | HTTP 404 | 1212ms |
 | 劲爆体育 | 体育 | DEAD | 连接失败/DNS 解析不了 | -ms |
 | 劲爆体育 | 体育 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV-1 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 45ms |
+| CCTV-1 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 102ms |
 | CCTV-4 America (1080p) | 央视 | DEAD | SSL 握手失败 | -ms |
-| CCTV-4K HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv4khd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u | 65ms |
-| CCTV-5+ (1080p) | 央视 | DEAD | 变体: HTTP 403 | 151ms |
-| CCTV-6 [Geo-blocked] | 央视 | DEAD | HTTP 500 | 1475ms |
+| CCTV-4K HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: {"error":"\u9891\u9053 cctv4khd \u6ca1\u6709\u914d\u7f6e\u4efb\u4f55\u | 205ms |
+| CCTV-5+ (1080p) | 央视 | DEAD | 变体: HTTP 403 | 126ms |
+| CCTV-6 [Geo-blocked] | 央视 | DEAD | HTTP 500 | 1327ms |
 | CCTV-13 HD (1080p) | 央视 | DEAD | 连接失败/DNS 解析不了 | -ms |
-| CCTV-16 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 29ms |
-| CGTN Russian (1080p) | 央视 | DEAD | 超时 >8.0s | -ms |
+| CCTV-16 HD (1080p) | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 53ms |
+| CGTN Russian (1080p) | 央视 | DEAD | HTTP 404 | 1779ms |
 | CGTN Spanish (1080p) | 央视 | DEAD | 超时 >8.0s | -ms |
-| CCTV-5 体育 | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 29ms |
-| CCTV-5 体育 | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 30ms |
-| CCTV+ 1 (600p) [Not 24/7] | 央视 | SUSPECT | 变体: 分片 HTTP 404 | 426ms |
-| 广东体育 | 广东 | SUSPECT | 分片 HTTP 502 | 2837ms |
-| 广东体育 | 广东 | SUSPECT | 返回网页而非视频流 | 677ms |
-| 广东珠江 | 广东 | SUSPECT | 返回网页而非视频流 | 71ms |
-| 深圳卫视4K | 广东 | SUSPECT | 返回网页而非视频流 | 1554ms |
-| HOY78 | 香港 | SUSPECT | 返回网页而非视频流 | 156ms |
-| 澳门体育 | 香港 | SUSPECT | 返回网页而非视频流 | 186ms |
-| 澳门综艺 | 香港 | SUSPECT | 返回网页而非视频流 | 77ms |
-| 翡翠台4K | 香港 | SUSPECT | 返回网页而非视频流 | 81ms |
+| CCTV-5 体育 | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 53ms |
+| CCTV-5 体育 | 央视 | DEAD | 返回提示文字而非视频流: the content is not available in your area | 54ms |
+| 翡翠台 | 香港 | SUSPECT | 变体: 分片 HTTP 404 | 389ms |
+| CCTV+ 1 (600p) [Not 24/7] | 央视 | SUSPECT | 变体: 分片 HTTP 404 | 1037ms |
+| CCTV+ 2 (600p) [Not 24/7] | 央视 | SUSPECT | 变体: 分片 HTTP 404 | 261ms |
+| 广东体育 | 广东 | SUSPECT | 分片 HTTP 502 | 1095ms |
+| 广东体育 | 广东 | SUSPECT | 返回网页而非视频流 | 610ms |
+| 广东民生 | 广东 | SUSPECT | 分片 HTTP 404 | 392ms |
+| 广东珠江 | 广东 | SUSPECT | 返回网页而非视频流 | 62ms |
+| 深圳卫视4K | 广东 | SUSPECT | 返回网页而非视频流 | 1100ms |
+| HOY78 | 香港 | SUSPECT | 返回网页而非视频流 | 195ms |
+| 澳门体育 | 香港 | SUSPECT | 返回网页而非视频流 | 107ms |
+| 澳门综艺 | 香港 | SUSPECT | 返回网页而非视频流 | 79ms |
+| 翡翠台4K | 香港 | SUSPECT | 返回网页而非视频流 | 62ms |
 
 ## 清单整理
 
-可用 166 条 → 去重合并后写进 `valid.m3u` 的 **83 条**。另有 31 条不进清单（付费频道 / 名字撞关键词的误采内容）。
+可用 160 条 → 去重合并后写进 `valid.m3u` 的 **83 条**。另有 30 条不进清单（付费频道 / 名字撞关键词的误采内容）。
 
 被剔除的内容：
 
-- `CCTV+ 2 (600p) [Not 24/7]`
 - `CCTV-Billiards (1080p)`
 - `CCTV-Culture of Quality SD (1080p)`
 - `CCTV-Golf & Tennis (1080p)`
@@ -237,13 +242,13 @@
 
 | 频道 | 延迟 | 分辨率 |
 |---|---|---|
-| TyC Sports | 22ms | 1920x1080 |
-| beIN SPORTS XTRA | 41ms | 1920x1080 |
-| NBC Sports NOW | 49ms | 1920x1080 |
-| 无线新闻台 | 53ms | - |
-| DD Sports | 53ms | 1920x1080 |
-| CCTV-9 纪录 | 62ms | 1920x1080 |
-| 澳门卫视 | 65ms | - |
-| CCTV-14 少儿 | 70ms | - |
-| CCTV-17 农业农村 | 70ms | - |
-| CCTV-11 戏曲 | 71ms | - |
+| DD Sports | 11ms | 1920x1080 |
+| beIN SPORTS XTRA | 11ms | 1920x1080 |
+| 翡翠台 | 39ms | 3840x2160 |
+| 明珠台 | 41ms | 1920x1080 |
+| 凤凰卫视香港台 | 42ms | - |
+| 无线新闻台 | 48ms | - |
+| ViuTV | 50ms | 1920x1080 |
+| 凤凰卫视中文台 | 57ms | - |
+| 澳门卫视 | 63ms | - |
+| 凤凰卫视资讯台 | 68ms | - |
